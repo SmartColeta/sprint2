@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Geral</title>
+</head>
+<body>
+  <h1 style="color: #00ff5f">Smart Coleta</h1>
+  <h2>Calculadora Geral</h2>
+
+    <div>
+      <span>Insira o valor do Diesel: </span>
+      <input type="text" id="ipt_diesel" placeholder="Qual o valor do diesel"><br>
+      <span>Insira quantos Km você vai rodar hoje: </span>
+      <input type="text" id="ipt_km" placeholder="Quantos km vai rodar hoje"><br>
+      <span>Insira quantos dias você realiza a coleta na semana: </span>
+      <input type="text" id="ipt_dias" placeholder="Quantos dias você coleta na semana"><br>
+      <button onclick="calcular()">Calcular Diesel</button><br>
+      <div id="exibirDiesel">Calculando....</div> <br>
+     </div>
+
+     <div>
+      <span>Insira a velocidade média de suas viagens: </span>
+      <input type="text" id="ipt_vel" placeholder="Velocidade media (km/h)"><br>
+      <button onclick="caltemp()">Calcular Tempo</button><br>
+      <div id="Etempo">Calculando...</div> <br>
+    </div>
+
+    <div id = "sesion4">
+    <span>Insira quantas toneladas de lixo você recolhe por dia: </span>
+    <input type="text" id="ipt_lixo" placeholder="Quantas toneladas de lixo recolhe por dia"><br>
+    <button onclick="carb()">Calcular emissão de carbono</button><br>
+    <div id="Ecarbono">Calculando...</div> <br>
+    </div>
+
+    <div id = "sesion3">
+    <span>Insira quanto você gasta diariamente com manutenção: </span>
+    <input type="text" id="ipt_manu" placeholder="Gasto diário com manutenção"><br>
+    <span>Insira quantos caminhões você possui na frota: </span>
+    <input type="text" id="ipt_qnt" placeholder="Quantos caminhões você tem"><br>
+    <button onclick="calmanu()">Calcular Manutenção</button><br>
+    <div id="Emanu">Calculando...</div> <br>
+    </div>
+
+    <h2>
+      Vamos Ver quanto você vai economizar com o sistema 
+    </h2>
+    <button onclick="economia()">Economizar</button>
+    <div id="economizar"> Calculando...</div>
+
+
+    <script>
+        function calcular(){
+            let diesel = Number(ipt_diesel.value);
+            let km = Number(ipt_km.value);
+            let dias = Number(ipt_dias.value);
+
+            // a divisão por 3 é referente a quantos Km/L os caminhões de lixo fazem em média
+            let gasto = (km * diesel) / 3;
+
+            let gSemanal = gasto * dias;
+            let gMes = gSemanal * 4;
+            let gAnual = gMes * 12;
+
+            exibirDiesel.innerHTML = `O gasto diário com diesel é de <span style="color: red">R$ ${gasto.toFixed(2)}</span>. O gasto mensal é de <span style="color: red">R$ ${gMes.toFixed(2)}</span> e o gasto anual é de <span style="color: red">R$ ${gAnual.toFixed(2)}</span>.`
+        }
+
+         //Calculo de emissão de dióxido de carbono
+          //a cada 1T são 950 de C
+
+         function carb(){
+            let carbono = 950
+            let lixo = Number(ipt_lixo.value);
+            let dias = Number(ipt_dias.value);
+
+            let emissao = (lixo * carbono) / 1000;
+
+            let eSemanal = emissao * dias;
+            let eMensal = eSemanal * 4;
+            let eAnual = eMensal * 12;
+
+            Ecarbono.innerHTML = `A emissão de CO₂e é de <span style="color: red">${emissao.toFixed(2)}</span>T por dia. A emissão de CO₂e mensal é de <span style="color: red">${eMensal.toFixed(2)}</span>T e a emissão de CO₂e anual é de <span style="color: red">${eAnual.toFixed(2)}</span>T.`
+         }
+
+          //Calculo do tempo de rota
+
+         function caltemp(){
+            let km = Number(ipt_km.value);
+            let vel = Number(ipt_vel.value);
+            let media = km / vel
+
+            if (media >= 1 ){
+              Etempo.innerHTML = `Seu tempo de rota vai ser de <span style="color: red">${media.toFixed(2)} horas</span>`
+
+            }else{
+              let minutos = media * 60
+              Etempo.innerHTML = `Seu tempo de rota vai ser de <span style="color: red">${minutos.toFixed(2)} minutos</span>`
+            }
+           }
+
+
+         function calmanu(){
+            let manu = Number(ipt_manu.value);
+            let qnt = Number(ipt_qnt.value);
+            let dias = Number(ipt_dias.value);
+
+            let gasto = manu * qnt;
+
+            let gSemanal = gasto * dias;
+            let gMensal = gSemanal * 4;
+            let gAnual = gMensal * 12;
+
+            Emanu.innerHTML = `O gasto diário com manutenção é de <span style="color: red"> R$${gasto.toFixed(2)}</span>. O gasto mensal é de <span style="color: red"> R$${gMensal.toFixed(2)}</span>. O gasto anual é de <span style="color: red"> R$${gAnual.toFixed(2)}</span>.`
+         }
+  
+         function economia(){
+            let diesel = Number(ipt_diesel.value);
+            let km = Number(ipt_km.value);
+            let vel = Number(ipt_vel.value);
+            let manu = Number(ipt_manu.value);
+            let qCaminhao = Number(ipt_qnt.value);
+            let dias = Number(ipt_dias.value);
+
+            let gasto = (km * diesel) / 3;
+            let emissao = 950;
+            
+
+            //Calculo do diesel
+            let gSemanal = gasto * dias;
+            let gMensal = gSemanal * 4;
+            let gAnual = gMensal * 12;
+
+            //Economia de 5%
+            let eAnualCinco = gAnual  * 0.05;
+            let eMensalCinco = gMensal  * 0.05;
+
+            //Economia de 10%
+            let eAnualDez = gAnual  * 0.1;
+            let eMensalDez = gMensal  * 0.1
+
+            //Economia de 15%
+            let eAnualQuinze = gAnual  * 0.15;
+            let eMensalQuinze = gMensal  * 0.15;
+
+            //Calculo do tempo
+            let media = km / vel;
+            let mediaMensal = (media * dias) * 4;
+
+            //Economia de 5%
+            let eTempoMensalCinco = mediaMensal * 0.05;
+            let eTempoMensalCincoMin = eTempoMensalCinco * 60;
+            let eTempoAnualCinco = eTempoMensalCinco * 12;
+            let eTempoAnualCincoMin = eTempoAnualCinco * 60;
+
+            //Economia de 10%
+            let eTempoMensalDez = mediaMensal * 0.1;
+            let eTempoMensalDezMin = eTempoMensalDez * 60;
+            let eTempoAnualDez = eTempoMensalDez * 12;
+            let eTempoAnualDezMin = eTempoAnualDez * 60;
+
+            //Economia de 15%
+            let eTempoMensalQuinze = mediaMensal * 0.15;
+            let eTempoMensalQuinzeMin = eTempoMensalQuinze * 60;
+            let eTempoAnualQuinze = eTempoMensalQuinze * 12;
+            let eTempoAnualQuinzeMin = eTempoAnualQuinze * 60;
+
+             //Calculo da manutenção
+             let mDiario = manu * qCaminhao;
+             let mSemanal = mDiario * dias;
+             let mMensal = mSemanal * 4;
+             let mAnual = mMensal * 12;
+
+             //Economia de 5%
+             let eManuMensalCinco = mMensal * 0.05;
+             let eManuAnualCinco = mAnual  * 0.05;
+
+             //Economia de 10%
+             let eManuMensalDez = mMensal * 0.1;
+             let eManuAnualDez = mAnual  * 0.1;
+
+            //Economia de 15%
+             let eManuMensalQuinze = mMensal * 0.15;
+             let eManuAnualQuinze = mAnual  * 0.15;
+
+             //Calculo de carbono
+             let lixo = Number(ipt_lixo.value);
+
+             let cDiario = lixo * emissao;
+             let cSemanal = cDiario * dias;
+             let cMensal = cSemanal * 4; 
+             let cAnual = cMensal * 12;
+
+             //Economia de 5%
+             let eCarbonoMensalCinco = cMensal * 0.05;
+             let eCarbonoAnualCinco = cAnual * 0.05;
+
+             //Economia de 10%
+             let eCarbonoMensalDez = cMensal * 0.1;
+             let eCarbonoAnualDez = cAnual * 0.1;
+
+             //Economia de 15%
+             let eCarbonoMensalQuinze = cMensal * 0.15;
+             let eCarbonoAnualQuinze = cAnual * 0.15;
+
+             if(diesel == 0 || km == 0 || vel == 0 || manu == 0 || qCaminhao == 0 || dias == 0){
+              economizar.innerHTML = `Preencha todos os dados corretamente`
+             } else {
+             economizar.innerHTML = `<b> Cenário de Economia: </b>Caso economize <b>5%</b> com o nosso sensor, você irá economizar: <br>
+             <span style="color: green">R$${eMensalCinco.toFixed(2)}</span> de combustível por mês e <span style="color: green">R$${eAnualCinco.toFixed(2)}</span> por ano; <br> 
+             A economia com o tempo vai ser de <span style="color: green">${eTempoMensalCinco.toFixed(2)}</span> horas no mês (${eTempoMensalCincoMin} minutos) e <span style="color: green">${eTempoAnualCinco.toFixed(2)}</span> horas (${eTempoAnualCincoMin} minutos) no ano; <br> 
+             A economia com a manutenção vai ser de <span style="color: green">R$${eManuMensalCinco.toFixed(2)}</span> por mês e <span style="color: green">R$${eManuAnualCinco.toFixed(2)}</span> por ano; <br> 
+             A economia de emissão CO₂e vai ser de <span style="color: green">${eCarbonoMensalCinco.toFixed(2)}</span>kg por mês e <span style="color: green">${eCarbonoAnualCinco.toFixed(2)}</span>kg por ano. <br> <br>
+             <b> Cenário de Economia: </b>Caso economize <b>10%</b> com o nosso sensor, você irá economizar: <br>
+             <span style="color: green">R$${eMensalDez.toFixed(2)}</span> de combustível por mês e <span style="color: green">R$${eAnualDez.toFixed(2)}</span> por ano; <br> 
+             A economia com o tempo vai ser de <span style="color: green">${eTempoMensalDez.toFixed(2)}</span> horas no mês (${eTempoMensalDezMin} minutos) e <span style="color: green">${eTempoAnualDez.toFixed(2)}</span> horas (${eTempoAnualDezMin} minutos) no ano; <br> 
+             A economia com a manutenção vai ser de <span style="color: green">R$${eManuMensalDez.toFixed(2)}</span> por mês e <span style="color: green">R$${eManuAnualDez.toFixed(2)}</span> por ano; <br> 
+             A economia de emissão CO₂e vai ser de <span style="color: green">${eCarbonoMensalDez.toFixed(2)}</span>kg por mês e <span style="color: green">${eCarbonoAnualDez.toFixed(2)}</span>kg por ano. <br> <br>
+             <b> Cenário de Economia: </b>Caso economize <b>15%</b> com o nosso sensor, você irá economizar: <br>
+             <span style="color: green">R$${eMensalQuinze.toFixed(2)}</span> de combustível por mês e <span style="color: green">R$${eAnualQuinze.toFixed(2)}</span> por ano; <br> 
+             A economia com o tempo vai ser de <span style="color: green">${eTempoMensalQuinze.toFixed(2)}</span> horas no mês (${eTempoMensalQuinzeMin} minutos) e <span style="color: green">${eTempoAnualQuinze.toFixed(2)}</span> horas (${eTempoAnualQuinzeMin} minutos) no ano; <br> 
+             A economia com a manutenção vai ser de <span style="color: green">R$${eManuMensalQuinze.toFixed(2)}</span> por mês e <span style="color: green">R$${eManuAnualQuinze.toFixed(2)}</span> por ano; <br> 
+             A economia de emissão CO₂e vai ser de <span style="color: green">${eCarbonoMensalQuinze.toFixed(2)}</span>kg por mês e <span style="color: green">${eCarbonoAnualQuinze.toFixed(2)}</span>kg por ano. <br>`
+             }}
+    </script>
+     
+    
+</body>
+</html>
