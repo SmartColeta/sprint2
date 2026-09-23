@@ -1,8 +1,8 @@
-# Sistema de Monitoramento Inteligente de Lixeiras em Pequenos Municípios
+# Sistema de Monitoramento Inteligente de Lixeiras em Pequenas Prefeituras
 
 ## Sobre o Projeto
 
-Este repositório contém o código-fonte e a documentação técnica de um protótipo de Internet das Coisas (IoT) focado no monitoramento em tempo real do volume de preenchimento de compartimentos de resíduos sólidos (lixeiras e caçambas públicas) em municípios de pequeno porte.
+Este repositório contém o código-fonte e a documentação técnica de um protótipo de Internet das Coisas (IoT) focado no monitoramento em tempo real do volume de compartimentos de resíduos sólidos de lixeiras e caçambas públicas em prefeituras de municípios de pequeno porte.
 
 A solução realiza a leitura volumétrica por meio do sensor ultrassônico HC-SR04 conectado a um microcontrolador, envia as informações para um banco de dados relacional e apresenta o nível de ocupação de cada ponto de coleta em uma interface web interativa, com gráficos e alertas por nível de urgência — permitindo à gestão pública substituir rotas fixas de coleta por rotas orientadas pela demanda real.
 
@@ -14,7 +14,7 @@ A solução realiza a leitura volumétrica por meio do sensor ultrassônico HC-S
 
 ## Tecnologias Utilizadas
 * **Hardware:** Microcontrolador Arduino e Sensor Ultrassônico de Distância HC-SR04.
-* **Backend**: Banco de Dados MySQL.
+* **Backend**: Banco de Dados MySQL, VM Linux.
 * **Frontend**: HTML5, CSS3, JavaScript.
 
 ## Funcionalidades do Protótipo
