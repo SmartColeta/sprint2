@@ -10,7 +10,7 @@ A solução realiza a leitura volumétrica por meio do sensor ultrassônico HC-S
 ├── arduino/        # Código C/C++ (.ino) para o microcontrolador e sensor HC-SR04
 ├── backend/        # Tratamento dos dados com MySQL
 ├── frontend/       # Painel web (HTML, CSS, JavaScript) com gráficos de monitoramento
-└── documentacao/   # Documentos do projeto (contexto, escopo, premissas e restrições)
+└── documentacao/   # Documentos do projeto (contexto, escopo, premissas e restrições) (https://bandteccom-my.sharepoint.com/:w:/g/personal/fernando_msantos_sptech_school/IQBKM5TeJg0MQbXbZbY5ZlS_Abujf-WoLOQLTsNFEVdz40k?e=GSDi2l)
 
 ## Tecnologias Utilizadas
 * **Hardware:** Microcontrolador Arduino e Sensor Ultrassônico de Distância HC-SR04.
