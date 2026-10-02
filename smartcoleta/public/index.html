@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Coleta - Acesso</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="wrap">
+
+        <!-- Parte esquerda -->
+        <aside class="side">
+
+            <img class="brand" src="logo.png" alt="Smart Coleta">
+
+            <h1>Smart Coleta</h1>
+
+            <p>
+                Sistema inteligente para auxiliar no gerenciamento
+                da coleta e monitoramento de resíduos.
+            </p>
+
+        </aside>
+
+
+        <!-- Parte direita -->
+        <main class="main">
+
+            <div class="card">
+
+                <!-- Abas -->
+                <div class="tabs">
+
+                    <button class="tab" id="loginTab" aria-selected="true" onclick="mostrarLogin()">
+                        Entrar
+                    </button>
+
+                    <button class="tab" id="cadastroTab" aria-selected="false" onclick="mostrarCadastro()">
+                        Criar conta
+                    </button>
+
+                </div>
+
+
+                <!-- Mensagem que vem do servidor (preenchida pelo script.js) -->
+                <div id="mensagem" class="ok" hidden></div>
+
+
+                <!-- LOGIN -->
+                <section id="login">
+
+                    <h2>Entrar</h2>
+
+                    <p class="sub">Entre com seus dados para acessar o sistema.</p>
+
+                    <form action="/entrar" method="post">
+
+                        <div class="f">
+                            <label for="emailLogin">E-mail</label>
+                            <input type="email" id="emailLogin" name="email" placeholder="Digite seu e-mail" required>
+                        </div>
+
+                        <div class="f">
+                            <label for="senhaLogin">Senha</label>
+
+                            <div class="pw">
+                                <input type="password" id="senhaLogin" name="senha" placeholder="Digite sua senha" required>
+                                <button type="button" onclick="mostrarSenha(senhaLogin, this)">Mostrar</button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label>
+                                <input type="checkbox" id="lembrar">
+                                Lembrar de mim
+                            </label>
+
+                            <a href="#">Esqueci a senha</a>
+                        </div>
+
+                        <button type="submit" class="go">Entrar</button>
+
+                    </form>
+
+                </section>
+
+
+                <!-- CADASTRO -->
+                <section id="cadastro" hidden>
+
+                    <h2>Criar conta</h2>
+
+                    <p class="sub">Cadastre-se para acessar o Smart Coleta.</p>
+
+                    <form action="/cadastrar" method="post">
+
+                        <div class="f">
+                            <label for="nome">Nome</label>
+                            <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+                        </div>
+
+                        <div class="f">
+                            <label for="emailCadastro">E-mail</label>
+                            <input type="email" id="emailCadastro" name="email" placeholder="Digite seu e-mail" required>
+                        </div>
+
+                        <div class="f">
+                            <label for="senhaCadastro">Senha</label>
+
+                            <div class="pw">
+                                <input type="password" id="senhaCadastro" name="senha" placeholder="Crie uma senha" minlength="6" required>
+                                <button type="button" onclick="mostrarSenha(senhaCadastro, this)">Mostrar</button>
+                            </div>
+                        </div>
+
+                        <div class="f">
+                            <label for="tipoUsuario">Tipo de usuário</label>
+
+                            <select id="tipoUsuario" name="tipo" required>
+                                <option value="">Selecione</option>
+                                <option value="usuario">Usuário</option>
+                                <option value="administrador">Administrador</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="go">Criar conta</button>
+
+                    </form>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
