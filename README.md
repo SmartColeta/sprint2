@@ -107,7 +107,7 @@ necessitam de coleta.
 |:-:|------------|---------|-----------|
 | 1 | Projeto atualizado no GitHub | Pesquisa e Inovação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | 2 | Documentação do Projeto atualizada | Pesquisa e Inovação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
-| 3 | Planilha de Riscos do Projeto | Pesquisa e Inovação | `▱▱▱▱▱▱▱▱▱▱ 0%` |
+| 3 | Planilha de Riscos do Projeto | Pesquisa e Inovação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | 4 | Especificação da Dashboard | Pesquisa e Inovação | `▱▱▱▱▱▱▱▱▱▱ 0%` |
 | - |------------|---------|-----------|
 | 1 | Site Estático Institucional | Algoritmos | `▱▱▱▱▱▱▱▱▱▱ 0%` |
