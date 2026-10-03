@@ -1,0 +1,64 @@
+
+:root {
+	/* color variables */
+	--backgrounds-primary: #fff;
+
+	/* responsive margins / paddings */
+	--margin-sm: 16px;
+	--margin-md: 32px;
+}
+
+* {
+	--min-screen-size: 430;
+	--max-screen-size: 1440;
+	--interpolate-diff: calc(var(--max-font-size) - var(--min-font-size));
+	--interpolate: clamp(calc(var(--min-font-size) * 1px), calc((var(--min-font-size) * 1px) + var(--interpolate-diff) * ((100vw - calc(var(--min-screen-size) * 1px)) / (var(--max-screen-size) - var(--min-screen-size)))), calc(var(--max-font-size) * 1px));
+}
+
+html {
+	height: 100%;
+	font-size: 16px;
+}
+
+
+
+/* text utility classes */
+
+.sub-text {
+	font-weight: 400;
+}
+
+.bold {
+	font-weight: 600;
+}
+
+
+
+/* ui objects utility classes */
+
+.card {
+	display: flex;
+	flex-direction: column;
+	background-color: #123c2b;
+	padding: 72px 66px 0 85px;
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+.secao {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-inline: 24px;
+}
+
+
+/* button hover utility classes */
+
+.hover-claro:hover {
+	filter: brightness(1.2);
+}
+
+.hover-escuro:hover {
+	filter: brightness(0.85);
+}
