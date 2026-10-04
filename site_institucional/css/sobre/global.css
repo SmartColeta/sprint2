@@ -49,8 +49,10 @@ html {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding-inline: 24px;
+	background-color: #f7faf8;
+	padding: 0 24px;
 }
+
 
 
 /* button hover utility classes */
