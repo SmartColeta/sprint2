@@ -63,6 +63,8 @@ Quando uma lixeira atingir determinado nível de preenchimento, o sistema poder�
 emitir um alerta, permitindo que a prefeitura identifique quais pontos
 necessitam de coleta.
 
+<img width="1306" height="1036" alt="image" src="https://github.com/user-attachments/assets/2f5f2bbd-790b-432b-b6ae-2d00472bdb12" />
+
 ---
 
 ## ⚙️ Funcionalidades
