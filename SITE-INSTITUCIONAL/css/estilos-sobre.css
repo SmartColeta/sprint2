@@ -1,0 +1,327 @@
+
+/* =====================================
+   PÁGINA SOBRE - SMARTCOLETA
+===================================== */
+
+/* PADRÃO GERAL */
+
+.quem-somos,
+.historia {
+    width: 100%;
+    padding: 80px 10%;
+    background-color: #F7FAF8;
+}
+
+.conteudo-sobre {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* =====================================
+   QUEM SOMOS
+===================================== */
+
+.quem-somos {
+    padding-top: 75px;
+    padding-bottom: 80px;
+}
+
+/* LOGO CENTRAL */
+
+.quem-somos-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    margin-bottom: 70px;
+}
+
+.quem-somos-logo img {
+    width: 43px;
+    height: 43px;
+    object-fit: contain;
+}
+
+.quem-somos-logo h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #01472B;
+}
+
+.quem-somos-logo h1 span {
+    color: #1F7A4D;
+}
+
+/* TÍTULOS DAS SEÇÕES */
+
+.conteudo-sobre h2 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #01472B;
+
+    margin-bottom: 25px;
+}
+
+/* PARÁGRAFOS */
+
+.conteudo-sobre p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    color: #34463B;
+
+    margin-bottom: 18px;
+}
+
+.conteudo-sobre p:last-child {
+    margin-bottom: 0;
+}
+
+/* =====================================
+   IMAGEM DOS CONTÊINERES
+===================================== */
+
+.quem-somos-imagem {
+    width: 100%;
+    height: 430px;
+    overflow: hidden;
+}
+
+.quem-somos-imagem img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+/* =====================================
+   O QUE RESOLVEMOS
+===================================== */
+
+.problemas {
+    background-color: #FFFFFF;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.lista-problemas {
+    margin: 25px 0;
+    padding-left: 25px;
+}
+
+.lista-problemas li {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #34463B;
+
+    margin-bottom: 18px;
+}
+
+.lista-problemas li strong {
+    color: #263D30;
+    font-weight: 700;
+}
+
+/* =====================================
+   MISSÃO, VISÃO E VALORES
+===================================== */
+
+.principios {
+    width: 100%;
+    padding: 80px 10%;
+
+    background-color: #F2F8F4;
+}
+
+.principios-conteudo {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* MISSÃO E VISÃO */
+
+.principios-superior {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px;
+
+    margin-bottom: 40px;
+}
+
+.card-principio {
+    min-height: 250px;
+    padding: 45px;
+
+    background-color: #103F2D;
+    border-radius: 12px;
+
+    color: white;
+}
+
+.card-principio h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.card-principio p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #E1EFE5;
+}
+
+/* VALORES */
+
+.card-valores {
+    width: 100%;
+    padding: 45px;
+
+    background-color: #103F2D;
+    border-radius: 12px;
+
+    color: white;
+}
+
+.card-valores > h2 {
+    font-size: 28px;
+    text-align: center;
+
+    margin-bottom: 40px;
+}
+
+/* TRÊS COLUNAS */
+
+.valores-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 35px;
+}
+
+.valor-item {
+    text-align: center;
+}
+
+.valor-item h3 {
+    font-size: 18px;
+    font-weight: 700;
+
+    margin-bottom: 18px;
+}
+
+.valor-item p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #E1EFE5;
+}
+
+/* =====================================
+   NOSSA HISTÓRIA
+===================================== */
+
+.nossa-historia {
+    padding-top: 100px;
+    padding-bottom: 110px;
+
+    background-color: #F7FAF8;
+}
+
+.nossa-historia .conteudo-sobre h2 {
+    margin-bottom: 35px;
+}
+
+.nossa-historia .conteudo-sobre p {
+    margin-bottom: 25px;
+}
+
+/* =====================================
+   RESPONSIVIDADE
+===================================== */
+
+@media (max-width: 900px) {
+
+    .quem-somos,
+    .historia,
+    .principios {
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+
+    .principios-superior {
+        gap: 20px;
+    }
+
+    .card-principio {
+        padding: 30px;
+    }
+
+    .card-valores {
+        padding: 35px 25px;
+    }
+
+    .valores-grid {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .quem-somos,
+    .historia,
+    .principios {
+        padding: 60px 7%;
+    }
+
+    .quem-somos-logo {
+        margin-bottom: 45px;
+    }
+
+    .quem-somos-logo h1 {
+        font-size: 26px;
+    }
+
+    .conteudo-sobre h2 {
+        font-size: 25px;
+    }
+
+    .conteudo-sobre p,
+    .lista-problemas li {
+        font-size: 14px;
+    }
+
+    .quem-somos-imagem {
+        height: 280px;
+    }
+
+    .principios-superior {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .card-principio {
+        min-height: auto;
+        padding: 30px 25px;
+    }
+
+    .card-principio h2,
+    .card-valores > h2 {
+        font-size: 24px;
+    }
+
+    .card-valores {
+        padding: 30px 25px;
+    }
+
+    .valores-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .nossa-historia {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+}

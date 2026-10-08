@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fale Conosco | SmartColeta</title>
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/estilos-contato.css">
+
+    <!-- FONTE DM SANS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div class="logo">
+            <img src="logos/logo-oficial.png" alt="Logo SmartColeta">
+
+            <span class="nome-logo">
+                Smart<span>Coleta</span>
+            </span>
+        </div>
+
+        <nav class="menu">
+            <a href="index.html">Início</a>
+            <a href="solucoes.html">Soluções</a>
+            <a href="simulador_financeiro.html">Simulador Financeiro</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="contato.html" class="ativo">Fale Conosco</a>
+        </nav>
+
+        <div class="botoes-header">
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="cadastro.html" class="btn-cadastro">Cadastre-se</a>
+        </div>
+
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="pagina-contato">
+
+        <!-- LOGO CENTRAL -->
+        <div class="contato-logo">
+
+            <img src="logos/logo-oficial.png" alt="Logo SmartColeta">
+
+            <h1>
+                Smart<span>Coleta</span>
+            </h1>
+
+        </div>
+
+        <!-- TÍTULO -->
+        <div class="contato-apresentacao">
+
+            <h2>
+                Vamos conversar sobre<br>
+                a coleta de resíduos do seu município?
+            </h2>
+
+        </div>
+
+        <!-- FORMULÁRIO -->
+        <section class="contato-formulario">
+
+            <div class="contato-formulario-cabecalho">
+
+                <h2>Entre em contato conosco</h2>
+
+                <p>
+                    Preencha os dados abaixo. Falaremos com você
+                    para agendar uma apresentação objetiva.
+                </p>
+
+            </div>
+
+            <form id="form-contato">
+
+                <!-- NOME E CARGO -->
+                <div class="contato-campos-linha">
+
+                    <div class="contato-campo">
+
+                        <label for="nome">Nome</label>
+
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            placeholder="Seu nome completo"
+                            required>
+
+                    </div>
+
+                    <div class="contato-campo">
+
+                        <label for="cargo">Cargo</label>
+
+                        <input
+                            type="text"
+                            id="cargo"
+                            name="cargo"
+                            placeholder="Ex.: Secretário(a) Municipal"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <!-- MUNICÍPIO -->
+                <div class="contato-campo">
+
+                    <label for="municipio">Município</label>
+
+                    <input
+                        type="text"
+                        id="municipio"
+                        name="municipio"
+                        placeholder="Município e UF"
+                        required>
+
+                </div>
+
+                <!-- E-MAIL E WHATSAPP -->
+                <div class="contato-campos-linha">
+
+                    <div class="contato-campo">
+
+                        <label for="email">E-mail</label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="nome@municipio.gov.br"
+                            required>
+
+                    </div>
+
+                    <div class="contato-campo">
+
+                        <label for="whatsapp">WhatsApp</label>
+
+                        <input
+                            type="tel"
+                            id="whatsapp"
+                            name="whatsapp"
+                            placeholder="(00) 00000-0000"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <!-- MENSAGEM -->
+                <div class="contato-campo">
+
+                    <label for="mensagem">Mensagem</label>
+
+                    <textarea
+                        id="mensagem"
+                        name="mensagem"
+                        rows="4"
+                        placeholder="Conte brevemente sobre a operação de coleta e o principal desafio atual."
+                        required></textarea>
+
+                </div>
+
+                <!-- AUTORIZAÇÃO -->
+                <label class="contato-politica">
+
+                    <input
+                        type="checkbox"
+                        name="autorizacao"
+                        required>
+
+                    <span>
+                        Autorizo o contato da SmartColeta e o tratamento
+                        dos dados conforme a
+                        <a href="privacidade.html">Política de Privacidade</a>.
+                    </span>
+
+                </label>
+
+                <!-- BOTÃO -->
+                <button type="submit" class="contato-btn-enviar">
+
+                    Enviar solicitação
+
+                    <img src="icons/arrow-right.svg" alt="">
+
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- TEXTO FINAL -->
+        <div class="contato-texto-final">
+
+            <p>
+                Seja para tirar dúvidas técnicas, solicitar uma demonstração
+                do sistema ou entender como a SmartColeta pode se adaptar
+                à realidade da sua cidade, nossa equipe está pronta para
+                atender gestores públicos e equipes técnicas de prefeituras
+                de todo o Brasil.
+                <br>
+                Preencha o formulário acima e retornaremos o mais breve possível.
+            </p>
+
+        </div>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="rodape">
+
+        <div class="conteudo-rodape">
+
+            <div class="rodape-empresa">
+
+                <div class="logo-rodape">
+
+                    <img src="logos/logo-oficial.png" alt="Logo SmartColeta">
+
+                    <span>
+                        Smart<span>Coleta</span>
+                    </span>
+
+                </div>
+
+                <p>
+                    Tecnologia brasileira para monitoramento e inteligência
+                    na coleta de resíduos de municípios de pequeno porte.
+                </p>
+
+                <p class="seguranca">
+                    Dados tratados com segurança e responsabilidade.
+                </p>
+
+            </div>
+
+            <div class="coluna-rodape">
+
+                <h3>Institucional</h3>
+
+                <a href="index.html">Início</a>
+                <a href="solucoes.html">Soluções</a>
+                <a href="sobre.html">Sobre a SmartColeta</a>
+                <a href="simulador_financeiro.html">Simulador Financeiro</a>
+                <a href="contato.html">Fale Conosco</a>
+
+            </div>
+
+            <div class="coluna-rodape">
+
+                <h3>FAQ & Suporte</h3>
+
+                <a href="faq.html">Perguntas Frequentes</a>
+                <a href="contato.html">Central de Ajuda</a>
+                <a href="status.html">Status da Plataforma</a>
+                <a href="privacidade.html">Política de Privacidade</a>
+                <a href="termos.html">Termos de Uso</a>
+
+            </div>
+
+            <div class="coluna-rodape contato-rodape">
+
+                <h3>Contato</h3>
+
+                <a href="mailto:contato@smartcoleta.com.br">
+                    contato@smartcoleta.com.br
+                </a>
+
+                <a href="tel:+551130907420">
+                    (11) 3090-7420
+                </a>
+
+                <div class="redes-sociais">
+
+                    <a href="#" aria-label="LinkedIn">
+                        <img src="icons/linkedin.svg" alt="">
+                    </a>
+
+                    <a href="#" aria-label="Instagram">
+                        <img src="icons/instagram.svg" alt="">
+                    </a>
+
+                    <a href="mailto:contato@smartcoleta.com.br" aria-label="E-mail">
+                        <img src="icons/mail.svg" alt="">
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="rodape-inferior">
+            <p>© 2026 SmartColeta. Todos os direitos reservados.</p>
+        </div>
+
+    </footer>
+
+</body>
+</html>

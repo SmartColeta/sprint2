@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Início | SmartColeta</title>
+    
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/estilos-index.css">
+
+    <!--PUXANDO AS FONTES DA API DO GOOGLE-->
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
+</head>
+
+<body>
+    <!-- TITULO DA HEADER -->
+    <header class="header">
+
+        <div class="logo">
+            <img src="logos/logo-oficial.png" alt="SmartColeta">
+
+            <span class="nome-logo">
+                Smart<span>Coleta</span>
+            </span>
+        </div>
+        
+        <!-- HEADER LINKANDO TODAS AS PÁGINAS -->
+        <nav class="menu"> 
+            <a href="index.html" class="ativo">Início</a>
+            <a href="solucoes.html">Soluções</a>
+            <a href="simulador_financeiro.html">Simulador Financeiro</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="contato.html">Fale Conosco</a>
+        </nav>
+
+        <!-- BOTÕES DE LOGIN E CADASTRO -->
+        <div class="botoes-header">
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="cadastro.html" class="btn-cadastro">Cadastre-se</a>
+        </div>
+
+    </header>
+
+	<!-- CONTEÚDO PRINCIPAL -->
+	<main>
+		<!-- BANNER -->
+		<section class="hero">
+
+			<div class="conteudo-hero">
+
+				<span class="etiqueta-hero">
+					• TECNOLOGIA PARA GESTÃO PÚBLICA EFICIENTE
+				</span>
+
+				<h1>
+					Monitoramento de<br>
+					Coleta Inteligente
+				</h1>
+
+				<p>
+					Dados em tempo real para rotas mais eficientes,
+					cidades mais limpas e decisões públicas mais
+					transparentes.
+				</p>
+
+				<a href="#demonstracao" class="btn-hero">
+					Solicitar Demonstração →
+				</a>
+
+				<span class="info-hero">
+					<img src="icons/shield-check.svg" alt="">
+					Implantação acompanhada • Atendimento especializado
+				</span>
+
+			</div>			
+
+		</section>
+		
+		<div class="solucao">
+			<h2 class="solucao-titulo">Transformamos dados em otimização</h2>
+			
+		<div class="solucao-secao">
+			<div class="solucao-conteudo">
+				<div class="solucao-conteudo-section-label">
+					<div class="circle solucao-conteudo-circle"></div>
+					<p class="botao-detalhes-titulo solucao-conteudo-botao-detalhes">monitoramento em tempo real</p>
+				</div>
+				
+				<p class="solucao-conteudo-text-problem text1">
+					Transformamos cada ponto em informação acionável para a operação.
+				</p>
+				
+				<div class="solucao-conteudo-pain-list">
+					<div class="operational-pain operational-pain1">
+						<div class="operational-pain-icon">
+							<img src="icons/route.svg" alt="">
+						</div>
+						
+						<div class="operational-pain-copy">
+							<p class="operational-pain-text1">Indicadores de Desempenho</p>
+							<p class="text-description operational-pain-text2">
+								Deslocamentos seguem cronogramas, não a demanda real de cada região.
+							</p>
+						</div>
+					</div>
+					
+					<div class="operational-pain operational-pain2">
+						<div class="operational-pain-icon">
+							<img src="icons/trash-2-1.svg" alt="">
+						</div>
+						
+						<div class="operational-pain-copy">
+							<p class="operational-pain-text1">Pontos de Coleta Monitorados</p>
+							<p class="text-description operational-pain-text2">
+								Ocorrências são percebidas tarde, elevando reclamações e risco sanitário.
+							</p>
+						</div>
+					</div>
+					
+					<div class="solucao-conteudo-operational">
+						<div class="solucao-conteudo-icon">
+							<img src="icons/fuel.svg" alt="">
+						</div>
+						
+						<div class="solucao-conteudo-pain-copy">
+							<p class="solucao-conteudo-text1">Eficiência no Combustível</p>
+							<p class="solucao-conteudo-text2">
+								Viagens desnecessárias ampliam custo, desgaste da frota e emissões.
+							</p>
+						</div>
+					</div>
+					
+					<div class="operational-pain operational-pain3">
+						<div class="operational-pain-icon">
+							<img src="icons/eye-off.svg" alt="">
+						</div>
+						
+						<div class="operational-pain-copy">
+							<p class="operational-pain-text1">Diagnóstico por Região</p>
+							<p class="text-description operational-pain-text2">
+								Gestores não têm uma visão única do serviço executado e das prioridades.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="solucao-painel">
+				<div class="solucao-painel-cabecalho">
+					<div class="solucao-painel-central">
+						<div class="solucao-painel-central-app-logo">
+							<img src="logos/logo-oficial.png" class="solucao-painel-central-logo" alt="">
+						</div>
+						
+						<div class="solucao-painel-central-descricao">
+							<p class="solucao-painel-central-texto">Central SmartColeta</p>
+							<p class="painel-municipio solucao-painel-central-municipio">Município de Serra Clara</p>
+						</div>
+					</div>
+					
+					<div class="solucao-painel-status">
+						<button class="btn-sync-status hover-escuro">
+							<div class="btn-sync-status-icon circle1"></div>
+							<p class="btn-sync-status-label">Sincronizado agora</p>
+						</button>
+						
+						<img src="icons/bell.svg" class="solucao-painel-status-bell" alt="">
+					</div>
+				</div>
+				
+				<div class="solucao-painel-dashboard">
+					<div class="solucao-painel-titulo">
+						<div class="solucao-painel-titulo-heading-copy">
+							<p class="solucao-painel-titulo-text">Operação de hoje</p>
+							<p class="painel-municipio solucao-painel-titulo-municipio">Atualizado em 01 out • 09:42</p>
+						</div>
+						
+						<button class="btn-filter hover-escuro">
+							<img src="icons/calendar-days.svg" class="btn-filter-icon" alt="">
+							<p class="btn-filter-label">Hoje</p>
+						</button>
+					</div>
+					
+					<div class="solucao-painel-indicadores">
+						<div class="indicador">
+							<p class="indicador-titulo">Rotas em execução</p>
+							<h2 class="indicador-dado">08</h2>
+							<p class="indicador-descricao">75% concluído</p>
+						</div>
+						
+						<div class="indicador">
+							<p class="indicador-titulo">Pontos monitorados</p>
+							<h2 class="indicador-dado">248</h2>
+							<p class="indicador-descricao">246 online</p>
+						</div>
+						
+						<div class="indicador indicador3">
+							<p class="indicador-titulo">Alertas prioritários</p>
+							<h2 class="indicador-dado">06</h2>
+							<p class="indicador-descricao">Requer atenção</p>
+						</div>
+					</div>
+					
+					
+
+
+
+<div class="solucao-painel-mapa-rota">
+
+    <!-- LINHA DA ROTA -->
+    <div class="linha-rota"></div>
+
+    <!-- PRIMEIRO PONTO -->
+    <div class="circle-map-pin circle-map-pin1">
+        <img src="icons/trash-2.svg" alt="">
+    </div>
+
+    <!-- SEGUNDO PONTO -->
+    <div class="circle-map-pin circle-map-pin2">
+        <img src="icons/trash-2.svg" alt="">
+    </div>
+
+    <!-- LEGENDA -->
+    <button class="btn-map-legend hover-escuro">
+        <div class="btn-map-legend-icon"></div>
+        <p class="btn-map-legend-label">
+            Rota otimizada 04
+        </p>
+    </button>
+
+</div>
+
+							</div>
+						</div>
+						
+						<div class="solucao-painel-mapa-coletas">
+							<div class="solucao-painel-mapa-fila-heading">
+								<p class="solucao-painel-mapa-fila-heading-text">Próximas coletas</p>
+								<p class="solucao-painel-mapa-fila-heading-text-link">Ver rota</p>
+							</div>
+							
+							<div class="fila-item fila-item1">
+								<div class="fila-item-level"></div>
+								
+								<div class="fila-item-location">
+									<p class="fila-item-text">Centro</p>
+									<p class="fila-item-text-asset">Ponto SC-104</p>
+								</div>
+								
+								<p class="fila-item-text-fill">92%</p>
+							</div>
+							
+							<div class="fila-item fila-item2">
+								<div class="fila-item-level"></div>
+								
+								<div class="fila-item-location">
+									<p class="fila-item-text">Jardim Novo</p>
+									<p class="fila-item-text-asset">Ponto SC-087</p>
+								</div>
+								
+								<p class="fila-item-text-fill">81%</p>
+							</div>
+							
+							<div class="fila-item fila-item3">
+								<div class="fila-item-level"></div>
+								
+								<div class="fila-item-location">
+									<p class="fila-item-text">Vila Sul</p>
+									<p class="fila-item-text-asset">Ponto SC-132</p>
+								</div>
+								
+								<p class="fila-item-text-fill">74%</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+				
+<!-- BENEFÍCIOS PARA A GESTÃO -->
+<section class="beneficios secao">
+
+    <div class="beneficios-descricao">
+			<div class="beneficios-bloco">
+
+				<span class="etiqueta-secao">
+					<span class="ponto-etiqueta"></span>
+					VALOR PARA A GESTÃO
+				</span>
+
+				<h2>
+					Eficiência que aparece na rua
+					e na prestação de contas.
+				</h2>
+
+			</div>
+
+			<p>
+				Benefícios mensuráveis para operação, gestão
+				e relacionamento com a população.
+			</p>
+		</div>
+
+		<div class="beneficios-itens">
+
+			<article class="card-beneficio">
+				<div class="card-beneficio-superior">
+					<div class="card-beneficio-superior-icon">
+						<img src="icons/circle-dollar-sign.svg" alt="">
+					</div>
+					<img src="icons/arrow-up-right.svg" alt="" class="icone-seta">
+				</div>
+
+				<div class="card-beneficio-descricao">
+					<h3>Redução de custo operacional</h3>
+					<p>
+						Menos deslocamentos improdutivos,
+						melhor uso de combustível e maior
+						disponibilidade da frota.
+					</p>
+				</div>
+
+				<div class="card-beneficio-inferior">
+					<span class="ponto-verde"></span>
+					Eficiência por rota e período
+				</div>
+			</article>
+
+			<article class="card-beneficio">
+				<div class="card-beneficio-superior">
+					<div class="card-beneficio-superior-icon">
+						<img src="icons/route.svg" alt="">
+					</div>
+					<img src="icons/arrow-up-right.svg" alt="" class="icone-seta">
+				</div>
+
+				<div class="card-beneficio-descricao">
+					<h3>Priorização inteligente de rotas</h3>
+					<p>
+						A equipe atende primeiro os pontos
+						críticos, com sequência orientada
+						por dados atualizados.
+					</p>
+				</div>
+
+				<div class="card-beneficio-inferior">
+					<span class="ponto-verde"></span>
+					Ação conforme demanda real
+				</div>
+			</article>
+
+			<article class="card-beneficio">
+				<div class="card-beneficio-superior">
+					<div class="card-beneficio-superior-icon">
+						<img src="icons/landmark.svg" alt="">
+					</div>
+					<img src="icons/arrow-up-right.svg" alt="" class="icone-seta">
+				</div>
+
+				<div class="card-beneficio-descricao">
+					<h3>Transparência para a população</h3>
+					<p>
+						Indicadores confiáveis apoiam
+						comunicação pública e acompanhamento
+						do serviço prestado.
+					</p>
+				</div>
+
+				<div class="card-beneficio-inferior">
+					<span class="ponto-verde"></span>
+					Evidências para o cidadão
+				</div>
+			</article>
+
+			<article class="card-beneficio">
+				<div class="card-beneficio-superior">
+					<div class="card-beneficio-superior-icon">
+						<img src="icons/chart-no-axes-combined.svg" alt="">
+					</div>
+					<img src="icons/arrow-up-right.svg" alt="" class="icone-seta">
+				</div>
+
+				<div class="card-beneficio-descricao">
+					<h3>Dados históricos para decisão</h3>
+					<p>
+						Séries operacionais ajudam a planejar
+						contratos, equipes, ativos e expansão
+						do serviço.
+					</p>
+				</div>
+
+				<div class="card-beneficio-inferior">
+					<span class="ponto-verde"></span>
+					Planejamento com histórico
+				</div>
+			</article>
+
+		</div>
+	</section>
+
+
+	<!-- DADOS REAIS -->
+	<section class="dados-reais secao">
+
+		<div class="dados-reais-cabecalho">
+			<div class="dados-reais-bloco">
+
+				<span class="etiqueta-secao etiqueta-clara">
+					<span class="ponto-etiqueta"></span>
+					DADOS REAIS
+				</span>
+
+				<h2>
+					Impacto Financeiro de Resíduos
+					pelo Brasil
+				</h2>
+
+			</div>
+
+			<p class="dados-reais-descricao">
+				Indicadores institucionais para contextualização.
+				O potencial financeiro é calculado conforme
+				frota, extensão e frequência de cada operação.
+			</p>
+		</div>
+
+		<div class="dados-reais-estatisticas">
+
+			<div class="dados-reais-itens">
+				<h3>4.888 municípios</h3>
+				<p class="dados-reais-itens-text-label">
+					com até 50.000 habitantes
+				</p>
+				<p class="dados-reais-itens-text-detail">
+					Um cenário diverso que exige soluções
+					adaptáveis à realidade local.
+				</p>
+			</div>
+
+			<div class="dados-reais-itens">
+				<h3>≈ 9 em 10</h3>
+				<p class="dados-reais-itens-text-label">
+					municípios têm até 50 mil habitantes
+				</p>
+				<p class="dados-reais-itens-text-detail">
+					Gestões menores também precisam de
+					inteligência operacional acessível.
+				</p>
+			</div>
+
+			<div class="dados-reais-itens">
+				<h3>R$ 34,7 bilhões</h3>
+				<p class="dados-reais-itens-text-label">
+					gastos anualmente com gestão de resíduos
+				</p>
+				<p class="dados-reais-itens-text-detail">
+					Combustível, horas de equipe, manutenção
+					e rotas sem priorização.
+				</p>
+			</div>
+
+		</div>
+
+		<p class="dados-reais-fonte">
+			Fonte: IBGE, 2023 • Valores financeiros são indicadores
+			de contexto, não projeções contratuais.
+		</p>
+
+	</section>
+
+
+	<!-- COMO FUNCIONA -->
+	<section class="fluxo-solucao secao">
+
+		<div class="fluxo-solucao-cabecalho">
+			<div class="fluxo-solucao-bloco">
+
+				<span class="etiqueta-secao">
+					<span class="ponto-etiqueta"></span>
+					COMO FUNCIONA
+				</span>
+
+				<h2>Otimização completa de rotas</h2>
+
+			</div>
+
+			<p class="fluxo-solucao-texto">
+				Uma cadeia segura e objetiva transforma
+				sinais de campo em prioridade operacional
+				para as equipes.
+			</p>
+		</div>
+
+		<div class="fluxo-solucao-conteudo">
+
+			<article class="card-solucao-etapa">
+				<div class="card-solucao-etapa-topo">
+					<div class="card-solucao-etapa-icon">
+						<img src="icons/radio-tower.svg" alt="">
+					</div>
+					<span>ETAPA 01</span>
+				</div>
+
+				<div class="card-solucao-etapa-conteudo">
+					<h3>Sensor</h3>
+					<p>
+						Mede o nível de enchimento e registra
+						eventos no ponto de coleta.
+					</p>
+				</div>
+			</article>
+
+			<div class="card-linha" aria-hidden="true">→</div>
+
+			<article class="card-solucao-etapa">
+				<div class="card-solucao-etapa-topo">
+					<div class="card-solucao-etapa-icon">
+						<img src="icons/antenna.svg" alt="">
+					</div>
+					<span>ETAPA 02</span>
+				</div>
+
+				<div class="card-solucao-etapa-conteudo">
+					<h3>Rede M2M</h3>
+					<p>
+						Transmite dados com baixo consumo e
+						cobertura adequada à operação.
+					</p>
+				</div>
+			</article>
+
+			<div class="card-linha" aria-hidden="true">→</div>
+
+			<article class="card-solucao-etapa">
+				<div class="card-solucao-etapa-topo">
+					<div class="card-solucao-etapa-icon">
+						<img src="icons/database.svg" alt="">
+					</div>
+					<span>ETAPA 03</span>
+				</div>
+
+				<div class="card-solucao-etapa-conteudo">
+					<h3>Banco de dados</h3>
+					<p>
+						Organiza histórico, telemetria e
+						integridade de cada ativo monitorado.
+					</p>
+				</div>
+			</article>
+
+			<div class="card-linha" aria-hidden="true">→</div>
+
+			<article class="card-solucao-etapa">
+				<div class="card-solucao-etapa-topo">
+					<div class="card-solucao-etapa-icon">
+						<img src="icons/layout-dashboard.svg" alt="">
+					</div>
+					<span>ETAPA 04</span>
+				</div>
+
+				<div class="card-solucao-etapa-conteudo">
+					<h3>Painel de gestão</h3>
+					<p>
+						Apresenta alertas, mapa operacional
+						e indicadores em uma visão única.
+					</p>
+				</div>
+			</article>
+
+			<div class="card-linha" aria-hidden="true">→</div>
+
+			<article class="card-solucao-etapa">
+				<div class="card-solucao-etapa-topo">
+					<div class="card-solucao-etapa-icon">
+						<img src="icons/route.svg" alt="">
+					</div>
+					<span>ETAPA 05</span>
+				</div>
+
+				<div class="card-solucao-etapa-conteudo">
+					<h3>Priorização de rota</h3>
+					<p>
+						Orienta a equipe para os pontos que
+						realmente precisam de atendimento.
+					</p>
+				</div>
+			</article>
+
+		</div>
+	</section>
+
+
+	<!-- CONTATO E DEMONSTRAÇÃO -->
+	<section class="fale-conosco" id="demonstracao">
+
+		<!-- COLUNA ESQUERDA -->
+		<div class="card-contato">
+
+			<div class="card-contato-conteudo">
+
+				<span class="etiqueta-secao">
+					<span class="ponto-etiqueta"></span>
+					CONVERSA TÉCNICA
+				</span>
+
+				<div class="card-contato-bloco">
+					<h2>
+						Vamos entender a operação
+						do seu município.
+					</h2>
+
+					<p>
+						Nossa equipe apresenta a plataforma,
+						avalia o cenário atual e estrutura
+						uma demonstração alinhada ao seu
+						processo de contratação.
+					</p>
+				</div>
+
+				<div class="card-contato-beneficios">
+					<p>✓ Diagnóstico inicial sem compromisso</p>
+					<p>✓ Apoio técnico para especificação</p>
+					<p>✓ Modelo escalável por área de cobertura</p>
+				</div>
+
+			</div>
+
+			<div class="card-contato-institucional">
+
+				<div class="contato-detalhe">
+					<div class="contato-detalhe-icon">
+						<img src="icons/mail.svg" alt="">
+					</div>
+
+					<div class="contato-detalhe-descricao">
+						<span>E-mail institucional</span>
+						<p>contato@smartcoleta.com.br</p>
+					</div>
+				</div>
+
+				<div class="contato-detalhe">
+					<div class="contato-detalhe-icon">
+						<img src="icons/phone.svg" alt="">
+					</div>
+
+					<div class="contato-detalhe-descricao">
+						<span>Atendimento</span>
+						<p>(11) 3090-7420</p>
+					</div>
+				</div>
+
+				<div class="contato-detalhe">
+					<div class="contato-detalhe-icon">
+						<img src="icons/clock-3.svg" alt="">
+					</div>
+
+					<div class="contato-detalhe-descricao">
+						<span>Retorno comercial</span>
+						<p>Em até 1 dia útil</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- COLUNA DIREITA -->
+		<div class="formulario-contato">
+
+			<div class="formulario-contato-cabecalho">
+				<h2>Solicite uma demonstração</h2>
+
+				<p>
+					Preencha os dados abaixo. Falaremos com você
+					para agendar uma apresentação objetiva.
+				</p>
+			</div>
+
+			<form id="form-demonstracao">
+
+				<div class="campos-bloco">
+
+					<div class="formulario-campo">
+						<label for="nome">Nome</label>
+						<input
+							type="text"
+							id="nome"
+							name="nome"
+							placeholder="Seu nome completo"
+							required>
+					</div>
+
+					<div class="formulario-campo">
+						<label for="cargo">Cargo</label>
+						<input
+							type="text"
+							id="cargo"
+							name="cargo"
+							placeholder="Ex.: Secretário(a) Municipal"
+							required>
+					</div>
+
+				</div>
+
+				<div class="formulario-campo">
+					<label for="municipio">Município</label>
+					<input
+						type="text"
+						id="municipio"
+						name="municipio"
+						placeholder="Município e UF"
+						required>
+				</div>
+
+				<div class="campos-bloco">
+
+					<div class="formulario-campo">
+						<label for="email">E-mail</label>
+						<input
+							type="text"
+							id="email"
+							name="email"
+							placeholder="nome@municipio.gov.br"
+							required>
+					</div>
+
+					<div class="formulario-campo">
+						<label for="whatsapp">WhatsApp</label>
+						<input
+							type="number"
+							id="whatsapp"
+							name="whatsapp"
+							placeholder="(00) 00000-0000"
+							required>
+					</div>
+
+				</div>
+
+				<div class="formulario-campo">
+					<label for="mensagem">Mensagem</label>
+					<textarea
+						id="mensagem"
+						name="mensagem"
+						rows="4"
+						placeholder="Conte brevemente sobre a operação de coleta e o principal desafio atual."
+						required></textarea>
+				</div>
+
+				<label class="formulario-contato-politica">
+					<input type="checkbox" name="autorizacao" required>
+
+					<span>
+						Autorizo o contato da SmartColeta e o
+						tratamento dos dados conforme a
+						Política de Privacidade.
+					</span>
+				</label>
+
+				<button type="submit" class="formulario-contato-botao">
+					Enviar solicitação
+					<span aria-hidden="true">→</span>
+				</button>
+
+			</form>
+
+		</div>
+	</section>
+
+</main>
+	
+    <!-- RODAPÉ -->
+    <footer class="rodape">
+        <div class="conteudo-rodape">
+            <!-- LOGO E DESCRIÇÃO -->
+            <div class="rodape-empresa">
+                <div class="logo-rodape">
+                    <img src="logos/logo-oficial.png" alt="Logo SmartColeta">
+
+                    <span>
+                        Smart<span>Coleta</span>
+                    </span>
+                </div>
+
+                <p>
+                    Tecnologia brasileira para monitoramento e inteligência
+                    na coleta de resíduos de municípios de pequeno porte.
+                </p>
+
+                <p class="seguranca">
+                    Dados tratados com segurança e responsabilidade.
+                </p>
+            </div>
+
+            <!-- LINKS INSTITUCIONAIS -->
+             <div class="coluna-rodape">
+                <h3>Institucional</h3>
+
+                <a href="index.html">Início</a>
+                <a href="solucoes.html">Soluções</a>
+                <a href="sobre.html">Sobre a SmartColeta</a>
+                <a href="simulador_financeiro.html">Simulador Financeiro</a>
+                <a href="contato.html">Fale Conosco</a>
+             </div>
+
+            <!-- FAQ E SUPORTE -->
+            <div class="coluna-rodape">
+
+                <h3>FAQ & Suporte</h3>
+
+                <a href="faq.html">Perguntas Frequentes</a>
+                <a href="contato.html">Central de Ajuda</a>
+                <a href="status.html">Status da Plataforma</a>
+                <a href="privacidade.html">Política de Privacidade</a>
+                <a href="termos.html">Termos de Uso</a>
+            </div>
+
+            <!-- CONTATO -->
+            <div class="coluna-rodape contato-rodape">
+                <h3>Contato</h3>
+
+                <a href="mailto:contato@smartcoleta.com.br">
+                    contato@smartcoleta.com.br
+                </a>
+
+                <a href="tel:+5511999999999">
+                    (11) 999999999
+                </a>
+
+                <!-- REDES SOCIAIS -->
+                <div class="redes-sociais">
+                    <a href="#" aria-label="LinkedIn">
+                        <img src="icons/linkedin.svg" alt="LinkedIn">
+                    </a>
+
+                    <a href="#" aria-label="Instagram">
+                        <img src="icons/instagram.svg" alt="Instagram">
+                    </a>
+
+                    <a href="#" aria-label="E-mail">
+                        <img src="icons/mail.svg" alt="E-mail">
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- LINHA INFERIOR -->
+        <div class="rodape-inferior">
+            <p>© 2026 SmartColeta. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

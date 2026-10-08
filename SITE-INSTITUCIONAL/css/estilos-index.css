@@ -1,0 +1,2155 @@
+
+/* BANNER PRINCIPAL */
+
+.hero {
+    width: 100%;
+    min-height: 600px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-image:
+    linear-gradient(
+        rgba(0, 35, 24, 0.65),
+        rgba(0, 35, 24, 0.85)
+    ),
+    url("../imgs/caminhao.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    padding: 80px 10%;
+}
+
+/* CONTEÚDO CENTRAL */
+
+.conteudo-hero {
+    max-width: 800px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+    color: white;
+}
+
+/* ETIQUETA SUPERIOR */
+
+.etiqueta-hero {
+    display: inline-block;
+
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    padding: 8px 15px;
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    margin-bottom: 25px;
+}
+
+/* TÍTULO PRINCIPAL */
+
+.conteudo-hero h1 {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.1;
+
+    margin-bottom: 25px;
+}
+
+/* DESCRIÇÃO */
+
+.conteudo-hero p {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.6;
+
+    max-width: 650px;
+    margin-bottom: 30px;
+}
+
+/* BOTÃO DE DEMONSTRAÇÃO */
+
+.btn-hero {
+    display: inline-block;
+
+    background-color: #1F7A4D;
+    color: white;
+
+    padding: 15px 30px;
+    border-radius: 7px;
+
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: background-color 0.3s;
+}
+
+.btn-hero:hover {
+    background-color: #01472B;
+}
+
+/* TEXTO ABAIXO DO BOTÃO */
+
+.info-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    font-size: 12px;
+    color: #e0e9e4;
+    margin-top: 15px;
+}
+
+.info-hero img {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+}
+
+/* RESPONSIVIDADE DO BANNER */
+
+@media (max-width: 768px) {
+    .hero {
+        min-height: 500px;
+        padding: 60px 7%;
+    }
+
+    .conteudo-hero h1 {
+        font-size: 36px;
+    }
+
+    .conteudo-hero p {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .conteudo-hero h1 {
+        font-size: 29px;
+    }
+
+    .etiqueta-hero {
+        font-size: 9px;
+    }
+
+    .btn-hero {
+        padding: 13px 20px;
+        font-size: 13px;
+    }
+}
+
+
+/* SEÇÃO TRANSFORMAMOS DADOS EM OTIMIZAÇÃO */
+
+.solucao {
+    width: 100%;
+    padding: 80px 5%;
+    background-color: #FCFDFD;
+}
+
+/* TÍTULO PRINCIPAL */
+
+.solucao-titulo {
+    font-size: 32px;
+    font-weight: 700;
+    color: #01472B;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+/* ORGANIZAÇÃO DAS DUAS COLUNAS */
+
+.solucao-secao {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 50px;
+
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* COLUNA ESQUERDA */
+
+.solucao-conteudo {
+    flex: 1;
+    min-width: 0;
+}
+
+/* COLUNA DIREITA */
+
+.solucao-painel {
+    flex: 1;
+    min-width: 0;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 900px) {
+    .solucao-secao {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .solucao-conteudo,
+    .solucao-painel {
+        width: 100%;
+    }
+
+    .solucao-titulo {
+        font-size: 26px;
+    }
+}
+
+
+/* CONTEÚDO ESQUERDO */
+
+.solucao-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* ETIQUETA MONITORAMENTO EM TEMPO REAL */
+
+.solucao-conteudo-section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: fit-content;
+    padding: 8px 14px;
+
+    background-color: #E8F5EC;
+    border-radius: 20px;
+}
+
+/* CÍRCULO VERDE DA ETIQUETA */
+
+.solucao-conteudo-circle {
+    width: 8px;
+    height: 8px;
+    background-color: #1F7A4D;
+    border-radius: 50%;
+}
+
+/* TEXTO DA ETIQUETA */
+
+.solucao-conteudo-botao-detalhes {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1F7A4D;
+    text-transform: uppercase;
+}
+
+/* TEXTO DE APRESENTAÇÃO */
+
+.solucao-conteudo-text-problem {
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #01472B;
+}
+
+/* LISTA DE BENEFÍCIOS */
+
+.solucao-conteudo-pain-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* CADA ITEM DA LISTA */
+
+.operational-pain,
+.solucao-conteudo-operational {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+/* FUNDO DOS ÍCONES */
+
+.operational-pain-icon,
+.solucao-conteudo-icon {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #E8F5EC;
+    border-radius: 10px;
+}
+
+/* TAMANHO DOS SVGs */
+
+.operational-pain-route,
+.solucao-conteudo-fuel {
+    width: 23px;
+    height: 23px;
+}
+
+/* TEXTO DE CADA ITEM */
+
+.operational-pain-copy,
+.solucao-conteudo-pain-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* TÍTULOS */
+
+.operational-pain-text1,
+.solucao-conteudo-text1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #01472B;
+}
+
+/* DESCRIÇÕES */
+
+.operational-pain-text2,
+.solucao-conteudo-text2 {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #64746C;
+}
+
+
+/* PAINEL SMARTCOLETA */
+
+.solucao-painel {
+    background-color: #FFFFFF;
+    border: 1px solid #E1EAE5;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0, 40, 20, 0.08);
+}
+
+/* CABEÇALHO DO PAINEL */
+
+.solucao-painel-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 18px 20px;
+    border-bottom: 1px solid #E1EAE5;
+}
+
+/* LOGO E NOME DA CENTRAL */
+
+.solucao-painel-central {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.solucao-painel-central-app-logo {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #E8F5EC;
+    border-radius: 10px;
+}
+
+.solucao-painel-central-logo {
+    width: 34px;
+    height: 34px;
+}
+
+.solucao-painel-central-descricao {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.solucao-painel-central-texto {
+    font-size: 14px;
+    font-weight: 700;
+    color: #01472B;
+}
+
+.painel-municipio {
+    font-size: 11px;
+    color: #7A8A80;
+}
+
+.solucao-painel-central-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+/* STATUS DE SINCRONIZAÇÃO */
+
+.solucao-painel-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-sync-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 7px 10px;
+
+    background-color: #E8F5EC;
+    border: none;
+    border-radius: 20px;
+}
+
+.btn-sync-status-icon {
+    width: 7px;
+    height: 7px;
+    background-color: #1F7A4D;
+    border-radius: 50%;
+}
+
+.btn-sync-status-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: #1F7A4D;
+}
+
+.solucao-painel-status-bell {
+    width: 18px;
+    height: 18px;
+}
+
+/* CONTEÚDO INTERNO DO DASHBOARD */
+
+.solucao-painel-dashboard {
+    padding: 20px;
+}
+
+/* TÍTULO E FILTRO */
+
+.solucao-painel-titulo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.solucao-painel-titulo-heading-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.solucao-painel-titulo-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #01472B;
+}
+
+.btn-filter {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 8px 12px;
+
+    background-color: white;
+    border: 1px solid #E1EAE5;
+    border-radius: 7px;
+}
+
+.btn-filter-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.btn-filter-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #01472B;
+}
+
+/* INDICADORES DO DASHBOARD */
+
+.solucao-painel-indicadores {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.indicador {
+    padding: 14px 10px;
+
+    background-color: #F5FAF7;
+    border: 1px solid #E1EAE5;
+    border-radius: 10px;
+
+    min-width: 0;
+}
+
+.indicador-titulo {
+    font-size: 10px;
+    font-weight: 500;
+    color: #64746C;
+    margin-bottom: 8px;
+}
+
+.indicador-dado {
+    font-size: 25px;
+    font-weight: 700;
+    color: #01472B;
+    margin-bottom: 5px;
+}
+
+.indicador-descricao {
+    font-size: 10px;
+    color: #1F7A4D;
+}
+
+/* INDICADOR DE ALERTAS */
+
+.indicador3 {
+    background-color: #FFF8ED;
+    border-color: #F3E5CC;
+}
+
+.indicador3 .indicador-dado,
+.indicador3 .indicador-descricao {
+    color: #B86A15;
+}
+
+/* ÁREA DO MAPA E DAS COLETAS */
+
+.solucao-painel-mapa {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* ÁREA VISUAL DA ROTA */
+
+.solucao-painel-mapa-rota {
+    position: relative;
+    min-height: 135px;
+
+    background-color: #EAF2ED;
+    border: 1px solid #DCE9E0;
+    border-radius: 10px;
+    overflow: hidden;
+
+    position: relative;
+
+    width: 100%;
+    height: 150px;
+
+    background-image: url("../imgs/mapa.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* LEGENDA DA ROTA */
+
+.btn-map-legend {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 8px 12px;
+
+    background-color: white;
+    border: 1px solid #E1EAE5;
+    border-radius: 20px;
+}
+
+.btn-map-legend-icon {
+    width: 8px;
+    height: 8px;
+    background-color: #1F7A4D;
+    border-radius: 50%;
+}
+
+.btn-map-legend-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: #01472B;
+}
+
+/* PRÓXIMAS COLETAS */
+
+.solucao-painel-mapa-coletas {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.solucao-painel-mapa-fila-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.solucao-painel-mapa-fila-heading-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #01472B;
+}
+
+.solucao-painel-mapa-fila-heading-text-link {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1F7A4D;
+}
+
+/* CADA PONTO DE COLETA */
+
+.fila-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    background-color: #F8FAF9;
+    border: 1px solid #E8EEEA;
+    border-radius: 8px;
+}
+
+.fila-item-level {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+
+    background-color: #1F7A4D;
+    border-radius: 50%;
+}
+
+.fila-item1 .fila-item-level {
+    background-color: #E38A32;
+}
+
+.fila-item2 .fila-item-level {
+    background-color: #D9AC32;
+}
+
+.fila-item-location {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+}
+
+.fila-item-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: #01472B;
+}
+
+.fila-item-text-asset {
+    font-size: 10px;
+    color: #7A8A80;
+}
+
+.fila-item-text-fill {
+    font-size: 13px;
+    font-weight: 700;
+    color: #01472B;
+}
+
+/* RESPONSIVIDADE DO PAINEL */
+
+@media (max-width: 600px) {
+    .solucao-painel-cabecalho {
+        flex-wrap: wrap;
+    }
+
+    .solucao-painel-indicadores {
+        grid-template-columns: 1fr;
+    }
+
+    .solucao-painel-dashboard {
+        padding: 15px;
+    }
+}
+
+/* LINHA REPRESENTANDO A ROTA */
+
+.linha-rota {
+    position: absolute;
+
+    width: 55%;
+    height: 55px;
+
+    top: 35%;
+    left: 22%;
+
+    border-top: 3px dashed #1F7A4D;
+    border-right: 3px dashed #1F7A4D;
+    border-radius: 0 20px 0 0;
+
+    transform: rotate(-8deg);
+}
+
+/* MARCADORES DO MAPA */
+
+.circle-map-pin {
+    position: absolute;
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #1F7A4D;
+    border: 3px solid white;
+    border-radius: 50%;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+}
+
+.circle-map-pin img {
+    width: 17px;
+    height: 17px;
+}
+
+/* POSIÇÃO DOS MARCADORES */
+
+.circle-map-pin1 {
+    top: 22%;
+    left: 18%;
+}
+
+.circle-map-pin2 {
+    top: 55%;
+    right: 17%;
+}
+
+
+/* SEÇÃO DE BENEFÍCIOS */
+
+.beneficios {
+    width: 100%;
+    padding: 80px 5%;
+    background-color: #F0F8F3;
+}
+
+/* CABEÇALHO DA SEÇÃO */
+
+.beneficios-descricao {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.beneficios-bloco {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+/* ETIQUETA SUPERIOR */
+
+.beneficios .botao-detalhes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 15px;
+
+    background-color: #DDEFE3;
+    border: none;
+    border-radius: 20px;
+}
+
+.beneficios .botao-detalhes-icon {
+    width: 8px;
+    height: 8px;
+
+    background-color: #1F7A4D;
+    border-radius: 50%;
+}
+
+.beneficios .botao-detalhes-titulo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1F7A4D;
+}
+
+/* TÍTULO PRINCIPAL */
+
+.beneficios-bloco-fluxo-solucao {
+    max-width: 650px;
+
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #01472B;
+}
+
+/* TEXTO AO LADO DO TÍTULO */
+
+.beneficios-texto {
+    max-width: 350px;
+
+    font-size: 14px;
+    line-height: 1.7;
+    color: #64746C;
+}
+
+/* ORGANIZAÇÃO DOS CARDS */
+
+.beneficios-itens {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* CADA CARD */
+
+.card-beneficio {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background-color: #FFFFFF;
+    border: 1px solid #DCE9E0;
+    border-radius: 14px;
+
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-beneficio:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 40, 20, 0.08);
+}
+
+/* CONTEÚDO DO CARD */
+
+.card-beneficio-conteudo {
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* PARTE SUPERIOR */
+
+.card-beneficio-superior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* FUNDO DO ÍCONE */
+
+.card-beneficio-superior-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #E8F5EC;
+    border-radius: 10px;
+}
+
+/* ÍCONES SVG */
+
+.card-beneficio-superior-circle {
+    width: 24px;
+    height: 24px;
+}
+
+.card-beneficio-superior-arrow-up {
+    width: 18px;
+    height: 18px;
+}
+
+/* TEXTOS */
+
+.card-beneficio-descricao {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card-beneficio-descricao-titulo {
+    font-size: 18px;
+    font-weight: 700;
+    color: #01472B;
+}
+
+.card-beneficio-descricao-texto {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #64746C;
+}
+
+/* RODAPÉ DE CADA CARD */
+
+.card-beneficio-inferior {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 15px 25px;
+
+    background-color: #F8FBF9;
+    border-top: 1px solid #E8EEEA;
+}
+
+.card-beneficio-circle {
+    width: 15px;
+    height: 15px;
+}
+
+.card-beneficio-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1F7A4D;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 900px) {
+    .beneficios-descricao {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .beneficios-itens {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .beneficios {
+        padding: 60px 7%;
+    }
+
+    .beneficios-bloco-fluxo-solucao {
+        font-size: 26px;
+    }
+
+    .card-beneficio-conteudo {
+        padding: 20px;
+    }
+}
+
+/* SEÇÃO DADOS REAIS */
+
+.dados-reais {
+    width: 100%;
+    padding: 80px 5%;
+    background-color: #073C29;
+    color: white;
+}
+
+/* CABEÇALHO */
+
+.dados-reais-cabecalho {
+    max-width: 1200px;
+    margin: 0 auto 55px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.dados-reais-bloco {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+/* ETIQUETA DADOS REAIS */
+
+.dados-reais .botao-detalhes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 15px;
+
+    background-color: #20543B;
+    border: 1px solid #37634E;
+    border-radius: 20px;
+}
+
+.dados-reais .botao-detalhes-icon {
+    width: 8px;
+    height: 8px;
+
+    background-color: #62C340;
+    border-radius: 50%;
+}
+
+.dados-reais .botao-detalhes-titulo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #C5E9D2;
+}
+
+/* TÍTULO */
+
+.dados-reais-titulo {
+    max-width: 600px;
+
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #FFFFFF;
+}
+
+/* DESCRIÇÃO DO CABEÇALHO */
+
+.dados-reais-descricao {
+    flex: 1;
+    max-width: 400px;
+
+    font-size: 14px;
+    line-height: 1.7;
+    color: #C2D9CD;
+}
+
+/* CONTAINER DOS INDICADORES */
+
+.dados-reais-estatisticas {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr 1px 1fr;
+    gap: 30px;
+
+    padding: 35px 0;
+
+    border-top: 1px solid #37634E;
+    border-bottom: 1px solid #37634E;
+}
+
+/* CADA INDICADOR */
+
+.dados-reais-itens {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* NÚMEROS */
+
+.dados-reais .coluna-titulo {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #A1E6AC;
+}
+
+/* DESCRIÇÃO PRINCIPAL */
+
+.dados-reais-itens-text-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+/* TEXTO COMPLEMENTAR */
+
+.dados-reais-itens-text-detail {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #B9D0C2;
+}
+
+/* LINHAS DIVISÓRIAS */
+
+.dados-reais-divisor {
+    width: 1px;
+    height: 100%;
+    background-color: #37634E;
+}
+
+/* FONTE DOS DADOS */
+
+.dados-reais-fonte {
+    max-width: 1200px;
+    margin: 25px auto 0;
+
+    font-size: 11px;
+    line-height: 1.6;
+    color: #A8C5B5;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 900px) {
+    .dados-reais-cabecalho {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 25px;
+    }
+
+    .dados-reais-descricao {
+        max-width: 100%;
+    }
+
+    .dados-reais-estatisticas {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .dados-reais-divisor {
+        width: 100%;
+        height: 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dados-reais {
+        padding: 60px 7%;
+    }
+
+    .dados-reais-titulo {
+        font-size: 27px;
+    }
+
+    .dados-reais .coluna-titulo {
+        font-size: 28px;
+    }
+}
+
+
+/* SEÇÃO OTIMIZAÇÃO COMPLETA DE ROTAS */
+
+.fluxo-solucao {
+    width: 100%;
+    padding: 80px 5%;
+    background-color: #FCFDFD;
+}
+
+/* CABEÇALHO DA SEÇÃO */
+
+.fluxo-solucao-cabecalho {
+    max-width: 1200px;
+    margin: 0 auto 45px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* TÍTULO E ETIQUETA */
+
+.fluxo-solucao-bloco {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.fluxo-solucao .botao-detalhes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 15px;
+
+    background-color: #E8F5EC;
+    border: none;
+    border-radius: 20px;
+}
+
+.fluxo-solucao .botao-detalhes-icon {
+    width: 8px;
+    height: 8px;
+
+    background-color: #1F7A4D;
+    border-radius: 50%;
+}
+
+.fluxo-solucao .botao-detalhes-titulo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1F7A4D;
+}
+
+.fluxo-solucao-titulo {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #01472B;
+}
+
+/* DESCRIÇÃO AO LADO DO TÍTULO */
+
+.fluxo-solucao-texto {
+    max-width: 400px;
+
+    font-size: 14px;
+    line-height: 1.7;
+    color: #64746C;
+}
+
+/* ORGANIZAÇÃO DOS CINCO CARDS */
+
+.fluxo-solucao-conteudo {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+}
+
+/* CADA CARD */
+
+.card-solucao-etapa {
+    flex: 1;
+    min-width: 0;
+    min-height: 230px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    padding: 20px 15px;
+
+    background-color: #FFFFFF;
+    border: 1px solid #E1EAE5;
+    border-radius: 12px;
+
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-solucao-etapa:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 40, 20, 0.08);
+}
+
+/* PARTE SUPERIOR DO CARD */
+
+.card-solucao-etapa-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+/* FUNDO DO ÍCONE */
+
+.card-solucao-etapa-icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #E8F5EC;
+    border-radius: 10px;
+}
+
+/* TAMANHO DOS ÍCONES SVG */
+
+.card-solucao-etapa-radio-tower {
+    width: 24px;
+    height: 24px;
+}
+
+/* NÚMERO DA ETAPA */
+
+.card-solucao-etapa-numero {
+    font-size: 10px;
+    font-weight: 700;
+    color: #1F7A4D;
+    white-space: nowrap;
+}
+
+/* CONTEÚDO DO CARD */
+
+.card-solucao-etapa-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card-solucao-etapa-titulo {
+    font-size: 15px;
+    font-weight: 700;
+    color: #01472B;
+}
+
+.card-solucao-etapa-texto {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #64746C;
+}
+
+/* SETAS ENTRE OS CARDS */
+
+.card-linha {
+    width: 18px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-linha-chevron-right {
+    width: 18px;
+    height: 18px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 1100px) {
+    .fluxo-solucao-conteudo {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .card-solucao-etapa {
+        flex: 1 1 30%;
+    }
+
+    .card-linha {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .fluxo-solucao {
+        padding: 60px 7%;
+    }
+
+    .fluxo-solucao-cabecalho {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .fluxo-solucao-titulo {
+        font-size: 27px;
+    }
+
+    .card-solucao-etapa {
+        flex: 1 1 100%;
+        min-height: auto;
+    }
+}
+
+/* ===================================
+   ESTILOS COMPARTILHADOS DAS SEÇÕES
+=================================== */
+
+.secao {
+    width: 100%;
+    padding: 80px 5%;
+}
+
+.etiqueta-secao {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 14px;
+    background-color: #E8F5EC;
+    border-radius: 20px;
+
+    color: #1F7A4D;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.ponto-etiqueta {
+    width: 8px;
+    height: 8px;
+    background-color: #1F7A4D;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+
+/* ===================================
+   BENEFÍCIOS
+=================================== */
+
+.beneficios {
+    background-color: #F2F8F4;
+}
+
+.beneficios-descricao {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.beneficios-bloco {
+    max-width: 630px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.beneficios-bloco h2 {
+    color: #01472B;
+    font-size: 32px;
+    line-height: 1.3;
+}
+
+.beneficios-descricao > p {
+    max-width: 380px;
+    color: #64746C;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.beneficios-itens {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* CARDS */
+
+.card-beneficio {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background-color: white;
+    border: 1px solid #E1EAE5;
+    border-radius: 12px;
+    overflow: hidden;
+
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-beneficio:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 40, 20, 0.08);
+}
+
+.card-beneficio-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 22px 20px 0;
+}
+
+.card-beneficio-superior-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #E8F5EC;
+    border-radius: 10px;
+}
+
+.card-beneficio-superior-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.icone-seta {
+    width: 17px;
+    height: 17px;
+}
+
+.card-beneficio-descricao {
+    padding: 22px 20px 28px;
+    flex: 1;
+}
+
+.card-beneficio-descricao h3 {
+    color: #01472B;
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.card-beneficio-descricao p {
+    color: #64746C;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.card-beneficio-inferior {
+    min-height: 55px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 15px 20px;
+    background-color: #F7FAF8;
+    border-top: 1px solid #E1EAE5;
+
+    color: #1F7A4D;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.ponto-verde {
+    width: 8px;
+    height: 8px;
+    background-color: #1F7A4D;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+
+/* ===================================
+   DADOS REAIS
+=================================== */
+
+.dados-reais {
+    background-color: #073D2B;
+    color: white;
+}
+
+.dados-reais-cabecalho {
+    max-width: 1200px;
+    margin: 0 auto 55px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+}
+
+.dados-reais-bloco {
+    max-width: 650px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.etiqueta-clara {
+    background-color: rgba(255,255,255,0.12);
+    color: #D4F4DF;
+}
+
+.etiqueta-clara .ponto-etiqueta {
+    background-color: #62C340;
+}
+
+.dados-reais-bloco h2 {
+    font-size: 32px;
+    line-height: 1.3;
+    color: white;
+}
+
+.dados-reais-descricao {
+    max-width: 380px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #C0D7CB;
+}
+
+.dados-reais-estatisticas {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+}
+
+.dados-reais-itens {
+    padding: 10px 35px;
+    border-right: 1px solid rgba(255,255,255,0.2);
+}
+
+.dados-reais-itens:first-child {
+    padding-left: 0;
+}
+
+.dados-reais-itens:last-child {
+    border-right: none;
+}
+
+.dados-reais-itens h3 {
+    font-size: 32px;
+    color: #7DDD95;
+    margin-bottom: 10px;
+}
+
+.dados-reais-itens-text-label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.dados-reais-itens-text-detail {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #C0D7CB;
+}
+
+.dados-reais-fonte {
+    max-width: 1200px;
+    margin: 45px auto 0;
+
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+
+    color: #AFC9BB;
+    font-size: 11px;
+}
+
+
+/* ===================================
+   OTIMIZAÇÃO COMPLETA DE ROTAS
+=================================== */
+
+.fluxo-solucao {
+    background-color: #FCFDFD;
+}
+
+.fluxo-solucao-cabecalho {
+    max-width: 1200px;
+    margin: 0 auto 45px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+}
+
+.fluxo-solucao-bloco {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.fluxo-solucao-bloco h2 {
+    font-size: 32px;
+    line-height: 1.3;
+    color: #01472B;
+}
+
+.fluxo-solucao-texto {
+    max-width: 400px;
+    color: #64746C;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.fluxo-solucao-conteudo {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.card-solucao-etapa {
+    flex: 1;
+    min-width: 0;
+    min-height: 230px;
+
+    padding: 20px 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    background-color: white;
+    border: 1px solid #E1EAE5;
+    border-radius: 12px;
+
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-solucao-etapa:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 40, 20, 0.08);
+}
+
+.card-solucao-etapa-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.card-solucao-etapa-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #E8F5EC;
+    border-radius: 10px;
+}
+
+.card-solucao-etapa-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.card-solucao-etapa-topo span {
+    color: #1F7A4D;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.card-solucao-etapa-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card-solucao-etapa-conteudo h3 {
+    color: #01472B;
+    font-size: 15px;
+}
+
+.card-solucao-etapa-conteudo p {
+    color: #64746C;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.card-linha {
+    width: 18px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #1F7A4D;
+    font-size: 22px;
+}
+
+
+/* ===================================
+   CONTATO E FORMULÁRIO
+=================================== */
+
+.fale-conosco {
+    width: 100%;
+    padding: 80px 5%;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px;
+
+    background-color: #F2F8F4;
+}
+
+/* COLUNA ESQUERDA */
+
+.card-contato {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background-color: #E5F2E9;
+    border: 1px solid #D2E8D8;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.card-contato-conteudo {
+    padding: 35px;
+}
+
+.card-contato-bloco {
+    margin-top: 25px;
+}
+
+.card-contato-bloco h2 {
+    color: #01472B;
+    font-size: 30px;
+    line-height: 1.3;
+    margin-bottom: 18px;
+}
+
+.card-contato-bloco p {
+    color: #526E5C;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.card-contato-beneficios {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.card-contato-beneficios p {
+    color: #01472B;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* INFORMAÇÕES INSTITUCIONAIS */
+
+.card-contato-institucional {
+    padding: 25px 35px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    background-color: #D7EBDC;
+    border-top: 1px solid #C5DFCC;
+}
+
+.contato-detalhe {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.contato-detalhe-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #C4E1CE;
+    border-radius: 9px;
+}
+
+.contato-detalhe-icon img {
+    width: 20px;
+    height: 20px;
+}
+
+.contato-detalhe-descricao span {
+    display: block;
+    color: #64816D;
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.contato-detalhe-descricao p {
+    color: #01472B;
+    font-size: 13px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+/* COLUNA DIREITA */
+
+.formulario-contato {
+    min-width: 0;
+    padding: 35px;
+
+    background-color: white;
+    border: 1px solid #E1EAE5;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,40,20,0.04);
+}
+
+.formulario-contato-cabecalho {
+    margin-bottom: 30px;
+}
+
+.formulario-contato-cabecalho h2 {
+    color: #01472B;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.formulario-contato-cabecalho p {
+    color: #64746C;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* CAMPOS DO FORMULÁRIO */
+
+#form-demonstracao {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.campos-bloco {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.formulario-campo {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formulario-campo label {
+    color: #01472B;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.formulario-campo input,
+.formulario-campo textarea {
+    width: 100%;
+    padding: 13px 14px;
+
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #01472B;
+
+    background-color: #FFFFFF;
+    border: 1px solid #DDE8E0;
+    border-radius: 7px;
+    outline: none;
+}
+
+.formulario-campo input::placeholder,
+.formulario-campo textarea::placeholder {
+    color: #97A69C;
+}
+
+.formulario-campo input:focus,
+.formulario-campo textarea:focus {
+    border-color: #1F7A4D;
+    box-shadow: 0 0 0 3px rgba(31,122,77,0.1);
+}
+
+.formulario-campo textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+/* POLÍTICA DE PRIVACIDADE */
+
+.formulario-contato-politica {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    cursor: pointer;
+}
+
+.formulario-contato-politica input {
+    margin-top: 3px;
+    accent-color: #1F7A4D;
+}
+
+.formulario-contato-politica span {
+    color: #64746C;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* BOTÃO ENVIAR */
+
+.formulario-contato-botao {
+    width: 100%;
+    padding: 15px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    background-color: #1F7A4D;
+    color: white;
+
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+
+    transition: background-color 0.3s;
+}
+
+.formulario-contato-botao:hover {
+    background-color: #01472B;
+}
+
+
+/* ===================================
+   RESPONSIVIDADE
+=================================== */
+
+@media (max-width: 1100px) {
+
+    .beneficios-itens {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .fluxo-solucao-conteudo {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .card-solucao-etapa {
+        flex: 1 1 30%;
+    }
+
+    .card-linha {
+        display: none;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .beneficios-descricao,
+    .dados-reais-cabecalho,
+    .fluxo-solucao-cabecalho {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .fale-conosco {
+        grid-template-columns: 1fr;
+    }
+
+    .dados-reais-estatisticas {
+        grid-template-columns: 1fr;
+    }
+
+    .dados-reais-itens,
+    .dados-reais-itens:first-child {
+        padding: 25px 0;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .dados-reais-itens:last-child {
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .secao,
+    .fale-conosco {
+        padding: 60px 7%;
+    }
+
+    .beneficios-bloco h2,
+    .dados-reais-bloco h2,
+    .fluxo-solucao-bloco h2 {
+        font-size: 26px;
+    }
+
+    .beneficios-itens {
+        grid-template-columns: 1fr;
+    }
+
+    .card-solucao-etapa {
+        flex: 1 1 100%;
+        min-height: auto;
+    }
+
+    .card-contato-conteudo,
+    .formulario-contato {
+        padding: 25px 20px;
+    }
+
+    .card-contato-institucional {
+        padding: 25px 20px;
+    }
+
+    .card-contato-bloco h2 {
+        font-size: 25px;
+    }
+
+    .campos-bloco {
+        grid-template-columns: 1fr;
+    }
+}
