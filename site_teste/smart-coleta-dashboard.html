@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css2?family=DM Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="css/reset.css" /> -->
+	<!-- <link rel="stylesheet" href="css/global.css" /> -->
+	<link rel="stylesheet" href="smart-coleta-dashboard.css" />
+
+</head>
+
+<body>
+	<img src="assets/symbol.png" class="mascote" />
+	
+	<div class="cabecalho">
+		<h2 class="cabecalho-nome-marca">SmartColeta</h2>
+		<p class="cabecalho-subtitulo text1">Painel Web de Gestão</p>
+		
+		<div class="cabecalho-selo">
+			<object data="assets/graphic1.svg" class="cabecalho-selo-fundo" type="image/svg+xml"></object>
+			<p class="cabecalho-selo-texto">Dados simulados</p>
+		</div>
+		
+		<object data="assets/group.svg" class="cabecalho-icone" type="image/svg+xml"></object>
+	</div>
+	
+	<div class="banner-alerta">
+		<object data="assets/graphic2.svg" class="banner-alerta-link-fundo" type="image/svg+xml"></object>
+		
+		<div class="banner-alerta-cabecalho">
+			<h2 class="banner-alerta-titulo">4 compartimentos estão em nível crítico</h2>
+			<p class="banner-alerta-link">Ver os 4 pontos</p>
+		</div>
+		
+		<p class="banner-alerta-texto text1">
+			Acima de 90% de preenchimento. Priorize a coleta nesses pontos.
+		</p>
+	</div>
+	
+	<div class="indicadores">
+		<div class="indicador-ocupacao card-white1">
+			<p class="text-a indicador-ocupacao-titulo">Ocupação média da frota</p>
+			<h1 class="indicador-ocupacao-dado title">58%</h1>
+			<p class="text-a">Última leitura de 30 compartimentos</p>
+		</div>
+		
+		<div class="indicador-criticos card-white1">
+			<object data="assets/card-graphic1.svg" class="indicador-criticos-status-fundo" type="image/svg+xml"></object>
+			<p class="text-a indicador-criticos-titulo">Em nível crítico</p>
+			
+			<div class="indicador-criticos-linha">
+				<h1 class="indicador-criticos-dado title">4</h1>
+				<p class="indicador-criticos-status-texto">Acima da meta</p>
+			</div>
+			
+			<p class="text-a">13% da frota, meta abaixo de 10%</p>
+		</div>
+		
+		<div class="indicador-atendimento card-white1">
+			<p class="indicador-titulo">Tempo de atendimento</p>
+			
+			<div class="indicador-atendimento-linha">
+				<h1 class="indicador-dado">18 h</h1>
+				
+				<div class="indicador-atendimento-status">
+					<object data="assets/card-graphic.svg" class="indicador-atendimento-status-fundo" type="image/svg+xml"></object>
+					<p class="indicador-atendimento-status-texto">Dentro da meta</p>
+				</div>
+			</div>
+			
+			<p class="indicador-descricao">Do alerta crítico até a coleta, meta até 24 h</p>
+		</div>
+		
+		<div class="indicador-sensores card-white1">
+			<object data="assets/card-graphic.svg" class="indicador-sensores-status-fundo" type="image/svg+xml"></object>
+			<p class="indicador-titulo">Sensores disponíveis</p>
+			
+			<div class="indicador-sensores-linha">
+				<h1 class="indicador-dado">97%</h1>
+				<p class="texto-auxiliar indicador-sensores-status-texto">Dentro da meta</p>
+			</div>
+			
+			<p class="indicador-descricao">Sensores ativos, meta de 95% ou mais</p>
+		</div>
+	</div>
+	
+	<div class="ocupacao">
+		<div class="card-patamares">
+			<p class="card-patamares-titulo text2">Compartimentos por patamar</p>
+			
+			<div class="patamar patamar-normal">
+				<div class="circle patamar-marcador"></div>
+				<p class="patamar-texto patamar-nome">Normal</p>
+				<h2 class="patamar-numero patamar-quantidade">19</h2>
+			</div>
+			
+			<p class="patamar-faixa patamar-faixa-normal">abaixo de 70%</p>
+			
+			<div class="patamar-atencao">
+				<h2 class="patamar-quantidade-frota">30</h2>
+				<div class="circle patamar-marcador-atencao"></div>
+				<p class="patamar-texto patamar-nome-atencao">Atenção</p>
+				<h2 class="patamar-numero patamar-quantidade-atencao">7</h2>
+			</div>
+			
+			<div class="patamar-atencao-detalhe">
+				<p class="texto-auxiliar patamar-atencao-unidade">pontos</p>
+				<p class="patamar-faixa-atencao">de 70% a 90%</p>
+			</div>
+			
+			<div class="patamar patamar-critico">
+				<div class="circle patamar-marcador"></div>
+				<p class="patamar-texto patamar-nome">Crítico</p>
+				<h2 class="patamar-numero patamar-quantidade">4</h2>
+			</div>
+			
+			<p class="patamar-faixa patamar-faixa-critico">acima de 90%</p>
+		</div>
+		
+		<div class="card-ocupacao">
+			<div class="circle grafico-ocupacao-ponto-qua"></div>
+			<p class="card-ocupacao-titulo text2">Ocupação média da frota por dia</p>
+			<p class="card-ocupacao-descricao">
+				Percentual de preenchimento, com os limites de atenção e crítico
+			</p>
+			
+			<div class="grafico-ocupacao-topo">
+				<div class="grafico-ocupacao-linha-100"></div>
+				<p class="grafico-ocupacao-eixo-100">100%</p>
+				<p class="grafico-ocupacao-critico-rotulo text3">Crítico 90%</p>
+			</div>
+			
+			<div class="grafico-ocupacao-critico-linha"></div>
+			
+			<div class="grafico-ocupacao-corpo">
+				<div class="circle grafico-ocupacao-ponto-ter"></div>
+				
+				<div class="grafico-ocupacao-eixo-y">
+					<p class="card-text-a grafico-ocupacao-eixo-y-75">75%</p>
+					<p class="card-text-a grafico-ocupacao-eixo-y-50">50%</p>
+					<p class="card-text-a grafico-ocupacao-eixo-y-25">25%</p>
+					<p class="card-text-a grafico-ocupacao-eixo-y-0">0%</p>
+				</div>
+				
+				<div class="grafico-ocupacao-plano">
+					<p class="grafico-ocupacao-valor-qua">46%</p>
+					
+					<div class="grafico-ocupacao-grade">
+						<div class="grafico-ocupacao-linha grafico-ocupacao-linha-25"></div>
+						<div class="grafico-ocupacao-linha grafico-ocupacao-linha-50"></div>
+						<div class="grafico-ocupacao-linha grafico-ocupacao-linha-75"></div>
+						<div class="grafico-ocupacao-linha grafico-ocupacao-atencao-linha"></div>
+						<p class="grafico-ocupacao-atencao-rotulo text3">Atenção 70%</p>
+						
+						<div class="grafico-ocupacao-serie">
+							<object data="assets/card-graphic3.svg" class="grafico-ocupacao-serie-area" type="image/svg+xml"></object>
+							
+							<div class="grafico-ocupacao-serie-pontos">
+								<object data="assets/card-graphic4.svg" class="grafico-ocupacao-serie-linha" type="image/svg+xml"></object>
+								
+								<div class="grafico-ocupacao-coluna grafico-ocupacao-coluna-qui">
+									<p class="grafico-ocupacao-coluna-valor">52%</p>
+									<div class="grafico-ocupacao-ponto grafico-ocupacao-coluna-ponto"></div>
+								</div>
+								
+								<div class="grafico-ocupacao-ponto grafico-ocupacao-ponto-sex"></div>
+								
+								<div class="grafico-ocupacao-coluna grafico-ocupacao-coluna-sab">
+									<p class="grafico-ocupacao-coluna-valor">55%</p>
+									<div class="grafico-ocupacao-ponto grafico-ocupacao-coluna-ponto"></div>
+								</div>
+								
+								<div class="grafico-ocupacao-ponto grafico-ocupacao-ponto-dom"></div>
+							</div>
+						</div>
+						
+						<p class="grafico-ocupacao-valor-sex">61%</p>
+						<p class="grafico-ocupacao-valor-dom">68%</p>
+						<div class="grafico-ocupacao-ponto grafico-ocupacao-ponto-seg"></div>
+						<p class="grafico-ocupacao-valor-seg">72%</p>
+						<p class="grafico-ocupacao-valor-ter">58%</p>
+					</div>
+					
+					<div class="grafico-ocupacao-linha grafico-ocupacao-linha-0"></div>
+				</div>
+			</div>
+			
+			<div class="grafico-ocupacao-eixo-x">
+				<p class="grafico-ocupacao-eixo-x-dia grafico-ocupacao-eixo-x-qua">Qua</p>
+				<p class="grafico-ocupacao-eixo-x-dia grafico-ocupacao-eixo-x-qui">Qui</p>
+				<p class="grafico-ocupacao-eixo-x-dia grafico-ocupacao-eixo-x-sex">Sex</p>
+				<p class="grafico-ocupacao-eixo-x-dia grafico-ocupacao-eixo-x-sab">Sáb</p>
+				<p class="grafico-ocupacao-eixo-x-dia grafico-ocupacao-eixo-x-dom">Dom</p>
+				<p class="grafico-ocupacao-eixo-x-dia grafico-ocupacao-eixo-x-seg">Seg</p>
+				<p class="grafico-ocupacao-eixo-x-dia grafico-ocupacao-eixo-x-ter">Ter</p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="detalhamento">
+		<div class="card-ranking card-white2">
+			<p class="card-ranking-titulo text2">Compartimentos mais cheios agora</p>
+			<p class="card-subtitulo card-ranking-subtitulo">Os quatro primeiros pedem coleta imediata</p>
+			
+			<div class="ranking-item ranking-item-1">
+				<p class="ranking-item-rua">Av. Tancredo Neves</p>
+				<p class="ranking-item-bairro">Centro</p>
+				<p class="ranking-item-percentual">94%</p>
+			</div>
+			
+			<div class="ranking-barra ranking-barra-1">
+				<object data="assets/row/row-graphic.svg" class="ranking-barra-fundo" type="image/svg+xml"></object>
+				<object data="assets/row/row-graphic2.svg" class="ranking-barra-preenchimento" type="image/svg+xml"></object>
+			</div>
+			
+			<div class="ranking-item ranking-item-2">
+				<p class="ranking-item-rua">Rua JK</p>
+				<p class="ranking-item-bairro">Bairro Planalto</p>
+				<p class="ranking-item-percentual">92%</p>
+			</div>
+			
+			<div class="ranking-barra ranking-barra-2">
+				<object data="assets/row/row-graphic.svg" class="ranking-barra-fundo" type="image/svg+xml"></object>
+				<object data="assets/row/row-graphic4.svg" class="ranking-barra-preenchimento" type="image/svg+xml"></object>
+			</div>
+			
+			<div class="ranking-item ranking-item-3">
+				<p class="ranking-item-rua">Av. Airton Senna</p>
+				<p class="ranking-item-bairro">Setor 02</p>
+				<p class="ranking-item-percentual">91%</p>
+			</div>
+			
+			<div class="ranking-barra ranking-barra-3">
+				<object data="assets/row/row-graphic.svg" class="ranking-barra-fundo" type="image/svg+xml"></object>
+				<object data="assets/row/row-graphic6.svg" class="ranking-barra-preenchimento" type="image/svg+xml"></object>
+			</div>
+			
+			<div class="ranking-item ranking-item-4">
+				<p class="ranking-item-rua">Rua Rio de Janeiro</p>
+				<p class="ranking-item-bairro">Bairro das Palmeiras</p>
+				<p class="ranking-item-percentual">90%</p>
+			</div>
+			
+			<div class="ranking-barra-4">
+				<object data="assets/row/row-graphic.svg" class="ranking-barra-4-fundo" type="image/svg+xml"></object>
+				<object data="assets/card-left-graphic2.svg" class="ranking-barra-4-preenchimento" type="image/svg+xml"></object>
+			</div>
+			
+			<div class="ranking-item ranking-item-5">
+				<p class="ranking-item-rua">Av. Brasil</p>
+				<p class="ranking-item-bairro">Centro</p>
+				<p class="ranking-item-percentual">78%</p>
+			</div>
+			
+			<div class="ranking-barra ranking-barra-5">
+				<object data="assets/row/row-graphic.svg" class="ranking-barra-fundo" type="image/svg+xml"></object>
+				<object data="assets/row/row-graphic8.svg" class="ranking-barra-preenchimento" type="image/svg+xml"></object>
+			</div>
+		</div>
+		
+		<div class="card-atendimento card-white2">
+			<p class="card-atendimento-titulo text2">Tempo de atendimento por bairro</p>
+			<p class="card-subtitulo card-atendimento-subtitulo">
+				Horas entre o alerta crítico e a coleta, diferença de 6 h entre bairros
+			</p>
+			<p class="grafico-atendimento-meta-rotulo text3">Meta 24 h</p>
+			
+			<div class="grafico-atendimento">
+				<div class="grafico-atendimento-bairros">
+					<p class="card-text-b grafico-atendimento-bairro-centro">Centro</p>
+					<p class="card-text-b">Bairro Planalto</p>
+					<p class="card-text-b">Setor 02</p>
+					<p class="card-text-b grafico-atendimento-bairro-palmeiras">Bairro das Palmeiras</p>
+				</div>
+				
+				<div class="grafico-atendimento-barras">
+					<div class="grafico-atendimento-linha grafico-atendimento-linha-0"></div>
+					<div class="grafico-atendimento-linha grafico-atendimento-linha-6"></div>
+					<div class="grafico-atendimento-linha grafico-atendimento-linha-12"></div>
+					<div class="grafico-atendimento-linha grafico-atendimento-linha-18"></div>
+					<div class="grafico-atendimento-barra-centro"></div>
+					<p class="grafico-atendimento-valor-centro">14 h</p>
+					<div class="grafico-atendimento-barra grafico-atendimento-barra-planalto">17 h</div>
+					<div class="grafico-atendimento-barra grafico-atendimento-barra-setor-02">19 h</div>
+					<div class="grafico-atendimento-barra grafico-atendimento-barra-palmeiras">20 h</div>
+				</div>
+				
+				<div class="grafico-atendimento-meta">
+					<div class="grafico-atendimento-linha grafico-atendimento-linha-24"></div>
+					<div class="grafico-atendimento-linha grafico-atendimento-meta-linha"></div>
+				</div>
+				
+				<div class="grafico-atendimento-linha grafico-atendimento-linha-30"></div>
+			</div>
+			
+			<div class="grafico-atendimento-eixo-x">
+				<p class="grafico-atendimento-eixo-x-hora grafico-atendimento-eixo-x-0">0 h</p>
+				<p class="grafico-atendimento-eixo-x-hora grafico-atendimento-eixo-x-6">6 h</p>
+				<p class="grafico-atendimento-eixo-x-hora grafico-atendimento-eixo-x-12">12 h</p>
+				<p class="grafico-atendimento-eixo-x-hora grafico-atendimento-eixo-x-20">20 h</p>
+				<p class="grafico-atendimento-eixo-x-hora grafico-atendimento-eixo-x-24">24 h</p>
+				<p class="grafico-atendimento-eixo-x-hora grafico-atendimento-eixo-x-30">30 h</p>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
