@@ -1,0 +1,10 @@
+<<<<<<< HEAD
+# A linha abaixo determina que o diretório node_modules não será enviado ao repositório remoto
+node_modules
+package-lock.json
+
+.github
+=======
+smartcoleta/node_modules/
+node_modules/
+>>>>>>> d6df0cca88cf555e9c3b545473b74e71d5a9827d
