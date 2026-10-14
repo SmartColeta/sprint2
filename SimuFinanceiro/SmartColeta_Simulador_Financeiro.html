@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simulador financeiro | SmartColeta</title>
+    <title>Simulador financeiro</title>
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap"
       rel="stylesheet"
@@ -25,9 +25,9 @@
 
         <label>Cenário de otimização das rotas</label>
         <div class="cenarios">
-          <button onclick="definirCenario(5)">5%</button>
-          <button onclick="definirCenario(10)">10%</button>
-          <button onclick="definirCenario(15)">15%</button>
+          <button onclick="entrada_cenario = 5; definirCenario()">5%</button>
+          <button onclick="entrada_cenario = 10; definirCenario()">10%</button>
+          <button onclick="entrada_cenario = 15; definirCenario()">15%</button>
         </div>
 
         <label
@@ -181,42 +181,67 @@
       let KG_CO2_POR_LITRO = 2.68;
       let saldos = [];
 
-      function agrupar(digitos) {
+      // Entrada de agrupar(): texto só com dígitos. Preenchida por inteiro(), dinheiro() e simular().
+      let entrada_agrupar = "";
+      // Entrada de inteiro(): número a formatar. Preenchida por simular().
+      let entrada_inteiro = 0;
+      // Entrada de dinheiro(): número a formatar. Preenchida por simular().
+      let entrada_dinheiro = 0;
+      // Entrada de definirCenario(): percentual escolhido. Preenchida pelos botões do HTML.
+      let entrada_cenario = 0;
+      // Saída de agrupar(): texto com pontos de milhar. Gravada por agrupar().
+      let saida_agrupar = "";
+      // Saída de inteiro(): número inteiro formatado. Gravada por inteiro().
+      let saida_inteiro = "";
+      // Saída de dinheiro(): valor em reais formatado. Gravada por dinheiro().
+      let saida_dinheiro = "";
+
+      // Espera: entrada_agrupar. Grava: saida_agrupar.
+      function agrupar() {
         let resultado = "";
-        let i = digitos.length - 1;
+        let i = entrada_agrupar.length - 1;
         let contador = 0;
         while (i >= 0) {
           if (contador > 0 && contador % 3 == 0) {
             resultado = "." + resultado;
           }
-          resultado = digitos[i] + resultado;
+          resultado = entrada_agrupar[i] + resultado;
           contador++;
           i--;
         }
-        return resultado;
+        saida_agrupar = resultado;
       }
 
-      function inteiro(valor) {
+      // Espera: entrada_inteiro. Grava: saida_inteiro.
+      function inteiro() {
+        let numero = entrada_inteiro;
         let sinal = "";
-        if (valor < 0) {
+        if (numero < 0) {
           sinal = "-";
-          valor = valor * -1;
+          numero = numero * -1;
         }
-        return sinal + agrupar(valor.toFixed(0));
+        entrada_agrupar = numero.toFixed(0);
+        agrupar();
+        saida_inteiro = sinal + saida_agrupar;
       }
 
-      function dinheiro(valor) {
+      // Espera: entrada_dinheiro. Grava: saida_dinheiro.
+      function dinheiro() {
+        let numero = entrada_dinheiro;
         let sinal = "";
-        if (valor < 0) {
+        if (numero < 0) {
           sinal = "-";
-          valor = valor * -1;
+          numero = numero * -1;
         }
-        let partes = valor.toFixed(2).split(".");
-        return sinal + "R$ " + agrupar(partes[0]) + "," + partes[1];
+        let partes = numero.toFixed(2).split(".");
+        entrada_agrupar = partes[0];
+        agrupar();
+        saida_dinheiro = sinal + "R$ " + saida_agrupar + "," + partes[1];
       }
 
-      function definirCenario(percentual) {
-        ipt_percentual.value = percentual;
+      // Espera: entrada_cenario. Não grava saída; atualiza o campo e chama simular().
+      function definirCenario() {
+        ipt_percentual.value = entrada_cenario;
         simular();
       }
 
@@ -280,7 +305,10 @@
 
         let aviso = "";
         if (investimento > ORCAMENTO_MAXIMO) {
-          aviso = `Atenção: o investimento passa do orçamento do projeto (${dinheiro(ORCAMENTO_MAXIMO)}).`;
+          entrada_dinheiro = ORCAMENTO_MAXIMO;
+          dinheiro();
+          let orcamentoTexto = saida_dinheiro;
+          aviso = `Atenção: o investimento passa do orçamento do projeto (${orcamentoTexto}).`;
         }
 
         saldos = [];
@@ -314,14 +342,19 @@
             corBarra = "neg";
           }
           let largura = (tamanho / maximo) * 100;
-          linhas += `<div class="linha"><span>Ano ${i + 1}</span><progress class="${corBarra}" value="${largura}" max="100"></progress><b>${dinheiro(saldo)}</b></div>`;
+          entrada_dinheiro = saldo;
+          dinheiro();
+          let saldoTexto = saida_dinheiro;
+          linhas += `<div class="linha"><span>Ano ${i + 1}</span><div class="barra"><div class="${corBarra}" style="width: ${largura}%"></div></div><b>${saldoTexto}</b></div>`;
           i++;
         }
 
         span_pct.innerHTML = percentual + "%";
         span_anos.innerHTML = anos + " ano(s)";
         div_rotulo_roi.innerHTML = `Retorno sobre o investimento (ROI) em ${anos} ano(s)`;
-        div_roi.innerHTML = inteiro(roi) + "%";
+        entrada_inteiro = roi;
+        inteiro();
+        div_roi.innerHTML = saida_inteiro + "%";
         div_selo.innerHTML = `<span class="selo ${classe}">${selo}</span>`;
         div_aviso.innerHTML = aviso;
         div_mensagem.innerHTML = mensagem;
@@ -330,13 +363,25 @@
         } else {
           kpi_payback.innerHTML = "-";
         }
-        kpi_ganho.innerHTML = dinheiro(ganhoLiquido);
-        kpi_invest.innerHTML = dinheiro(investimento);
-        kpi_smartcoin.innerHTML = inteiro(ganhoLiquido) + " SMC";
-        kpi_diesel.innerHTML = inteiro(litros);
-        kpi_km.innerHTML = inteiro(km);
+        entrada_dinheiro = ganhoLiquido;
+        dinheiro();
+        kpi_ganho.innerHTML = saida_dinheiro;
+        entrada_dinheiro = investimento;
+        dinheiro();
+        kpi_invest.innerHTML = saida_dinheiro;
+        entrada_inteiro = ganhoLiquido;
+        inteiro();
+        kpi_smartcoin.innerHTML = saida_inteiro + " SMC";
+        entrada_inteiro = litros;
+        inteiro();
+        kpi_diesel.innerHTML = saida_inteiro;
+        entrada_inteiro = km;
+        inteiro();
+        kpi_km.innerHTML = saida_inteiro;
         kpi_co2.innerHTML = toneladas.toFixed(1).replace(".", ",");
-        kpi_total.innerHTML = dinheiro(ganhoLiquido * anos - investimento);
+        entrada_dinheiro = ganhoLiquido * anos - investimento;
+        dinheiro();
+        kpi_total.innerHTML = saida_dinheiro;
         span_total_anos.innerHTML = `em ${anos} ano(s), já sem o investimento`;
         div_tabela.innerHTML = linhas;
       }

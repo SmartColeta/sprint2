@@ -326,8 +326,6 @@ input[type=range] {
 
 /* --------------------------------------------------------------------------
    GRÁFICO "SALDO ACUMULADO ANO A ANO"
-   O JavaScript cria uma linha para cada ano, com o texto "Ano N",
-   a barra e o valor em reais.
    -------------------------------------------------------------------------- */
 
 /* Linha de um ano, dividida em 3 colunas: nome do ano, barra e valor. */
@@ -340,36 +338,27 @@ input[type=range] {
   font-size: 14px;
 }
 
-/* Barra de progresso base: define altura e cor do trilho */
-progress {
-  appearance: none;           /* remove o visual padrão do navegador, para o CSS poder estilizar a barra */
-  -webkit-appearance: none;   /* a mesma regra, para Chrome, Edge e Safari */
+/* Trilho cinza da barra: ocupa toda a coluna do meio da linha. */
+.barra {
   width: 100%;
   height: 14px;
-  border: 0;
   border-radius: 6px;
   background: var(--linha);
-}
-
-/* Trilho da barra no Chrome, Edge e Safari. */
-progress::-webkit-progress-bar {  /* pseudoelemento: parte interna da barra, só para navegadores -webkit- */
-  background: var(--linha);
-  border-radius: 6px;
+  overflow: hidden;  /* corta o que passar do trilho, para as pontas internas ficarem arredondadas */
 }
 
 /* Parte preenchida quando o saldo do ano é POSITIVO (classe "pos"), em lima.
-   Há duas regras porque cada navegador usa um nome diferente:
-   -webkit- vale para Chrome, Edge e Safari */
-progress.pos::-webkit-progress-value {
+   A largura vem do JavaScript, em porcentagem. */
+.barra .pos {
+  height: 100%;
   background: var(--lima);
-  border-radius: 6px;
 }
 
 /* Parte preenchida quando o saldo do ano é NEGATIVO (classe "neg"), em
    vermelho. Significa que o investimento ainda não foi pago. */
-progress.neg::-webkit-progress-value {
+.barra .neg {
+  height: 100%;
   background: var(--vermelho);
-  border-radius: 6px;
 }
 
 
