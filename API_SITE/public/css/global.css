@@ -1,0 +1,265 @@
+
+/* RESET GLOBAL */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    min-width: 320px;
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+}
+
+main {
+    display: block;
+    width: 100%;
+}
+
+main > section,
+main > .solucao {
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* MENU HEADER */
+.header {
+    width: 100%;
+    height: 75px;
+    padding: 0 5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: #FCFDFD;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.menu a{
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.menu a:hover {
+    color: #1F7A4D;
+}
+
+
+.menu .ativo {
+    color: #01472b;
+    font-weight: 700;
+}
+
+.botoes-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.botoes-header a{
+    text-decoration: none;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 6px;
+}
+
+.btn-login {
+    color: #01472B;
+    border: 1px solid #ddd;
+    background-color: transparent;
+}
+
+.btn-login:hover {
+    background-color: #d8f0d9;
+}
+
+.btn-cadastro {
+    color: white;
+    background-color: #1b754d;
+}
+
+.btn-cadastro:hover {
+    background-color: #01472B;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
+
+.nome-logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #01472B;
+    white-space: nowrap;
+}
+
+.nome-logo span {
+    color: #1F7A4D;
+}
+
+/* RODAPÉ */
+.rodape {
+    background-color: #082f21;
+    color: white;
+    padding: 60px 5% 20px;
+}
+
+.conteudo-rodape {
+    max-width: 1200px;
+    margin: 0;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.3fr;
+    gap: 50px;
+}
+
+/* LOGO RODAPÉ */
+.logo-rodape {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.logo-rodape img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
+
+.logo-rodape > span {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+}
+
+.logo-rodape span span {
+    color: #62c340;
+}
+
+/* DESCRIÇÃO DA EMPRESA */
+.rodape-empresa p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c5d5ce;
+    max-width: 280px;
+}
+
+.rodape-empresa .seguranca {
+    margin-top: 20px;
+    font-size: 11px;
+}
+
+/* COLUNAS DO RODAPÉ */
+
+.coluna-rodape {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.coluna-rodape h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.coluna-rodape a {
+    font-size: 12px;
+    color: #c5d5ce;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.coluna-rodape a:hover {
+    color: #62c340;
+}
+
+/* REDES SOCIAIS */
+
+.redes-sociais {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.redes-sociais a {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #204a38;
+    border-radius: 50%;
+
+    transition: background-color 0.3s;
+}
+
+.redes-sociais a:hover {
+    background-color: #1f7a4d;
+}
+
+.redes-sociais img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* PARTE INFERIOR DO RODAPÉ */
+
+.rodape-inferior {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    padding-top: 20px;
+
+    border-top: 1px solid #28503f;
+    text-align: center;
+}
+
+.rodape-inferior p {
+    font-size: 11px;
+    color: #a8c0b4;
+}

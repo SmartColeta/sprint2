@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartColeta | Login</title>
+
+    <script src="./js/sessao.js"></script>
+
+        <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="wrap">
+
+        <!-- Parte esquerda -->
+        <aside class="side">
+            <img class="brand" src="logo.png" alt="Smart Coleta">
+            <h1>Smart Coleta</h1>
+            <p>
+                Sistema inteligente para auxiliar no gerenciamento
+                da coleta e monitoramento de resíduos.
+            </p>
+        </aside>
+
+        <!-- Parte direita -->
+        <main class="main">
+
+            <div class="card">
+
+                <!-- Abas -->
+                <div class="tabs">
+                    <a href="login.html">
+            <button
+              class="tab"
+              id="loginTab"          
+            >
+              Entrar
+            </button>
+            </a>
+
+            <a href="cadastro.html">
+            <button
+              class="tab"
+              id="cadastroTab"            
+            >
+              Criar conta
+            </button>
+            </a>
+                </div>
+
+                <!-- Mensagem -->
+                <div id="mensagem" class="ok" hidden></div>
+
+                <!-- LOGIN -->
+                <section id="login">
+                    <h2>Entrar</h2>
+                    <p class="sub">Entre com seus dados para acessar o sistema.</p>
+
+                    <!-- TAG FORM CORRIGIDA AQUI -->
+                    <form onsubmit="realizarLogin(event)">
+
+                        <div class="f">
+                            <label for="emailLogin">E-mail</label>
+                            <input type="email" id="emailLogin" name="email" placeholder="Digite seu e-mail" required>
+                        </div>
+
+                        <div class="f">
+                            <label for="senhaLogin">Senha</label>
+                            <div class="pw">
+                                <input type="password" id="senhaLogin" name="senha" placeholder="Digite sua senha" required>
+                                <button type="button" onclick="mostrarSenha(senhaLogin, this)">Mostrar</button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label>
+                                <input type="checkbox" id="lembrar">
+                                Lembrar de mim
+                            </label>
+                            <a href="#">Esqueci a senha</a>
+                        </div>
+
+                        <button type="submit" class="go">Entrar</button>
+
+                    </form>
+                </section>
+
+</body>
+
+</html>
+
+<script>
+
+
+    function entrar() {
+        aguardar();
+
+        var emailVar = email_input.value;
+        var senhaVar = senha_input.value;
+
+        if (emailVar == "" || senhaVar == "") {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+            finalizarAguardar();
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
+
+                    setTimeout(function () {
+                        window.location = "./dashboard/cards.html";
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+    function sumirMensagem() {
+        cardErro.style.display = "none"
+    }
+
+</script>
