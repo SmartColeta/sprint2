@@ -108,13 +108,13 @@ necessitam de coleta.
 | 1 | Projeto atualizado no GitHub | Pesquisa e Inovação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | 2 | Documentação do Projeto atualizada | Pesquisa e Inovação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | 3 | Planilha de Riscos do Projeto | Pesquisa e Inovação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
-| 4 | Especificação da Dashboard | Pesquisa e Inovação | `▱▱▱▱▱▱▱▱▱▱ 0%` |
+| 4 | Especificação da Dashboard | Pesquisa e Inovação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | - |------------|---------|-----------|
-| 1 | Site Estático Institucional | Algoritmos | `▱▱▱▱▱▱▱▱▱▱ 0%` |
-| 2 | Site Estático Dashboard | Algoritmos | `▱▱▱▱▱▱▱▱▱▱ 0%` |
-| 3 | Site Estático Cadastro e Login | Algoritmos | `▱▱▱▱▱▱▱▱▱▱ 0%` |
+| 1 | Site Estático Institucional | Algoritmos | `▰▰▰▰▰▰▰▰▰▰ 100%` |
+| 2 | Site Estático Dashboard | Algoritmos | `▰▰▰▰▰▰▰▰▰▰ 100%` |
+| 3 | Site Estático Cadastro e Login | Algoritmos | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | - |------------|---------|-----------|
-| 1 | Diagrama de Solução (Arquitetura Técnica do Projeto) | Tecnologia da Informação | `▱▱▱▱▱▱▱▱▱▱ 0%` |
+| 1 | Diagrama de Solução (Arquitetura Técnica do Projeto) | Tecnologia da Informação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | 2 | Atividades organizadas na ferramenta de Gestão | Tecnologia da Informação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | 3 | Backlog da Sprint | Tecnologia da Informação | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | - |------------|---------|-----------|
