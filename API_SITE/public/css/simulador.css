@@ -1,0 +1,718 @@
+/* ==========================================================================
+   SIMULADOR FINANCEIRO | SMARTCOLETA
+   Estilos da página SmartColeta_Simulador_Financeiro.html
+   Estrutura da página, de cima para baixo:
+     1. Topo (logo e título)
+     2. Coluna da esquerda: formulário "Seus números"
+     3. Coluna da direita: destaque do ROI com mascote, cartões de KPI
+        e gráfico de saldo ano a ano
+     4. Nota de rodapé
+   ========================================================================== */
+
+
+/* ------------------------------
+  HEADER E RODAPÉ DO SITE INSTITUCIONAL
+-------------------------------- */
+/* RESET GLOBAL */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    min-width: 320px;
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+}
+
+main {
+    display: block;
+    width: 100%;
+}
+
+main > section,
+main > .solucao {
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* MENU HEADER */
+.header {
+    width: 100%;
+    height: 75px;
+    padding: 0 5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: #FCFDFD;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.menu a{
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.menu a:hover {
+    color: #1F7A4D;
+}
+
+
+.menu .ativo {
+    color: #01472b;
+    font-weight: 700;
+}
+
+.botoes-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.botoes-header a{
+    text-decoration: none;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 6px;
+}
+
+.btn-login {
+    color: #01472B;
+    border: 1px solid #ddd;
+    background-color: transparent;
+}
+
+.btn-login:hover {
+    background-color: #d8f0d9;
+}
+
+.btn-cadastro {
+    color: white;
+    background-color: #1b754d;
+}
+
+.btn-cadastro:hover {
+    background-color: #01472B;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
+
+.nome-logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #01472B;
+    white-space: nowrap;
+}
+
+.nome-logo span {
+    color: #1F7A4D;
+}
+
+/* RODAPÉ */
+.rodape {
+    background-color: #082f21;
+    color: white;
+    padding: 60px 5% 20px;
+}
+
+.conteudo-rodape {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.3fr;
+    gap: 50px;
+}
+
+/* LOGO RODAPÉ */
+.logo-rodape {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.logo-rodape img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
+
+.logo-rodape > span {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+}
+
+.logo-rodape span span {
+    color: #62c340;
+}
+
+/* DESCRIÇÃO DA EMPRESA */
+.rodape-empresa p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c5d5ce;
+    max-width: 280px;
+}
+
+.rodape-empresa .seguranca {
+    margin-top: 20px;
+    font-size: 11px;
+}
+
+/* COLUNAS DO RODAPÉ */
+
+.coluna-rodape {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.coluna-rodape h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.coluna-rodape a {
+    font-size: 12px;
+    color: #c5d5ce;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.coluna-rodape a:hover {
+    color: #62c340;
+}
+
+/* REDES SOCIAIS */
+
+.redes-sociais {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.redes-sociais a {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #204a38;
+    border-radius: 50%;
+
+    transition: background-color 0.3s;
+}
+
+.redes-sociais a:hover {
+    background-color: #1f7a4d;
+}
+
+.redes-sociais img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* PARTE INFERIOR DO RODAPÉ */
+
+.rodape-inferior {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    padding-top: 20px;
+
+    border-top: 1px solid #28503f;
+    text-align: center;
+}
+
+.rodape-inferior p {
+    font-size: 11px;
+    color: #a8c0b4;
+}
+
+/* ------------------------------------------------
+  ESPAÇAMENTO DO SIMULADOR PARA A HEADER E FOOTER
+-------------------------------------------------*/
+
+/* --------------------------------------------------------------------------
+   CORES DA IDENTIDADE VISUAL
+   -------------------------------------------------------------------------- */
+:root {                       /* :root = a página inteira, onde ficam as variáveis de cor */
+  --verde: #02925D;           /* "--nome" cria uma variável de cor*/
+  --escuro: #00472A;          /* verde escuro*/
+  --lima: #62C540;            /* verde lima*/
+  --fundo: #F1F6F3;           /* verde clarinho*/
+  --linha: #DCE8E1;           /* cinza claro*/
+  --cinzado: #5E7468;           /* cinza médio*/
+  --amarelo: #F2B705;            /* amarelo*/
+  --vermelho: #D64545;        /* vermelho*/
+}
+
+
+* {
+  box-sizing: border-box;     /* faz a largura já contar o padding e a borda*/
+  margin: 0;                  /* tira a margem padrão do navegador */
+}
+
+
+body {
+  font-family: 'DM Sans', Arial, sans-serif;  /* fonte da identidade visual*/
+  background: var(--fundo);   /* cor de fundo*/
+  color: var(--escuro);       /* cor do texto */
+  margin: 0;                /* margin = espaço entre a borda da tela e o conteúdo */
+  padding: 0;              /* padding = espaço entre a borda e o conteúdo */
+}
+
+/* Limita o topo e a área principal a 1200px e os centraliza na tela. */
+.topo,
+.pagina {
+  max-width: 1200px;          /* largura máxima do elemento */
+  margin: 0 auto;             /* 0 em cima e embaixo; "auto" nas laterais centraliza o elemento */
+}
+
+
+.topo {
+  background: var(--verde);
+  border-radius: 24px;        /* arredonda os cantos */
+  padding: 14px 28px;         /* o primeiro valor é de cima e baixo, o segundo das laterais */
+  display: flex;              /* flex coloca os itens internos lado a lado */
+  justify-content: space-between;  /* distribui os itens um em cada ponta da faixa */
+  align-items: center;        /* centraliza os itens na vertical */
+  color: #fff;                /* branco */
+  margin-bottom: 24px;        /* margem só na parte de baixo */
+}
+
+/* Texto "SmartColeta" do topo. */
+.logo-simulador {
+  font-size: 28px;            /* tamanho da letra */
+  font-weight: 700;           /* espessura da letra*/
+}
+
+/* Parte "Coleta" da logo, em verde lima (é o <span> dentro de .logo). */
+.logo-simulador span {
+  color: var(--lima);
+}
+
+
+/* Divide a página em duas colunas: formulário à esquerda e resultados
+   à direita. */
+.pagina {
+  display: grid;              /* grid organiza os itens em linhas e colunas */
+  grid-template-columns: 380px 1fr;  /* define as colunas: a primeira com 380px e a segunda ocupando o espaço que sobrar (1fr) */
+  gap: 24px;                  /* espaço entre os itens do grid ou do flex */
+}
+
+/*empilha o destaque do ROI, os cartões de KPI e o
+   gráfico de saldo. */
+.direita {
+  display: flex;
+  flex-direction: column;     /* faz os itens do flex ficarem um embaixo do outro*/
+  gap: 24px;
+}
+
+
+/* -
+   CARD (caixa branca).
+   - */
+
+.card {
+  background: #fff;
+  border: 1.5px solid var(--linha);  /* borda: espessura, tipo (solid = linha contínua) e cor */
+  border-radius: 20px;
+  padding: 24px;
+}
+
+/* Título de cada card. */
+h2 {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+/* Subtítulo. */
+.sub {
+  font-size: 13px;
+  color: var(--cinzado);
+  margin-bottom: 8px;
+}
+
+
+/* -
+   FORMULÁRIO "SEUS NÚMEROS" (coluna da esquerda)
+   - */
+
+/* Título de cada campo */
+label {
+  display: block;             /* block faz o elemento ocupar uma linha inteira */
+  font-size: 14px;
+  font-weight: 500;    
+  margin: 14px 0 6px;         /* com três valores: cima, laterais e baixo */
+}
+
+/* Valor atual mostrado à direita do rótulo dos controles deslizantes*/
+.valor {
+  float: right;               /* joga o elemento para o lado direito da linha */
+  color: var(--verde);
+  font-weight: 700;
+}
+
+/* Campos de número e o select */
+input[type=number],
+select {
+  width: 100%;                /* largura; 100% ocupa todo o espaço disponível */
+  padding: 10px 12px;
+  border: 1.5px solid var(--linha);
+  border-radius: 10px;
+  color: var(--escuro);
+  background: #fff;
+}
+
+/* Contorno quando o usuário clica em um campo para digitar. */
+input[type=number]:focus,
+select:focus {             
+  outline: 2px solid var(--lima);  /* contorno por fora da borda */
+}
+
+/* Controles deslizantes ("Redução de custos" e "Horizonte da análise"). */
+input[type=range] {
+  width: 100%;
+  accent-color: var(--verde); /* pinta o botão e a barra do controle*/
+}
+
+/* Linha com os três botões de cenário (5%, 10% e 15%). */
+.cenarios {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* Aparência dos botões de cenário. */
+.cenarios button {
+  flex: 1;                    /* faz cada botão ocupar a mesma parte do espaço, então os três ficam iguais */
+  padding: 10px;
+  border: 1.5px solid var(--verde);
+  background: #fff;
+  color: var(--verde);
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+/* Ao passar o mouse, o botão fica preenchido de verde. */
+.cenarios button:hover {      /* :hover = estado em que o mouse está sobre o elemento */
+  background: var(--verde);
+  color: #fff;
+}
+
+
+/* --------------------------------------------------------------------------
+   DESTAQUE DO ROI
+   -------------------------------------------------------------------------- */
+
+.destaque {
+  background: var(--escuro);
+  color: #fff;
+  border-radius: 20px;
+  padding: 24px 24px 0;       /* sem padding embaixo, para o mascote encostar na base */
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 250px;          /* altura mínima do elemento */
+}
+
+/* Frase acima do número */
+.rotulo {
+  font-size: 15px;
+  opacity: .85;               /* transparência; 1 é opaco e 0 é invisível */
+}
+
+/* Número grande do ROI*/
+.roi {
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--lima);
+  line-height: 1.1;           /* altura da linha de texto, em múltiplos do tamanho da letra */
+  margin: 6px 0 12px;
+}
+
+/* Selo abaixo do ROI ("Retorno rápido").
+   O JS adiciona uma das três classes de cor abaixo. */
+.selo {
+  display: inline-block;      /* inline-block deixa o elemento do tamanho do texto, mas aceita padding e margem */
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Cores do selo conforme o payback*/
+.selo.verde {                 /* .selo.verde*/
+  background: var(--lima);
+  color: var(--escuro);
+}
+.selo.amarelo {
+  background: var(--amarelo);
+  color: var(--escuro);
+}
+.selo.vermelho {
+  background: var(--vermelho);
+  color: #fff;
+}
+
+/* Aviso amarelo que só aparece quando o investimento passa do orçamento*/
+.aviso {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--amarelo);
+  padding-bottom: 24px;       /* padding só na parte de baixo */
+}
+
+
+/* --------------------------------------------------------------------------
+   COLETINHO
+   -------------------------------------------------------------------------- */
+
+/* Coluna à direita do destaque: balão de fala em cima e imagem embaixo. */
+.mascote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;  /* empurra o conteúdo para o final do bloco */
+  width: 240px;
+}
+
+/* Balão branco com a mensagem do mascote (muda conforme o resultado). */
+.balao {
+  background: #fff;
+  color: var(--escuro);
+  border-radius: 16px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  position: relative;         /* permite posicionar elementos internos em relação ao balão */
+}
+
+/* Setinha triangular na base do balão, apontando para o mascote. */
+.balao:after {                /* :after cria um elemento extra logo depois do conteúdo */
+  content: "";                /* conteúdo vazio*/
+  position: absolute;         /* posiciona o elemento por coordenadas dentro do balão */
+  bottom: -8px;               /* distância da borda de baixo; negativo = para fora do balão */
+  left: 50%;                  /* distância da borda da esquerda; 50% = no meio */
+  border: 8px solid transparent;
+  border-top-color: #fff;     /* cor só da borda de cima*/
+  border-bottom: 0;           /* tira a borda de baixo */
+}
+
+/* Tamanho da imagem do mascote. */
+.mascote img {
+  height: 170px;              /* altura do elemento */
+}
+
+
+/* --------------------------------------------------------------------------
+   CARTÕES DE KPI
+   Duas fileiras de 4 cartões: payback, economia, investimento, SmartCoin,
+   diesel, km, CO2 e ganho total.
+   -------------------------------------------------------------------------- */
+
+/* Fileira de 4 cartões do mesmo tamanho. */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* repeat(4, 1fr) = 4 colunas de largura igual */
+  gap: 16px;
+}
+
+/* Caixa branca de cada KPI. */
+.kpi {
+  background: #fff;
+  border: 1.5px solid var(--linha);
+  border-radius: 20px;
+  padding: 18px;
+}
+
+/* Rótulo do KPI no alto do cartão (tag <p>)*/
+.kpi p {
+  font-size: 13px;
+  color: var(--cinzado);
+}
+
+/* Número principal do KPI (tag <b>), em uma linha própria. */
+.kpi b {
+  display: block;
+  font-size: 26px;
+  margin: 6px 0 2px;
+}
+
+/* Unidade ou detalhe no fim do cartão". */
+.kpi span {
+  font-size: 12px;
+  color: var(--cinzado);
+}
+
+
+/* --------------------------------------------------------------------------
+   GRÁFICO "SALDO ACUMULADO ANO A ANO"
+   -------------------------------------------------------------------------- */
+
+/* Linha de um ano, dividida em 3 colunas: nome do ano, barra e valor. */
+.linha {
+  display: grid;
+  grid-template-columns: 60px 1fr 140px;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+/* Trilho cinza da barra: ocupa toda a coluna do meio da linha. */
+.barra {
+  width: 100%;
+  height: 14px;
+  border-radius: 6px;
+  background: var(--linha);
+  overflow: hidden;  /* corta o que passar do trilho, para as pontas internas ficarem arredondadas */
+}
+
+/* Parte preenchida quando o saldo do ano é POSITIVO (classe "pos"), em lima.
+   A largura vem do JavaScript, em porcentagem. */
+.barra .pos {
+  height: 100%;
+  background: var(--lima);
+}
+
+/* Parte preenchida quando o saldo do ano é NEGATIVO (classe "neg"), em
+   vermelho. Significa que o investimento ainda não foi pago. */
+.barra .neg {
+  height: 100%;
+  background: var(--vermelho);
+}
+
+
+/* --------------------------------------------------------------------------
+   NOTA DE RODAPÉ
+   Texto pequeno no fim da página, explicando que os valores são ilustrativos
+   e citando a referência dos 5% a 15% de redução.
+   -------------------------------------------------------------------------- */
+
+.nota {
+  max-width: 1200px;
+  margin: 20px auto 0;
+  font-size: 12px;
+  color: var(--cinzado);
+}
+
+
+/* --------------------------------------------------------------------------
+   RESPONSIVIDADE (telas de até 900px, como tablets e celulares)
+   Ajusta o layout para caber em telas estreitas.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {   /* @media = as regras abaixo só valem quando a tela tem até 900px de largura */
+  .pagina   { grid-template-columns: 1fr; }          /* as duas colunas viram uma só: formulário em cima, resultados embaixo */
+  .kpis     { grid-template-columns: 1fr 1fr; }      /* cartões de KPI passam de 4 para 2 por fileira */
+  .destaque { flex-direction: column; }              /* ROI e mascote ficam um sobre o outro */
+  .mascote  { width: 100%; }                         /* mascote ocupa a largura toda do bloco */
+}
+
+@media (max-width: 900px) {
+    .header {
+        height: auto;
+        padding: 20px 5%;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .conteudo-rodape {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .simulador {
+        padding: 20px 12px 32px;
+    }
+
+    .topo {
+        padding: 16px;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .logo-simulador {
+        font-size: 22px;
+    }
+
+    .kpis {
+        grid-template-columns: 1fr;
+    }
+
+    .conteudo-rodape {
+        grid-template-columns: 1fr;
+    }
+
+    .linha {
+        grid-template-columns: 48px minmax(0, 1fr);
+    }
+
+    .linha b {
+        grid-column: 2;
+    }
+
+    .rodape {
+        padding: 40px 5% 20px;
+    }
+}
