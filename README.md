@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./assets/banner-oficial.png" width="">
+<img src="./assets/banner-readme.png" width="">
 
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 ![Projeto](https://img.shields.io/badge/projeto-acadêmico-blue)
