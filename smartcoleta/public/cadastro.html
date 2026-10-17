@@ -9,11 +9,10 @@
 
     <script src="./js/sessao.js"></script>
 
-        <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="css/style.css" />
   </head>
 
-  <body onload="listar()">
+  <body>
     <div class="wrap">
       <!-- Parte esquerda -->
       <aside class="side">
@@ -30,69 +29,65 @@
         <div class="card">
           <!-- Abas -->
           <div class="tabs">
-
             <a href="login.html">
-            <button
-              class="tab"
-              id="loginTab"          
-            >
-              Entrar
-            </button>
+              <button class="tab" id="loginTab">Entrar</button>
             </a>
 
             <a href="cadastro.html">
-            <button
-              class="tab"
-              id="cadastroTab"            
-            >
-              Criar conta
-            </button>
+              <button class="tab" id="cadastroTab">Criar conta</button>
             </a>
-
           </div>
 
           <section id="cadastro">
             <h2>Criar conta</h2>
             <p class="sub">Cadastre-se para acessar o Smart Coleta.</p>
 
-            <!-- TAG FORM CORRIGIDA AQUI -->
-            <form onsubmit="realizarCadastro(event)">
+            <form onsubmit="return realizarCadastro()">
               <div class="f">
-                <label for="nome">Nome</label>
+                <label for="input_nome">Nome</label>
                 <input
                   type="text"
-                  id="nome"
-                  name="nome"
+                  id="input_nome"
                   placeholder="Digite seu nome"
                   required
                 />
               </div>
 
               <div class="f">
-                <label for="emailCadastro">E-mail</label>
+                <label for="input_emailCadastro">E-mail</label>
                 <input
                   type="email"
-                  id="emailCadastro"
-                  name="email"
+                  id="input_emailCadastro"
                   placeholder="Digite seu e-mail"
                   required
                 />
               </div>
 
               <div class="f">
-                <label for="senhaCadastro">Senha</label>
+                <label for="input_qtdHabitantes">Quantidade de Habitantes</label>
+                <select id="input_qtdHabitantes" name="tipo" required>
+                  <option value="#" disabled selected>Selecione uma opção</option>
+                  <option value="1">Até 10.000</option>
+                  <option value="2">Entre 10.000 e 20.000</option>
+                  <option value="3">Entre 20.000 e 30.000</option>
+                  <option value="4">Entre 30.000 e 40.000</option>
+                  <option value="5">Entre 40.000 e 50.000</option>
+                </select>
+              </div>
+
+              <div class="f">
+                <label for="input_senha_cadastro">Senha</label>
                 <div class="pw">
                   <input
                     type="password"
-                    id="senhaCadastro"
-                    name="senha"
+                    id="input_senha_cadastro"
                     placeholder="Crie uma senha"
                     minlength="6"
                     required
                   />
                   <button
                     type="button"
-                    onclick="mostrarSenha(senhaCadastro, this)"
+                    onclick="mostrarSenha(input_senha_cadastro, this)"
                   >
                     Mostrar
                   </button>
@@ -100,12 +95,17 @@
               </div>
 
               <div class="f">
-                <label for="tipoUsuario">Tipo de usuário</label>
-                <select id="tipoUsuario" name="tipo" required>
-                  <option value="" disabled selected>Selecione o Perfil</option>
-                  <option value="usuario">Usuário</option>
-                  <option value="administrador">Administrador</option>
-                </select>
+                <label for="input_confirmar_senha">Confirmar Senha</label>
+                <div class="pw">
+                  <input
+                    type="password"
+                    id="input_confirmar_senha"
+                    placeholder="Confirme a senha"
+                    minlength="6"
+                    required
+                  />
+                  
+                </div>
               </div>
 
               <button type="submit" class="go">Criar conta</button>
@@ -118,115 +118,72 @@
 </html>
 
 <script>
-  // Array para armazenar empresas cadastradas para validação de código de ativação
-  let listaEmpresasCadastradas = [];
-
-  function cadastrar() {
-    // aguardar();
-
-    //Recupere o valor da nova input pelo nome do id
-    // Agora vá para o método fetch logo abaixo
-    var nomeVar = nome_input.value;
-    var emailVar = email_input.value;
-    var senhaVar = senha_input.value;
-    var confirmacaoSenhaVar = confirmacao_senha_input.value;
-    var codigoVar = codigo_input.value;
-    var idEmpresaVincular;
+  function realizarCadastro() {
+    let nomeVar = input_nome.value;
+    let emailVar = input_emailCadastro.value;
+    let senhaVar = input_senha_cadastro.value;
+    let confirmacaoSenhaVar = input_confirmar_senha.value;
 
     // Verificando se há algum campo em branco
     if (
       nomeVar == "" ||
       emailVar == "" ||
       senhaVar == "" ||
-      confirmacaoSenhaVar == "" ||
-      codigoVar == ""
+      confirmacaoSenhaVar == ""
     ) {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
-
-      finalizarAguardar();
+      alert("Preencha todos os campos!");
       return false;
-    } else {
-      setInterval(sumirMensagem, 5000);
     }
 
-    // Verificando se o código de ativação é de alguma empresa cadastrada
-    for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
-      if (listaEmpresasCadastradas[i].codigo_ativacao == codigoVar) {
-        idEmpresaVincular = listaEmpresasCadastradas[i].id;
-        console.log("Código de ativação válido.");
-        break;
-      } else {
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
-        finalizarAguardar();
-      }
+    // Verificando se a senha e a confirmação de senha são iguais
+    if (senhaVar != confirmacaoSenhaVar) {
+      alert("As senhas não são iguais!");
+      return false;
     }
 
-    // Enviando o valor da nova input
+    // Enviando os dados
     fetch("/usuarios/cadastrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // crie um atributo que recebe o valor recuperado aqui
-        // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
         emailServer: emailVar,
         senhaServer: senhaVar,
-        idEmpresaVincularServer: idEmpresaVincular,
       }),
-    })
+     })
       .then(function (resposta) {
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
-          cardErro.style.display = "block";
-
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+          alert(
+            "Cadastro realizado com sucesso! Redirecionando para tela de Login..."
+          );
 
           setTimeout(() => {
             window.location = "login.html";
-          }, "2000");
-
-          limparFormulario();
-          finalizarAguardar();
+          }, 2000);
         } else {
           throw "Houve um erro ao tentar realizar o cadastro!";
         }
       })
-      .catch(function (resposta) {
+            .catch(function (resposta) {
         console.log(`#ERRO: ${resposta}`);
-        finalizarAguardar();
       });
+  
 
     return false;
   }
 
-  // Listando empresas cadastradas
-  function listar() {
-    fetch("/empresas/listar", {
-      method: "GET",
-    })
-      .then(function (resposta) {
-        resposta.json().then((empresas) => {
-          empresas.forEach((empresa) => {
-            listaEmpresasCadastradas.push(empresa);
-
-            console.log("listaEmpresasCadastradas");
-            console.log(listaEmpresasCadastradas[0].codigo_ativacao);
-          });
-        });
-      })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-      });
-  }
-
-  function sumirMensagem() {
-    cardErro.style.display = "none";
+  // Mostra ou esconde a senha
+  function mostrarSenha(campo, botao) {
+    if (campo.type == "password") {
+      campo.type = "text";
+      botao.innerText = "Ocultar";
+    } else {
+      campo.type = "password";
+      botao.innerText = "Mostrar";
+    }
   }
 </script>
