@@ -52,7 +52,7 @@ body {
   font-family: 'DM Sans', Arial, sans-serif;  /* fonte da identidade visual*/
   background: var(--fundo);   /* cor de fundo*/
   color: var(--escuro);       /* cor do texto */
-  padding: 0px 24px 24px 24px;              /* padding = espaço entre a borda e o conteúdo */
+  padding: 0px;            /* padding = espaço entre a borda e o conteúdo */
 }
 
 /* SECAO INTEIRA DO DASHBOARD */
@@ -580,6 +580,149 @@ body {
 /* final GRAFICO: TEMPO ATENDIMENTO POR BAIRRO*/
 
 
+/* LAYOUT COM BARRA LATERAL */
+.layout {
+	display: flex;
+	min-height: 100vh;
+}
+
+.conteudo {
+	flex: 1;
+	min-width: 0;          /* evita que gráficos/tabela estourem a coluna */
+	padding: 0 24px 24px 24px;
+}
+
+/* BARRA LATERAL */
+.barra-lateral {
+	width: 240px;
+	flex-shrink: 0;
+	position: sticky;      /* fica parada enquanto a página rola */
+	top: 0;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	padding: 24px 16px;
+	background-color: #fff;
+	border-right: 1px solid var(--borda);
+	box-shadow: 6px 0 20px 0 rgba(16, 41, 30, 0.06);
+}
+
+.barra-lateral-logo {
+	display: flex;
+	align-items: center;
+	gap: 0px;
+	padding: 5px;
+}
+
+.barra-lateral-logo-marca {
+	width: 34px;
+	padding: 8px;
+	flex-shrink: 0;
+	/* background-color: var(--verde); */
+	border-radius: 8px;
+}
+
+.barra-lateral-logo-icone {
+	height: 20px;
+	align-content: center;
+	justify-content: center;
+}
+
+.barra-lateral-logo-nome {
+    font-size: 20px;
+    font-weight: 700;
+    color: #01472B;
+    white-space: nowrap;
+	padding: 8px;
+}
+
+.barra-lateral-logo-nome span {
+    color: #1F7A4D;
+}
+
+/* LINKS */
+.barra-lateral-menu {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.barra-link {
+	padding: 12px 14px;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--cinzado);
+	text-decoration: none;
+	border-radius: 10px;
+}
+
+.barra-link:hover {
+	background-color: var(--fundo);
+	color: var(--escuro);
+}
+
+.barra-link-ativo {
+	background-color: rgba(2, 146, 93, 0.12);
+	color: var(--verde);
+	font-weight: 700;
+}
+
+/* BOTÕES (ficam no rodapé da barra) */
+.barra-lateral-botoes {
+	margin-top: auto;      /* empurra para o fim da barra */
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.barra-botao {
+	padding: 12px;
+	font-size: 14px;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.barra-botao-perfil {
+	color: var(--escuro);
+	background-color: transparent;
+	border: 1px solid var(--borda);
+}
+
+.barra-botao-config {
+	color: #fff;
+	background-color: var(--verde);
+	border: 1px solid transparent;
+}
+
+.barra-botao:hover {
+	filter: brightness(0.9);
+}
+
+/* CELULAR / TELA ESTREITA: barra vira faixa no topo */
+@media screen and (max-width: 900px) {
+	.layout {
+		flex-direction: column;
+	}
+
+	.barra-lateral {
+		width: 100%;
+		height: auto;
+		position: static;
+		gap: 16px;
+		border-right: none;
+		border-bottom: 1px solid var(--borda);
+	}
+
+	.barra-lateral-menu {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.barra-lateral-botoes {
+		flex-direction: row;
+	}
+}
 
 
 /** breakpoints (margin / paddings) **/
