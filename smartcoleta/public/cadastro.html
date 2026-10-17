@@ -9,15 +9,22 @@
 
     <script src="./js/sessao.js"></script>
 
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" href="logos/smartcoleta-logo.svg">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/login-cadastro.css" />
+
+    <!--PUXANDO AS FONTES DA API DO GOOGLE-->
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
   </head>
 
   <body>
     <div class="wrap">
       <!-- Parte esquerda -->
       <aside class="side">
-        <img class="brand" src="logo.png" alt="Smart Coleta" />
-        <h1>Smart Coleta</h1>
+        <img class="brand" src="logos/smartcoleta-logo.svg" alt="Smart Coleta" />
+        <h1>SmartColeta</h1>
         <p>
           Sistema inteligente para auxiliar no gerenciamento da coleta e
           monitoramento de resíduos.
@@ -104,6 +111,10 @@
                     minlength="6"
                     required
                   />
+                  <button
+                    type="button"
+                    onclick="mostrarSenha(input_senha_cadastro, this)"
+                  >
                   
                 </div>
               </div>
