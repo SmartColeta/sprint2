@@ -135,7 +135,7 @@ Projeto desenvolvido por estudantes de **Análise e Desenvolvimento de Sistemas
 da São Paulo Tech School (SPTech)** como parte do Projeto de Pesquisa e Inovação.
 
 ###  🔗 Links Interessantes:
-- Documentação do Projeto: https://sl1nk.com/documento-smartcoleta
+- Documentação do Projeto: https://bandteccom-my.sharepoint.com/:w:/g/personal/fernando_msantos_sptech_school/IQA-CaFohiEYRaYle5Kxw7S3AQ9dFuXlgTdPu-Sidfne_4c?e=hAkdRp
 - Trello do Projeto: https://trello.com/b/3E94k3tl/smartcoleta
 
 ---
