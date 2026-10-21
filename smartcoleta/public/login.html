@@ -69,7 +69,7 @@
                     <p class="sub">Entre com seus dados para acessar o sistema.</p>
 
                     <!-- TAG FORM CORRIGIDA AQUI -->
-                    <form onsubmit="realizarLogin(event)">
+                    <form onsubmit="entrar(event)">
 
                         <div class="f">
                             <label for="emailLogin">E-mail</label>
@@ -147,7 +147,7 @@
                     sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
 
                     setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
+                        window.location = "./dashboard/dashboard.html";
                     }, 1000); // apenas para exibir o loading
 
                 });

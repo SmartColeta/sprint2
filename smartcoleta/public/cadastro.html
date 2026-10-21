@@ -63,16 +63,16 @@
               </div>
 
               <div class="f">
-                <label for="input_emailCadastro">E-mail</label>
+                <label for="input_email_cadastro">E-mail</label>
                 <input
                   type="email"
-                  id="input_emailCadastro"
+                  id="input_email_cadastro"
                   placeholder="Digite seu e-mail"
                   required
                 />
               </div>
 
-              <div class="f">
+              <!-- <div class="f"> CAMPO DE INPUT DE HABITANTES (Será utilizado no cadastro)
                 <label for="input_qtdHabitantes">Quantidade de Habitantes</label>
                 <select id="input_qtdHabitantes" name="tipo" required>
                   <option value="#" disabled selected>Selecione uma opção</option>
@@ -82,7 +82,7 @@
                   <option value="4">Entre 30.000 e 40.000</option>
                   <option value="5">Entre 40.000 e 50.000</option>
                 </select>
-              </div>
+              </div> -->
 
               <div class="f">
                 <label for="input_senha_cadastro">Senha</label>
@@ -133,7 +133,7 @@
 <script>
   function realizarCadastro() {
     let nomeVar = input_nome.value;
-    let emailVar = input_emailCadastro.value;
+    let emailVar = input_email_cadastro.value;
     let senhaVar = input_senha_cadastro.value;
     let confirmacaoSenhaVar = input_confirmar_senha.value;
 
