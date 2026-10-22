@@ -47,14 +47,29 @@ dataHoraColeta DATETIME,
 coletaAntes DECIMAL(5,2),
     FOREIGN KEY (fkCompartimentoSensor)
         REFERENCES compartimento(idCompartimento)
+
 );
 
-CREATE TABLE preenchimento (
-sensor_idSensor INT PRIMARY KEY,
-ultima VARCHAR(45),
-    FOREIGN KEY (sensor_idSensor)
-        REFERENCES sensor(idSensor)
+CREATE TABLE prefeitura (
+	idPrefeitura INT PRIMARY KEY AUTO_INCREMENT,
+    nomeFantasia VARCHAR(50),
+    cnpj CHAR(14),
+    qtdHabitantes INT,
+    fkEndereco INT,
+		CONSTRAINT fkPrefeituraEnd FOREIGN KEY (fkEndereco)
+			REFERENCES endereco(idEndereco)
 );
+
+CREATE TABLE endereco (
+	idEndereco INT PRIMARY KEY AUTO_INCREMENT,
+    municipio VARCHAR(50),
+    rua VARCHAR(50),
+    bairro VARCHAR(50),
+    uf CHAR(2),
+    numero VARCHAR(50),
+    cep CHAR(8)
+);
+    
 
 CREATE TABLE usuario (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -93,11 +108,6 @@ INSERT INTO coleta (fkCompartimentoSensor, dataHoraColeta, coletaAntes) VALUES
 (3, '2026-10-13 16:45:00', 96.10),
 (4, '2026-10-13 18:10:00', 82.30);
 
-INSERT INTO preenchimento (sensor_idSensor, ultima) VALUES
-(1, 'Crítico'),
-(2, 'Normal'),
-(3, 'Crítico'),
-(4, 'Atenção');
 
 -- 1. Exibir todos os pontos de coleta cadastrados
 SELECT * FROM ponto_coleta;
@@ -130,14 +140,5 @@ SELECT
 FROM leitura l
 JOIN sensor s ON l.idSensor = s.idSensor;
 
--- 5. Exibir o status atual de preenchimento de cada sensor
-SELECT 
-    s.idSensor,
-    s.numeroSensor,
-    p.ultima AS statusPreenchimento
-FROM preenchimento p
-JOIN sensor s ON p.sensor_idSensor = s.idSensor;
-
-
--- 6. Exibir toda a tabela usuario
+-- 5. Exibir toda a tabela usuario
 SELECT * FROM usuario;
