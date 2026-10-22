@@ -1,6 +1,4 @@
-create database smart_coleta1;
-
-USE smart_coleta1;
+use smartcoleta;
 
 CREATE TABLE ponto_coleta (
 idPonto INT PRIMARY KEY AUTO_INCREMENT,
@@ -141,3 +139,5 @@ FROM preenchimento p
 JOIN sensor s ON p.sensor_idSensor = s.idSensor;
 
 
+-- 6. Exibir toda a tabela usuario
+SELECT * FROM usuario;
