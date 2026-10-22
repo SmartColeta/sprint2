@@ -127,7 +127,7 @@ necessitam de coleta.
 | - |------------|---------|-----------|
 | 1 | Instalar MySQL no servidor de dados da solução (VMLinux) | Introdução a Sistemas Operacionais | `▱▱▱▱▱▱▱▱▱▱ 0%` |
 | 2 | Inserção de dados do Arduino no MySQL (VMLinux) | Introdução a Sistemas Operacionais | `▱▱▱▱▱▱▱▱▱▱ 0%` |
-| 3 | Validar solução técnica + Diagrama da Solução (Validado) | Introdução a Sistemas Operacionais | `▱▱▱▱▱▱▱▱▱▱ 0%` |
+| 3 | Validar solução técnica + Diagrama da Solução (Validado) | Introdução a Sistemas Operacionais | `▰▰▰▰▰▰▰▱▱▱ 70%` |
 
 ## 🎓 Contexto acadêmico
 
