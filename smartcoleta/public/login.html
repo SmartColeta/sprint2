@@ -1,121 +1,244 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartColeta | Entrar</title>
 
-    <title>Login | SmartColeta</title>
+  <!-- FONTE: Inter (Google Fonts). Se preferir outra, troque aqui e em --fonte no CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <script src="./js/sessao.js"></script>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="icon" href="logos/smartcoleta-logo.svg">
 
-    <!-- Importando icone da aba do navegador -->
-    <link rel="icon" href="logos/smartcoleta-logo.svg">
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/login-cadastro.css">
-
-    <!--PUXANDO AS FONTES DA API DO GOOGLE-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
 </head>
 
 <body>
-    <div class="wrap">
 
-        <!-- Parte esquerda -->
-        <aside class="side">
-            <img class="brand" src="logos/isologo-light.svg" alt="Smart Coleta">
-            <h1>SmartColeta</h1>
-            <p>
-                Sistema inteligente para auxiliar no gerenciamento
-                da coleta e monitoramento de resíduos.
-            </p>
-        </aside>
+  <!-- =====================================================
+       BLOCO 1: CABEÇALHO
+       ===================================================== -->
+    <header class="header">
 
-        <!-- Parte direita -->
-        <main class="main">
+        <div class="logo">
+            <img src="logos/smartcoleta-logo.svg" alt="Logo SmartColeta">
 
+            <span class="nome-logo">
+                Smart<span>Coleta</span>
+            </span>
+        </div>
 
-            <div class="card">
+        <nav class="menu">
+            <a href="index.html">Início</a>
+            <a href="solucoes.html">Soluções</a>
+            <a href="simulador_financeiro.html">Simulador Financeiro</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="contato.html">Fale Conosco</a>
+        </nav>
 
-                <!-- Abas -->
-                <div class="tabs">
-                    <a href="login.html">
-                        <button class="tab" id="loginTab">
-                            Entrar
-                        </button>
-                    </a>
+        <div class="botoes-header">
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="cadastro.html" class="btn-cadastro">Cadastre-se</a>
+        </div>
 
-                    <a href="cadastro.html">
-                        <button class="tab" id="cadastroTab">
-                            Criar conta
-                        </button>
-                    </a>
+    </header>
+
+  <!-- =====================================================
+       BLOCO 2: ÁREA PRINCIPAL (2 colunas no desktop)
+       ===================================================== -->
+  <main class="principal">
+
+    <!-- ---------- 2.1 PAINEL ESQUERDO ---------- -->
+    <section class="painel">
+
+      <!-- Etiqueta do topo -->
+      <div class="painel-etiqueta">Inteligência para sua cidade</div>
+
+      <!-- Título principal -->
+      <h1>Sua cidade conectada a uma coleta mais inteligente.</h1>
+
+      <!-- Subtítulo -->
+      <p class="painel-sub">Acesse a SmartColeta e acompanhe os dados que ajudam a transformar a operação do seu município.</p>
+
+      <!-- Lista de benefícios (ícone + texto) -->
+      <ul class="beneficios">
+        <li>
+          <img src="icons/radio-tower.svg" alt="radio-tower">
+          Monitoramento em tempo real
+        </li>
+        <li>
+          <img src="icons/route-1.svg" alt="route">
+          Rotas orientadas pela demanda real
+        </li>
+        <li>
+          <img src="icons/chart-no-axes-combined.svg" alt="chart-no-axes-combined.svg">
+          Mais clareza para a gestão pública
+        </li>
+      </ul>
+    </section>
+
+    <!-- ---------- 2.2 LADO DIREITO: FORMULÁRIO ---------- -->
+    <section class="lado-form">
+      <div class="form-box">
+
+        <!-- Abas Entrar / Criar conta -->
+        <div class="abas" role="tablist">
+          <a href="smartcoleta-login.html" class="aba ativa" role="tab" aria-selected="true">Entrar</a>
+          <a href="cadastro.html" class="aba" role="tab" aria-selected="false">Criar conta</a>
+        </div>
+
+        <!-- Título e descrição -->
+        <h2>Bem-vindo(a) de volta</h2>
+        <p class="form-desc">Entre com seu e-mail e senha para acessar a SmartColeta.</p>
+
+        <!-- Formulário (ajuste o action/method para o seu back-end) -->
+        <form onsubmit="return entrar()">
+
+          <!-- Campo E-mail -->
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="Digite seu e-mail" autocomplete="email" required>
+          </div>
+
+          <!-- Campo Senha + botão mostrar/ocultar -->
+          <div class="campo">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" autocomplete="current-password" required>
+            <button type="button" class="btn-olho" id="btnOlho" aria-label="Mostrar senha">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.7 10.7 0 0 1 12 20C5 20 1 12 1 12a18 18 0 0 1 5.1-5.9M9.9 4.2A10.6 10.6 0 0 1 12 4c7 0 11 8 11 8a18 18 0 0 1-2.2 3.2M1 1l22 22"/></svg>
+            </button>
+          </div>
+
+          <!-- Lembrar de mim / Esqueci minha senha -->
+          <div class="linha-opcoes">
+            <label class="lembrar"><input type="checkbox" name="lembrar"> Lembrar de mim</label>
+            <a href="#" class="link-forte">Esqueci minha senha</a>
+          </div>
+
+          <!-- Botão principal -->
+          <button type="submit" class="btn-entrar">
+            Entrar
+            <img src="icons/arrow-right.svg" alt="arrow-right">
+          </button>
+        </form>
+
+        <!-- Link para criar conta -->
+        <p class="criar-conta">Ainda não tem uma conta? <a href="cadastro.html" class="link-forte">Crie sua conta</a></p>
+
+        <!-- Selo de segurança -->
+        <div class="selo-seguranca">
+          <img src="icons/shield-check.svg" alt="shield-check">
+          Seus dados tratados com segurança e responsabilidade.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================
+       BLOCO 3: RODAPÉ DA PÁGINA
+       ===================================================== -->
+    <footer class="rodape">
+        <div class="conteudo-rodape">
+
+            <div class="rodape-empresa">
+
+                <div class="logo-rodape">
+                    <img src="logos/smartcoleta-logo.svg" alt="Logo SmartColeta">
+
+                    <span>Smart<span>Coleta</span></span>
                 </div>
 
-                <!-- Mensagem -->
-                <div id="mensagem" class="ok" hidden></div>
+                <p>
+                    Tecnologia brasileira para monitoramento e inteligência
+                    na coleta de resíduos de municípios de pequeno porte.
+                </p>
 
-                <!-- LOGIN -->
-                <section id="login">
+                <p class="seguranca">
+                    Dados tratados com segurança e responsabilidade.
+                </p>
 
-                    <div class="alerta_erro">
-                        <div class="card_erro" id="cardErro">
-                            <span id="mensagem_erro"></span>
-                        </div>
-                    </div>
+            </div>
 
-                    <h2>Entrar</h2>
-                    <p class="sub">Entre com seus dados para acessar o sistema.</p>
+            <div class="coluna-rodape">
 
-                    <!-- TAG FORM CORRIGIDA AQUI -->
-                    <form onsubmit="return entrar()">
+                <h3><u>Institucional</u></h3>
 
-                        <div class="f">
-                            <label for="input_email">E-mail</label>
-                            <input type="email" id="input_email" placeholder="Digite seu e-mail" required>
-                        </div>
+                <a href="index.html">Início</a>
+                <a href="solucoes.html">Soluções</a>
+                <a href="sobre.html">Sobre a SmartColeta</a>
+                <a href="simulador_financeiro.html">Simulador Financeiro</a>
+                <a href="contato.html">Fale Conosco</a>
 
-                        <div class="f">
-                            <label for="input_senha">Senha</label>
-                            <div class="pw">
-                                <input type="password" id="input_senha" placeholder="******" required>
-                                <button type="button" onclick="mostrarSenha(input_senha, this)">Mostrar</button>
-                            </div>
-                        </div>
+            </div>
 
-                        <div class="row">
-                            <label>
-                                <input type="checkbox" id="lembrar">
-                                Lembrar de mim
-                            </label>
-                            <a href="#">Esqueci a senha</a>
-                        </div>
+            <div class="coluna-rodape">
 
-                        <!-- BOTÃO ENTRAR (ANIMAÇÃO DE LOADING) -->
-                        <button type="submit" class="go" id="botao_entrar">
-                            <span class="botao-entrar-loading"></span>
-                            <span id="botao-entrar-texto">Entrar</span>
-                        </button>
+                <h3><u>FAQ & Suporte</u></h3>
 
-                    </form>
-                </section>
+                <a href="faq.html">Perguntas Frequentes</a>
+                <a href="contato.html">Central de Ajuda</a>
+                <a href="status.html">Status da Plataforma</a>
+                <a href="privacidade.html">Política de Privacidade</a>
+                <a href="termos.html">Termos de Uso</a>
 
-                <div id="div_aguardar" class="loading-div">
-                    <img src="./assets/loading.gif" id="loading-gif">
+            </div>
+
+            <div class="coluna-rodape contato-rodape">
+
+                <h3><u>Contato</u></h3>
+
+                <a href="mailto:contato@smartcoleta.com.br">
+                    contato@smartcoleta.com.br
+                </a>
+
+                <a href="tel:+551130907420">
+                    (11) 3090-7420
+                </a>
+
+                <div class="redes-sociais">
+
+                    <a href="#" aria-label="LinkedIn">
+                        <img src="icons/linkedin.svg" alt="">
+                    </a>
+
+                    <a href="#" aria-label="Instagram">
+                        <img src="icons/instagram.svg" alt="">
+                    </a>
+
+                    <a href="mailto:contato@smartcoleta.com.br" aria-label="E-mail">
+                        <img src="icons/mail.svg" alt="">
+                    </a>
+
                 </div>
 
-                <div id="div_erros_login"></div>
+            </div>
 
+        </div>
+
+        <div class="rodape-inferior">
+            <p>© 2026 SmartColeta. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+  <!-- =====================================================
+       BLOCO 4: JAVASCRIPT (menu mobile + mostrar senha)
+       ===================================================== -->
 </body>
-
 </html>
-
 <script>
+    // Mostra/oculta a senha
+    const senha = document.getElementById('senha');
+    const btnOlho = document.getElementById('btnOlho');
+    btnOlho.addEventListener('click', () => {
+      const mostrar = senha.type === 'password';
+      senha.type = mostrar ? 'text' : 'password';
+      btnOlho.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
+    });
 
-
+    // Função de envio do formulário
     function entrar() {
         aguardar();
 
@@ -184,34 +307,5 @@
 
     function sumirMensagem() {
         cardErro.style.display = "none"
-    }
-
-    function mostrarSenha(campo, botao) {
-        if (campo.type == "password") {
-            campo.type = "text";
-            botao.innerText = "Ocultar";
-        } else {
-            campo.type = "password";
-            botao.innerText = "Mostrar";
-        }
-    }
-
-    function mostrarErro(texto) {
-        mensagem_erro.innerHTML = texto;
-        cardErro.style.display = "block";
-        setTimeout(sumirMensagem, 5000);
-    }
-
-    // # FUNCTIONS PARA O LOADING DO BOTÃO ENTRAR
-    function aguardarLogin() {
-        botao_entrar.disabled = true;
-        botao_entrar.classList.add("carregando");
-        window["botao-entrar-texto"].innerText = "Entrando...";
-    }
-
-    function finalizarLogin() {
-        botao_entrar.disabled = false;
-        botao_entrar.classList.remove("carregando");
-        window["botao-entrar-texto"].innerText = "Entrar";
     }
 </script>
