@@ -32,17 +32,17 @@
 .contato-logo img {
     width: 48px;
     height: 48px;
-    object-fit: contain;
+    object-fit: contain; /*Imagem dentro do container*/
 }
 
 .contato-logo h1 {
     font-size: 36px;
     font-weight: 700;
-    color: #01472B;
+    color: #01472B;/*"Smart"*/
 }
 
 .contato-logo h1 span {
-    color: #1F7A4D;
+    color: #1F7A4D;/*"Coleta*/
 }
 
 /* =====================================
@@ -86,6 +86,7 @@
     margin-bottom: 25px;
 }
 
+/*"Entre em contato conosco"*/
 .contato-formulario-cabecalho h2 {
     font-size: 28px;
     font-weight: 700;
@@ -94,6 +95,7 @@
     margin-bottom: 8px;
 }
 
+/*"Preencha os dados..."*/
 .contato-formulario-cabecalho p {
     font-size: 13px;
     line-height: 1.6;
@@ -104,13 +106,14 @@
    ORGANIZAÇÃO DOS CAMPOS
 ===================================== */
 
+/*  gap vertical entre os campos*/
 #form-contato {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-/* DUAS COLUNAS */
+/* DUAS COLUNAS , gap horizontal entre os campos*/
 
 .contato-campos-linha {
     display: grid;
@@ -129,12 +132,12 @@
 
     padding: 12px 14px;
 
-    border: 1px solid #DCE7E0;
+    border: 1px solid #e7dcdc;
     border-radius: 8px;
 
     background-color: #FFFFFF;
 
-    transition: border-color 0.3s;
+    transition: border-color 0.3s; /*velocidade de transição ao selecionar a borda*/
 }
 
 /* DESTAQUE AO CLICAR */
@@ -173,7 +176,7 @@
 
 .contato-campo input::placeholder,
 .contato-campo textarea::placeholder {
-    color: #9AA9A0;
+    color: #a5a99a;
 }
 
 /* ALTURA DOS INPUTS */

@@ -58,6 +58,13 @@ ultima VARCHAR(45),
         REFERENCES sensor(idSensor)
 );
 
+CREATE TABLE usuario (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50),
+    email VARCHAR(50),
+    senha VARCHAR(50)
+);
+
 INSERT INTO ponto_coleta (rua, bairro, cidade, latitude, longitude, statuss) VALUES
 ('Rua Haddock Lobo', 'Cerqueira César', 'São Paulo', -23.5562000, -46.6621000, 1),
 ('Av. Paulista', 'Bela Vista', 'São Paulo', -23.5618000, -46.6565000, 1),
