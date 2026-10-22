@@ -189,9 +189,79 @@ a {
     color: #b3401a;
 }
 
+/* LOADING */
+.loading-div {
+  width: 80px;
+  margin: auto;
+  display: none;
+}
+
+.loading-div img {
+  height: 80px;
+  width: 80px;
+}
+
+#div_erros_login {
+  display: none;
+}
+
+/* ALERTA DE ERRO */
+.alerta_erro {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.card_erro {
+  display: none;
+  background-color: #fff;
+  color: black;
+  width: 230px;
+  position: fixed;
+  border-radius: 4px;
+  border: #ED145B 3px solid;
+  padding: 10px;
+  margin-right: 10%;
+}
+
+.card_erro #mensagem_erro {
+  font-weight: 500;
+  font-size: 20px;
+}
+
 /* esconde elementos */
 [hidden] {
     display: none;
+}
+
+/* BOTÃO ENTRAR (ANIMAÇÃO DE LOADING) */
+.go {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.botao-entrar-loading {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+.go.carregando .botao-entrar-loading {
+  display: block;
+}
+
+.go:disabled {
+  opacity: 0.85;
+  cursor: not-allowed;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
 }
 
 /* celular */
