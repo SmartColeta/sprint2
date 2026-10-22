@@ -52,9 +52,10 @@ coletaAntes DECIMAL(5,2),
 
 CREATE TABLE prefeitura (
 	idPrefeitura INT PRIMARY KEY AUTO_INCREMENT,
-    nomeFantasia VARCHAR(50),
+    razaoSocial VARCHAR(50),
     cnpj CHAR(14),
     qtdHabitantes INT,
+    codigoAtivacao CHAR(8) UNIQUE,
     fkEndereco INT,
 		CONSTRAINT fkPrefeituraEnd FOREIGN KEY (fkEndereco)
 			REFERENCES endereco(idEndereco)
@@ -64,12 +65,12 @@ CREATE TABLE endereco (
 	idEndereco INT PRIMARY KEY AUTO_INCREMENT,
     municipio VARCHAR(50),
     rua VARCHAR(50),
+	numero VARCHAR(50),
     bairro VARCHAR(50),
     uf CHAR(2),
-    numero VARCHAR(50),
-    cep CHAR(8)
+    codigoPostal VARCHAR(8),
+    pais VARCHAR(50)
 );
-    
 
 CREATE TABLE usuario (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -108,6 +109,11 @@ INSERT INTO coleta (fkCompartimentoSensor, dataHoraColeta, coletaAntes) VALUES
 (3, '2026-10-13 16:45:00', 96.10),
 (4, '2026-10-13 18:10:00', 82.30);
 
+-- TABELA PREFEITURA INSERTS
+INSERT INTO prefeitura (razaoSocial, cnpj, qtdHabitantes, codigoAtivacao) VALUES
+('MUNICIPIO DE CAMPO NOVO DE RONDONIA', '63762033000199', 9225, 'SMCL0001'),
+('MUNICIPIO DE CEREJEIRAS', '04914925000107', 16975, 'SMCL0002'),
+('MUNICIPIO DE BANDEIRANTES', '03501491000142', 8276, 'SMCL0003');
 
 -- 1. Exibir todos os pontos de coleta cadastrados
 SELECT * FROM ponto_coleta;
