@@ -33,10 +33,10 @@ statuss TINYINT,
 
 CREATE TABLE leitura (
 idLeitura INT PRIMARY KEY AUTO_INCREMENT,
-idSensor INT,
 distanciaCm DECIMAL(6,2),
-dataHora DATETIME,
-    FOREIGN KEY (idSensor)
+dataHora DATETIME DEFAULT,
+fkSensor INT,
+    FOREIGN KEY (fkSensor)
         REFERENCES sensor(idSensor)
 );
 
