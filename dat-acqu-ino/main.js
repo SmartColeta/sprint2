@@ -8,7 +8,7 @@ const SERIAL_BAUD_RATE = 9600;
 const SERVIDOR_PORTA = 3300;
 
 // habilita ou desabilita a inserção de dados no banco de dados
-const HABILITAR_OPERACAO_INSERIR = false;
+const HABILITAR_OPERACAO_INSERIR = true;
 
 // função para comunicação serial
 const serial = async (
@@ -16,12 +16,13 @@ const serial = async (
 ) => {
 
     // conexão com o banco de dados MySQL
+    // Acesso padrão (NÃO ALTERAR DADOS!)
     let poolBancoDados = mysql.createPool(
         {
-            host: 'HOST_DO_BANCO',
-            user: 'USUARIO_DO_BANCO',
-            password: 'SENHA_DO_BANCO',
-            database: 'DATABASE_DO_BANCO',
+            host: 'localhost',
+            user: 'user_insert',
+            password: 'smartcoleta2026',
+            database: 'smartcoleta',
             port: 3306
         }
     ).promise();
@@ -53,14 +54,14 @@ const serial = async (
         const sensorDistancia = parseFloat(valores[0]);
 
         // armazena os valores dos sensores nos arrays correspondentes
-        valoresSensorDistancia.push(sensorDigital);
+        valoresSensorDistancia.push(sensorDistancia);
 
         // insere os dados no banco de dados (se habilitado)
         if (HABILITAR_OPERACAO_INSERIR) {
 
             // este insert irá inserir os dados na tabela "medida"
             await poolBancoDados.execute(
-                'INSERT INTO medida (sensor_analogico, sensor_digital) VALUES (?, ?)',
+                'INSERT INTO leitura (distanciaCm) VALUES (?)',
                 [sensorDistancia]
             );
             console.log("valores inseridos no banco: ", sensorDistancia);
