@@ -95,10 +95,9 @@ necessitam de coleta.
 |:-:|------|----|--------|
 | 1 | Davi Borges Taioque | 01262115 | @daviborges011 (https://github.com/daviborges011) |
 | 2 | Fernando Mateus Santos | 01262001 | @FerKaGe (https://github.com/FerKaGe) |
-| 3 | Leonardo Vieira Linge | 01262109 | @LeonardoVieiraLinge (https://github.com/LeonardoVieiraLinge) |
-| 4 | Marcos Vinicius Miguel Ferreira | 01262089 | @MarcosVMFe (https://github.com/MarcosVMFe) |
-| 5 | Paulo Vinicius Paulino de Araujo | 01262008 | @paulovpa (https://github.com/paulovpa) |
-| 6 | Viviane Meira Marques | 01262064 | @viviane-marques (https://github.com/viviane-marques) |
+| 3 | Marcos Vinicius Miguel Ferreira | 01262089 | @MarcosVMFe (https://github.com/MarcosVMFe) |
+| 4 | Paulo Vinicius Paulino de Araujo | 01262008 | @paulovpa (https://github.com/paulovpa) |
+| 5 | Viviane Meira Marques | 01262064 | @viviane-marques (https://github.com/viviane-marques) |
 
 ---
 
