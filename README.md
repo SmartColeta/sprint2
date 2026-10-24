@@ -124,8 +124,8 @@ necessitam de coleta.
 | 1 | Teste com Sensor do Projeto + Gráficos | Arquitetura Computacional | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | 2 | Usar API Local/Sensor | Arquitetura Computacional | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | - |------------|---------|-----------|
-| 1 | Instalar MySQL no servidor de dados da solução (VMLinux) | Introdução a Sistemas Operacionais | `▱▱▱▱▱▱▱▱▱▱ 0%` |
-| 2 | Inserção de dados do Arduino no MySQL (VMLinux) | Introdução a Sistemas Operacionais | `▱▱▱▱▱▱▱▱▱▱ 0%` |
+| 1 | Instalar MySQL no servidor de dados da solução (VMLinux) | Introdução a Sistemas Operacionais | `▰▰▰▰▰▰▰▰▰▰ 100%` |
+| 2 | Inserção de dados do Arduino no MySQL (VMLinux) | Introdução a Sistemas Operacionais | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 | 3 | Validar solução técnica + Diagrama da Solução (Validado) | Introdução a Sistemas Operacionais | `▰▰▰▰▰▰▰▰▰▰ 100%` |
 
 ## 🎓 Contexto acadêmico
