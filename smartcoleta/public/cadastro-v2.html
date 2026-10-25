@@ -115,7 +115,7 @@
           <div class="campo" id="campoSenha">
             <label for="senha">Senha</label>
             <input type="password" id="input_senha" name="senha" placeholder="Crie uma senha" minlength="8" required>
-            <button type="button" class="btn-olho" data-alvo="senha" aria-label="Mostrar senha">
+            <button type="button" class="btn-olho" data-alvo="input_senha" aria-label="Mostrar senha">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.7 10.7 0 0 1 12 20C5 20 1 12 1 12a18 18 0 0 1 5.1-5.9M9.9 4.2A10.6 10.6 0 0 1 12 4c7 0 11 8 11 8a18 18 0 0 1-2.2 3.2M1 1l22 22"/></svg>
             </button>
           </div>
@@ -125,7 +125,7 @@
           <div class="campo" id="campoConfirmar">
             <label for="confirmar">Confirmar senha</label>
             <input type="password" id="input_confirmar" name="confirmar" placeholder="Repita a senha" autocomplete="new-password" required>
-            <button type="button" class="btn-olho" data-alvo="confirmar" aria-label="Mostrar senha">
+            <button type="button" class="btn-olho" data-alvo="input_confirmar" aria-label="Mostrar senha">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.7 10.7 0 0 1 12 20C5 20 1 12 1 12a18 18 0 0 1 5.1-5.9M9.9 4.2A10.6 10.6 0 0 1 12 4c7 0 11 8 11 8a18 18 0 0 1-2.2 3.2M1 1l22 22"/></svg>
             </button>
           </div>
@@ -227,7 +227,7 @@
     let confirmarSenhaVar = input_confirmar.value;
     let codigoAcessoVar = input_codigo_acesso.value;
 
-    const form = document.getElementById('formCadastro');
+  const form = document.getElementById('formCadastro');
     const msgErro = document.getElementById('mensagemErro');
     const btnCadastrar = document.getElementById('btnCadastrar');
     let timerErro;
@@ -251,7 +251,7 @@
       msgErro.classList.add('visivel');
 
       clearTimeout(timerErro);
-      timerErro = setTimeout(limparErro, 5000); // some sozinha depois de 5s
+      timerErro = setTimeout(limparErro, 5000);
     }
 
     function limparErro() {
@@ -264,33 +264,60 @@
       evento.preventDefault();
       limparErro();
 
-      const nome = document.getElementById('nome').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const senha = document.getElementById('senha').value;
+      // Os valores agora são lidos NO MOMENTO DO ENVIO (antes eram lidos ao carregar a página, vazios)
+      const nome = document.getElementById('input_nome').value.trim();
+      const email = document.getElementById('input_email').value.trim();
+      const senha = document.getElementById('input_senha').value;
       const confirmar = document.getElementById('input_confirmar').value;
 
-      // Validações (edite as mensagens aqui)
       if (nome.length < 3) return mostrarErro('Informe o nome da sua prefeitura. (ex: Prefeitura de São Paulo)', 'campoNome');
       if (!email.includes('@') || !email.includes('.')) return mostrarErro('Informe um e-mail válido.', 'campoEmail');
+
+    //Validação de senha forte
+      let temMaiuscula = false;
+      let temMinuscula = false;
+      let temNumero = false;
+      let temEspecial = false;
+      const especiais = "!@#$%&*()-_=+[]{};:,.<>?/|~";
+
+      // Olha cada caractere da senha, um por um
+      for (let i = 0; i < senha.length; i++) {
+        const letra = senha[i];
+
+        if (letra >= 'A' && letra <= 'Z') {
+          temMaiuscula = true;
+        } else if (letra >= 'a' && letra <= 'z') {
+          temMinuscula = true;
+        } else if (letra >= '0' && letra <= '9') {
+          temNumero = true;
+        } else if (especiais.includes(letra)) {
+          temEspecial = true;
+        }
+      }
+
       if (senha.length < 8) return mostrarErro('A senha precisa ter pelo menos 8 caracteres.', 'campoSenha');
+      if (!temMaiuscula) return mostrarErro('A senha precisa ter pelo menos uma letra maiúscula.', 'campoSenha');
+      if (!temMinuscula) return mostrarErro('A senha precisa ter pelo menos uma letra minúscula.', 'campoSenha');
+      if (!temNumero) return mostrarErro('A senha precisa ter pelo menos um número.', 'campoSenha');
+      if (!temEspecial) return mostrarErro('A senha precisa ter pelo menos um caractere especial (!, @, #, $...).', 'campoSenha');
+      
+//
       if (senha !== confirmar) return mostrarErro('As senhas não conferem.', 'campoConfirmar');
 
-      btnCadastrar.disabled = true; // evita clique duplo no botão de cadastro
+      btnCadastrar.disabled = true;
 
-      // AJUSTE: troque a rota e os nomes dos campos conforme o seu back-end
       fetch('/usuarios/cadastrar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nomeServer: nomeVar,
-          emailServer: emailVar,
-          senhaServer: senhaVar,
-          codigoAcessoServer: codigoAcessoVar
+          nomeServer: nome,
+          emailServer: email,
+          senhaServer: senha
+          // codigoAcessoServer removido
         })
       })
         .then(function (resposta) {
           if (resposta.ok) {
-            // Cadastro feito: leva para o login
             window.location = 'login.html';
           } else {
             resposta.text().then(function (texto) {
