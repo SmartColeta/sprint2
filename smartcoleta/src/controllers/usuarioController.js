@@ -58,13 +58,37 @@ function autenticar(req, res) {
   }
 }
 
+//Função que confere se a senha é forte
+function senhaForte(senha) {
+  var temMaiuscula = false;
+  var temMinuscula = false;
+  var temNumero = false;
+  var temEspecial = false;
+  var especiais = "!@#$%&*()-_=+[]{};:,.<>?/|~";
+
+  for (var i = 0; i < senha.length; i++) {
+    var letra = senha[i];
+
+    if (letra >= 'A' && letra <= 'Z') {
+      temMaiuscula = true;
+    } else if (letra >= 'a' && letra <= 'z') {
+      temMinuscula = true;
+    } else if (letra >= '0' && letra <= '9') {
+      temNumero = true;
+    } else if (especiais.includes(letra)) {
+      temEspecial = true;
+    }
+  }
+
+  return senha.length >= 8 && temMaiuscula && temMinuscula && temNumero && temEspecial;
+}
+
 function cadastrar(req, res) {
   // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
   var nome = req.body.nomeServer;
   var email = req.body.emailServer;
   var senha = req.body.senhaServer;
-  var codigoAcesso = req.body.codigoAcessoServer;
-  // var fkEmpresa = req.body.idEmpresaVincularServer; // VALIDAÇÃO DO CÓDIGO DO CLIENTE
+  // codigoAcesso removido
 
   // Faça as validações dos valores
   if (nome == undefined) {
@@ -73,15 +97,13 @@ function cadastrar(req, res) {
     res.status(400).send("Seu email está undefined!");
   } else if (senha == undefined) {
     res.status(400).send("Sua senha está undefined!");
-  } else if (codigoAcesso == undefined){
-    res.status(400).send("Seu código de acesso está inválido")
-    // } VALIDAÇÃO DO CÓDIGO DO CLIENTE =
-    //    else if (fkEmpresa == undefined) {
-    //     res.status(400).send("Sua empresa a vincular está undefined!");
+  } else if (!senhaForte(senha)) {
+    // NOVO: validação de senha forte
+    res.status(400).send("A senha deve ter no mínimo 8 caracteres, com letras maiúsculas e minúsculas, números e caracteres especiais.");
   } else {
     // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
     usuarioModel
-      .cadastrar(nome, email, senha, codigoAcesso)
+      .cadastrar(nome, email, senha)
       .then(function (resultado) {
         res.json(resultado);
       })
