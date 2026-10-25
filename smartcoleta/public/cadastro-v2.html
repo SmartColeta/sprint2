@@ -96,6 +96,9 @@
         <!-- Mensagem de erro do formulário (aparece via JavaScript) -->
         <div class="msg-erro" id="mensagemErro" role="alert"></div>
 
+         <!-- Formulário -->
+        <form id="formCadastro">
+
 
           <!-- Campo Nome completo -->
           <div class="campo" id="campoNome">
@@ -219,12 +222,6 @@
        ===================================================== -->
   <script> 
 
-    let nomeVar = input_nome.value;
-    let emailVar = input_email.value;
-    let senhaVar = input_senha.value;
-    let confirmarSenhaVar = input_confirmar.value;
-    let codigoAcessoVar = input_codigo_acesso.value;
-
   const form = document.getElementById('formCadastro');
     const msgErro = document.getElementById('mensagemErro');
     const btnCadastrar = document.getElementById('btnCadastrar');
@@ -255,12 +252,16 @@
     function limparErro() {
       msgErro.classList.remove('visivel');
       document.querySelectorAll('.campo.invalido').forEach(function (c) { c.classList.remove('invalido'); });
+
+      
     }
 
     // ---- 4.3 Envio do formulário ----
     form.addEventListener('submit', function (evento) {
       evento.preventDefault();
       limparErro();
+
+ 
 
       // Os valores agora são lidos NO MOMENTO DO ENVIO (antes eram lidos ao carregar a página, vazios)
       const nome = document.getElementById('input_nome').value.trim();
