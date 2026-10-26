@@ -16,7 +16,6 @@ const serial = async (
 ) => {
 
     // conexão com o banco de dados MySQL
-    // Acesso padrão (NÃO ALTERAR DADOS!)
     let poolBancoDados = mysql.createPool(
         {
             host: 'localhost',

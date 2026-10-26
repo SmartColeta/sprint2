@@ -8,128 +8,110 @@
 	 4. Gráficos de Indicadores
 	 5. Histórico de Registros
 
+   COMO A RESPONSIVIDADE FUNCIONA
+   - O <main class="conteudo"> é um "container": as @container queries no fim
+     do arquivo olham a LARGURA DO CONTEÚDO (sem a barra lateral), e não a
+     largura da janela. Assim o layout se ajusta igual no celular, no notebook,
+     no desktop e quando o usuário aplica zoom.
+   - Nada tem largura fixa grande: grids usam fr/minmax e textos quebram linha.
    ========================================================================== */
 
 
 /* --------------------------------------------------------------------------
    CORES DA IDENTIDADE VISUAL
    -------------------------------------------------------------------------- */
-:root {                       /* :root = a página inteira, onde ficam as variáveis de cor */
-  --verde: #02925D;           /* "--nome" cria uma variável de cor*/
-  --escuro: #00472A;          /* verde escuro*/
-  --lima: #62C540;            /* verde lima*/
-  --fundo: #F1F6F3;           /* verde clarinho*/
-  --borda: #DCE8E1;           /* cinza claro*/
-  --cinzado: #5E7468;           /* cinza médio*/
-  --amarelo: #F2B705;            /* amarelo*/
-  --vermelho: #D64545;        /* vermelho*/
-  --margem-peq: 16px;
-  --margem-med: 32px;
-}
+:root {
+	--verde: #02925D;     /* verde principal */
+	--escuro: #00472A;    /* verde escuro */
+	--lima: #62C540;      /* verde lima */
+	--fundo: #F1F6F3;     /* verde clarinho (fundo da página) */
+	--borda: #DCE8E1;     /* cinza claro (bordas) */
+	--cinzado: #5E7468;   /* cinza médio (textos secundários) */
+	--amarelo: #F2B705; /* variável reutilizada no arquivo inteiro */
+	--vermelho: #D64545; /* variável reutilizada no arquivo inteiro */
 
-/* interpolação de fonte fluida (usada por --fonte-tam-min / --fonte-tam-max) */
-* {
-	--tela-tamanho-min: 430;
-	--tela-tamanho-max: 1440;
-	--interpolate-diff: calc(var(--fonte-tam-max) - var(--fonte-tam-min));
-	--interpolate: clamp(calc(var(--fonte-tam-min) * 1px), calc((var(--fonte-tam-min) * 1px) + var(--interpolate-diff) * ((100vw - calc(var(--tela-tamanho-min) * 1px)) / (var(--tela-tamanho-max) - var(--tela-tamanho-min)))), calc(var(--fonte-tam-max) * 1px));
+	/* espaçamentos proporcionais: crescem com a tela, mas com mínimo e máximo */
+	--espaco: clamp(16px, 2vw, 24px);         /* espaço entre os cards */
+	--card-padding: clamp(16px, 2vw, 26px);   /* espaço interno dos cards */
+	--raio: 20px; /* variável reutilizada no arquivo inteiro */
 }
 
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
+	box-sizing: border-box; /* a largura inclui padding e borda (facilita o cálculo de tamanho) */
 }
 
 h1,
 h2,
 p {
-	margin: 0;
-	padding: 0; /* padding = espaço entre a borda e o conteúdo */
+	margin: 0; /* remove o espaço externo */
+	padding: 0; /* remove o espaço interno */
 }
 
 body {
-  font-family: 'DM Sans', Arial, sans-serif;  /* fonte da identidade visual*/
-  background: var(--fundo);   /* cor de fundo*/
-  color: var(--escuro);       /* cor do texto */
-  padding: 0px;            /* padding = espaço entre a borda e o conteúdo */
+	font-family: 'DM Sans', Arial, sans-serif; /* fonte da identidade visual (as outras são reserva) */
+	background: var(--fundo); /* cor de fundo da página (usa a variável --fundo) */
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
 }
 
 /* SECAO INTEIRA DO DASHBOARD */
-.secao { 
-	max-width: 1200px; /* largura máxima do elemento */
+.painel {
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+	gap: var(--espaco); /* espaço entre os itens do grid ou do flex (usa a variável --espaco) */
+	width: 100%; /* largura; 100% ocupa todo o espaço disponível */
+	max-width: 1320px; /* largura máxima (1320px) */
+	margin: 0 auto; /* centraliza o elemento na horizontal */
+	padding: var(--espaco) 0; /* padding = espaço entre a borda e o conteúdo (--espaco 0) */
 }
 
 /* CARD = CADA BLOCO DA DASHBOARD */
 .card {
-	display: flex; /* flex coloca os itens internos lado a lado */ 
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro*/
-	min-height: 310px;
-	background-color: #fff;
-	padding: 22px 26.5px 24px 26.5px; /* padding = espaço entre a borda e o conteúdo - ordem: cima  direita baixo esquerda */
-	border: 1.5px solid var(--borda);
-	border-radius: 20px; /* arredonda os cantos */
-}
-
-/* PAINEL DE NOTIFICACAO */
-
-.painel { 
-	display: flex; /* flex coloca os itens internos lado a lado */  
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro*/
-	gap: 24px; /* espaço entre os itens do grid ou do flex */
-	margin: 20px 350px 20px 350px;
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+	min-width: 0; /* permite o elemento encolher abaixo do tamanho do conteúdo (evita vazar) — deixa o card encolher dentro do grid */
+	background-color: #fff; /* cor de fundo (#fff) */
+	padding: var(--card-padding); /* padding = espaço entre a borda e o conteúdo (--card-padding) */
+	border: 1.5px solid var(--borda); /* borda: espessura, estilo e cor (1.5px solid --borda) */
+	border-radius: var(--raio); /* arredonda os cantos (usa a variável --raio) */
 }
 
 /* BANNER = CONTEUDO DO PAINEL NOTIFICAÇÃO */
-
 .banner-alerta {
-	position: relative;
-	margin-top: 22px;
-	min-height: 84px;
-	display: flex; /* flex coloca os itens internos lado a lado */ 
+	position: relative; /* serve de referência para elementos com position absolute dentro dele */
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
 	align-items: center; /* centraliza os itens na vertical */
-	justify-content: space-between; /* distribui os itens um em cada ponta da faixa */
-	gap: 24px; /* espaço entre os itens do grid ou do flex */
-	color: #fff;
-	background-color: var(--escuro);
-	padding: 0 172px 0 32px; /* padding = espaço entre a borda e o conteúdo - ordem: cima  direita baixo esquerda */
-	border-radius: 24px; /* arredonda os cantos */
-}
-
-.banner-alerta-conteudo {
-	padding-bottom: 3px;
+	justify-content: space-between; /* distribui os itens um em cada ponta */
+	gap: 16px 24px; /* espaço entre os itens do grid ou do flex (vertical 16px, horizontal 24px) */
+	color: #fff; /* cor do texto (#fff) */
+	background-color: var(--escuro); /* cor de fundo (usa a variável --escuro) */
+	padding: 20px clamp(20px, 3vw, 32px); /* padding = espaço entre a borda e o conteúdo (vertical 20px, lateral fluido) */
+	border-radius: 24px; /* arredonda os cantos (24px) */
 }
 
 .banner-alerta-titulo {
-	--fonte-tam-min: 17;
-	--fonte-tam-max: 24;
-	font-size: clamp(17px, 0.9rem + 1vw, 24px);
-	font-weight: 700; /* espessura da letra*/
-	line-height: 1.2;
-	text-align: left;
+	font-size: clamp(17px, 0.9rem + 1vw, 24px); /* tamanho da letra (tamanho fluido: mínimo 17px, máximo 24px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	line-height: 1.2; /* altura da linha do texto (1.2x o tamanho da letra) */
 }
 
 .banner-alerta-texto {
-	margin-top: 8px;
-	color: var(--lima);
-	font-size: 15px;
-	font-weight: 400; /* espessura da letra*/
-	text-align: left;
+	margin-top: 8px; /* espaço acima do elemento (8px) */
+	color: var(--lima); /* cor do texto (usa a variável --lima) */
+	font-size: 15px; /* tamanho da letra (15px) */
 }
 
 .banner-alerta-link {
-	margin-top: 2px;
-	width: 206px;
-	height: 38px;
-	display: grid;
-	place-items: center;
-	flex-shrink: 0;
-	color: var(--escuro);
-	font-size: 15px;
-	font-weight: 700; /* espessura da letra*/
-	text-decoration: none;
-	background-color: var(--lima);
-	border-radius: 19px; /* arredonda os cantos */
+	padding: 10px 24px; /* padding = espaço entre a borda e o conteúdo (10px 24px) */
+	flex-shrink: 0; /* impede o elemento de encolher quando falta espaço */
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-size: 15px; /* tamanho da letra (15px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	text-decoration: none; /* remove o sublinhado do link */
+	background-color: var(--lima); /* cor de fundo (usa a variável --lima) */
+	border-radius: 999px; /* cantos totalmente arredondados (formato de pílula) */
 }
 
 
@@ -137,73 +119,69 @@ body {
 /* INDICADORES */
 
 .indicadores {
-	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr)); /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel, repeat = valor igual para ambos */
-	gap: 24px; /* espaço entre os itens do grid ou do flex */
+	display: grid; /* grid organiza os itens internos em linhas e colunas */
+	grid-template-columns: repeat(4, minmax(0, 1fr)); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho — 4 colunas iguais; muda na seção 7 */
+	gap: var(--espaco); /* espaço entre os itens do grid ou do flex (usa a variável --espaco) */
 }
 
 .indicador {
-	min-height: 130px;
-	display: flex; /* flex coloca os itens internos lado a lado */ 
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro*/
-	color: var(--cinzado);
-	background-color: #fff;
-	padding: 17px 22.5px 11px 22.5px; /* padding = espaço entre a borda e o conteúdo - ordem: cima  direita baixo esquerda */
-	border: 1.5px solid var(--borda);
-	border-radius: 20px; /* arredonda os cantos */
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+	gap: 10px; /* espaço entre os itens do grid ou do flex (10px) */
+	min-width: 0; /* permite o elemento encolher abaixo do tamanho do conteúdo (evita vazar) */
+	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
+	background-color: #fff; /* cor de fundo (#fff) */
+	padding: var(--card-padding); /* padding = espaço entre a borda e o conteúdo (--card-padding) */
+	border: 1.5px solid var(--borda); /* borda: espessura, estilo e cor (1.5px solid --borda) */
+	border-radius: var(--raio); /* arredonda os cantos (usa a variável --raio) */
 }
 
 .indicador-titulo {
-	font-size: 15px;
-	font-weight: 500; /* espessura da letra*/
-	line-height: 19px;
-	text-align: left;
+	font-size: 15px; /* tamanho da letra (15px) */
+	font-weight: 500; /* espessura da letra (média) */
+	line-height: 1.3; /* altura da linha do texto (1.3x o tamanho da letra) */
 }
 
 .indicador-linha {
-	margin-top: 13px;
-	display: flex; /* flex coloca os itens internos lado a lado */ 
-	align-items: flex-start;
-	justify-content: space-between; /* distribui os itens um em cada ponta da faixa */
-	gap: 12px; /* espaço entre os itens do grid ou do flex */
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo — se faltar espaço, o selo desce em vez de vazar do card */
+	align-items: center; /* centraliza os itens na vertical */
+	gap: 8px 12px; /* espaço entre os itens do grid ou do flex (vertical 8px, horizontal 12px) */
 }
 
 .indicador-dado {
-	color: var(--escuro);
-	font-size: 46px;
-	font-weight: 700; /* espessura da letra*/
-	line-height: 46px;
-	text-align: left;
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-size: clamp(30px, 3cqi, 44px); /* tamanho da letra fluido: mínimo 30px, máximo 44px — cqi = % da largura do conteúdo */
+	font-weight: 700; /* espessura da letra (negrito) */
+	line-height: 1; /* altura da linha do texto (1x o tamanho da letra) */
+	white-space: nowrap; /* impede o texto de quebrar linha — "18 h" nunca quebra em duas linhas */
 }
 
 .indicador-status {
-	margin-top: 8px;
-	width: 118px;
-	height: 28px;
-	display: grid;
-	place-items: center;
-	flex-shrink: 0;
-	font-size: 13px;
-	font-weight: 700; /* espessura da letra*/
-	border-radius: 14px; /* arredonda os cantos */
+	display: inline-flex; /* flex que ocupa só o tamanho do conteúdo, como um texto */
+	align-items: center; /* centraliza os itens na vertical */
+	padding: 5px 12px; /* padding = espaço entre a borda e o conteúdo (5px 12px) */
+	font-size: 13px; /* tamanho da letra (13px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	line-height: 1.2; /* altura da linha do texto (1.2x o tamanho da letra) */
+	white-space: nowrap; /* impede o texto de quebrar linha */
+	border-radius: 999px; /* cantos totalmente arredondados (formato de pílula) */
 }
 
 .indicador-status-critico {
-	color: var(--vermelho);
-	background-color: rgba(214, 69, 69, 0.14);
+	color: var(--vermelho); /* cor do texto (usa a variável --vermelho) */
+	background-color: rgba(214, 69, 69, 0.14); /* cor de fundo (cor com transparência) */
 }
 
 .indicador-status-normal {
-	color: var(--verde);
-	background-color: rgba(2, 146, 93, 0.14);
+	color: var(--verde); /* cor do texto (usa a variável --verde) */
+	background-color: rgba(2, 146, 93, 0.14); /* cor de fundo (cor com transparência) */
 }
 
 .indicador-descricao {
-	margin-top: 6px;
-	font-size: 12.5px;
-	font-weight: 400; /* espessura da letra*/
-	line-height: 16px;
-	text-align: left;
+	margin-top: auto; /* empurra o elemento para o final (baixo) do flex — alinha as descrições no rodapé dos 4 cards */
+	font-size: 13px; /* tamanho da letra (13px) */
+	line-height: 1.35; /* altura da linha do texto (1.35x o tamanho da letra) */
 }
 /* end indicadores*/
 
@@ -214,24 +192,23 @@ body {
 .card-patamares-titulo,
 .card-ocupacao-titulo,
 .card-ranking-titulo,
-.card-atendimento-titulo {
-	color: var(--escuro);
-	font-size: 20px;
-	font-weight: 700; /* espessura da letra*/
-	line-height: 24px;
-	text-align: left;
+.card-atendimento-titulo,
+.historico-titulo {
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-size: clamp(18px, 1.4vw, 20px); /* tamanho da letra (tamanho fluido: mínimo 18px, máximo 20px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	line-height: 1.25; /* altura da linha do texto (1.25x o tamanho da letra) */
 }
 
 .card-patamares-subtitulo,
 .card-ocupacao-subtitulo,
 .card-ranking-subtitulo,
-.card-atendimento-subtitulo {
-	margin-top: 2px;
-	color: var(--cinzado);
-	font-size: 13px;
-	font-weight: 400; /* espessura da letra*/
-	line-height: 17px;
-	text-align: left;
+.card-atendimento-subtitulo,
+.historico-descricao {
+	margin-top: 4px; /* espaço acima do elemento (4px) */
+	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
+	font-size: 13px; /* tamanho da letra (13px) */
+	line-height: 1.35; /* altura da linha do texto (1.35x o tamanho da letra) */
 }
 /* end card (titulos e subtitulos)*/
 
@@ -240,151 +217,130 @@ body {
 /* BLOCO: COMPARTIMENTO POR PATAMAR */
 
 .patamar-div {
-	display: grid;
-	grid-template-columns: minmax(0, 420fr) minmax(0, 932fr); /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-	gap: 24px; /* espaço entre os itens do grid ou do flex */
+	display: grid; /* grid organiza os itens internos em linhas e colunas */
+	grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
+	gap: var(--espaco); /* espaço entre os itens do grid ou do flex (usa a variável --espaco) */
 }
 
 .patamares {
-	margin-right: -4px;
-	margin-top: 7px;
-	padding: 10px 50px 10px 10px; /* padding = espaço entre a borda e o conteúdo - ordem: cima  direita baixo esquerda */
-	display: flex; /* flex coloca os itens internos lado a lado */ 
-	;
+	flex: 1; /* ocupa todo o espaço que sobrar no flex */
+	display: flex; /* flex coloca os itens internos lado a lado */
 	align-items: center; /* centraliza os itens na vertical */
-	justify-content: space-between; /* distribui os itens um em cada ponta da faixa */
-	gap: 16px; /* espaço entre os itens do grid ou do flex */
-	flex-grow: 1;
-
+	justify-content: center; /* centraliza os itens na horizontal */
+	gap: 24px 32px; /* espaço entre os itens do grid ou do flex (vertical 24px, horizontal 32px) */
+	margin-top: 20px; /* espaço acima do elemento (20px) */
 }
 
 .patamares-grafico {
-	position: relative;
-	width: 174px;
-	height: 174px;
-	flex-shrink: 0;
+	position: relative; /* serve de referência para elementos com position absolute dentro dele */
+	width: clamp(150px, 40%, 180px); /* largura (tamanho fluido: mínimo 150px, máximo 180px) */
+	aspect-ratio: 1; /* proporção 1:1, mantém o elemento quadrado — sempre um círculo perfeito */
+	flex-shrink: 0; /* impede o elemento de encolher quando falta espaço */
 }
 
 .patamares-grafico-canvas {
 	display: block; /* block faz o elemento ocupar uma linha inteira */
-	width: 100% !important;
-	height: 100% !important;
+	width: 100% !important; /* largura; 100% ocupa todo o espaço disponível (!important = tem prioridade sobre outras regras) */
+	height: 100% !important; /* altura igual à do elemento pai (!important = tem prioridade sobre outras regras) */
 }
 
 .patamares-grafico-centro {
-	position: absolute; /* posiciona o elemento por coordenadas dentro do balão */
-	inset: 0;
-	padding-top: 6px;
-	display: flex; /* flex coloca os itens internos lado a lado */ 
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro*/
+	position: absolute; /* posiciona o elemento por coordenadas dentro do pai (relative) */
+	inset: 0; /* estica o elemento para cobrir todo o pai (top, right, bottom e left = 0) */
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
 	align-items: center; /* centraliza os itens na vertical */
-	justify-content: center; /* deixa o conteudo centralizado na horizontal */
-	gap: 2px; /* espaço entre os itens do grid ou do flex */
+	justify-content: center; /* centraliza os itens na horizontal */
+	pointer-events: none; /* o elemento ignora cliques e o mouse (passa para o que está atrás) — não atrapalha o tooltip do gráfico */
 }
 
 .patamares-grafico-total {
-	color: var(--escuro);
-	font-size: 34px;
-	font-weight: 700; /* espessura da letra*/
-	line-height: 1;
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-size: 34px; /* tamanho da letra (34px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	line-height: 1; /* altura da linha do texto (1x o tamanho da letra) */
 }
 
 .patamares-grafico-unidade {
-	color: var(--cinzado);
-	font-size: 13px;
-	font-weight: 400; /* espessura da letra*/
+	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
+	font-size: 12px; /* tamanho da letra (12px) */
 }
 
 .patamares-lista {
-	margin-top: 28px;
-	width: 173px;
-	display: flex; /* flex coloca os itens internos lado a lado */ 
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro*/
-	gap: 16px; /* espaço entre os itens do grid ou do flex */
-	flex-shrink: 0;
+	flex: 1 1 160px; /* cresce e encolhe, com tamanho base de 160px */
+	max-width: 220px; /* largura máxima (220px) */
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+	gap: 16px; /* espaço entre os itens do grid ou do flex (16px) */
 }
 
 .patamar {
-	display: grid;
-	grid-template-columns: 14px 1fr auto; /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-	column-gap: 9px;
-	align-items: start;
+	display: grid; /* grid organiza os itens internos em linhas e colunas */
+	grid-template-columns: 14px 1fr auto; /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
+	column-gap: 10px; /* espaço horizontal entre as colunas (10px) */
+	align-items: center; /* centraliza os itens na vertical */
 }
 
 .patamar-marcador {
-	margin-top: 3px;
-	width: 14px;
-	height: 14px;
-	grid-row: 1;
-	border-radius: 50%; /* arredonda os cantos */
+	width: 14px; /* largura (14px) */
+	height: 14px; /* altura (14px) */
+	border-radius: 50%; /* deixa o elemento redondo */
 }
 
 .patamar-normal .patamar-marcador {
-	background-color: var(--lima);
+	background-color: var(--lima); /* cor de fundo (usa a variável --lima) */
 }
 
 .patamar-atencao .patamar-marcador {
-	background-color: var(--amarelo);
+	background-color: var(--amarelo); /* cor de fundo (usa a variável --amarelo) */
 }
 
 .patamar-critico .patamar-marcador {
-	background-color: var(--vermelho);
+	background-color: var(--vermelho); /* cor de fundo (usa a variável --vermelho) */
 }
 
 .patamar-nome {
-	grid-column: 2;
-	color: var(--escuro);
-	font-size: 16px;
-	font-weight: 700; /* espessura da letra*/
-	line-height: 20px;
-	text-align: left;
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-size: 16px; /* tamanho da letra (16px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	line-height: 1.25; /* altura da linha do texto (1.25x o tamanho da letra) */
 }
 
 .patamar-quantidade {
-	grid-column: 3;
-	grid-row: 1;
-	color: var(--escuro);
-	font-size: 22px;
-	font-weight: 700; /* espessura da letra*/
-	line-height: 20px;
-	text-align: right;
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-size: 22px; /* tamanho da letra (22px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	line-height: 1; /* altura da linha do texto (1x o tamanho da letra) */
+	text-align: right; /* alinha o texto à direita */
 }
 
 .patamar-faixa {
-	grid-column: 2 / 4;
-	color: var(--cinzado);
-	font-size: 12.5px;
-	font-weight: 400; /* espessura da letra*/
-	line-height: 16px;
-	text-align: left;
+	grid-column: 2 / 4; /* coluna(s) do grid que o elemento ocupa (da 2 até antes da 4) */
+	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
+	font-size: 12.5px; /* tamanho da letra (12.5px) */
+	line-height: 1.3; /* altura da linha do texto (1.3x o tamanho da letra) */
 }
 
 /* final BLOCO: COMPARTIMENTOS POR PATAMAR*/
 
 
 
-/* BLOCO GRÁFICO CHART.JS: OCUPAÇÃO MÉDIA DA FROTA POR DIA */
+/* BLOCO GRÁFICO CHART.JS: OCUPAÇÃO MÉDIA DA FROTA POR DIA E TEMPO DE ATENDIMENTO POR BAIRRO */
 
-.ocupacao {
-	display: grid;
-	grid-template-columns: minmax(0, 420fr) minmax(0, 932fr); /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-	gap: 24px; /* espaço entre os itens do grid ou do flex */
+.grafico-ocupacao,
+.grafico-atendimento {
+	position: relative; /* serve de referência para elementos com position absolute dentro dele */
+	flex: 1 1 auto; /* ocupa todo o espaço que sobrar no card */
+	width: 100%; /* largura; 100% ocupa todo o espaço disponível */
+	min-height: 240px; /* altura mínima (240px) */
+	margin-top: 16px; /* espaço acima do elemento (16px) */
 }
 
-
-.grafico-ocupacao {
-	position: relative;
-	margin-top: 12px;
-	height: 210px;
+.grafico-ocupacao canvas,
+.grafico-atendimento canvas {
+	position: absolute;    /* o canvas não empurra o card */
+	inset: 0;              /* preenche a caixa inteira */
 }
-
-.grafico-ocupacao-canvas {
-	display: block; /* block faz o elemento ocupar uma linha inteira */
-	width: 100% !important;
-	height: 100% !important;
-}
-
-/* grafico-ocupacao*/
 
 /* final ocupacao*/
 
@@ -393,14 +349,9 @@ body {
 /* BLOCO: ranking COMPARTIMENTOS MAIS CHEIOS AGORA */
 
 .ranking-secao {
-	display: grid;
-	grid-template-columns: minmax(0, 600fr) minmax(0, 752fr); /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-	gap: 24px; /* espaço entre os itens do grid ou do flex */
-}
-
-.card-ranking,
-.card-atendimento {
-	min-height: 284px;
+	display: grid; /* grid organiza os itens internos em linhas e colunas */
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
+	gap: var(--espaco); /* espaço entre os itens do grid ou do flex (usa a variável --espaco) */
 }
 
 
@@ -408,67 +359,60 @@ body {
 /* card-ranking */
 
 .ranking {
-	margin-top: 27px;
-	display: flex; /* flex coloca os itens internos lado a lado */ 
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro*/
+	margin-top: 20px; /* espaço acima do elemento (20px) */
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+	gap: 14px; /* espaço entre os itens do grid ou do flex (14px) */
 }
 
 .ranking-item {
-	display: grid;
-	grid-template-columns: minmax(0, 42%) minmax(0, 1fr) auto; /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-	align-items: baseline;
-	padding-bottom: 4px;
-}
-
-.ranking-item:last-child {
-	padding-bottom: 0;
+	display: grid; /* grid organiza os itens internos em linhas e colunas */
+	grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto; /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
+	align-items: baseline; /* alinha os itens pela linha de base do texto */
+	column-gap: 12px; /* espaço horizontal entre as colunas (12px) */
 }
 
 .ranking-item-rua {
-	color: var(--escuro);
-	font-size: 15px;
-	font-weight: 700; /* espessura da letra*/
-	line-height: 16px;
-	text-align: left;
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-size: 15px; /* tamanho da letra (15px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	line-height: 1.3; /* altura da linha do texto (1.3x o tamanho da letra) */
 }
 
 .ranking-item-bairro {
-	color: var(--cinzado);
-	font-size: 13px;
-	font-weight: 400; /* espessura da letra*/
-	line-height: 16px;
-	text-align: left;
+	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
+	font-size: 13px; /* tamanho da letra (13px) */
+	line-height: 1.3; /* altura da linha do texto (1.3x o tamanho da letra) */
 }
 
 .ranking-item-percentual {
-	color: var(--escuro);
-	font-size: 16px;
-	font-weight: 700; /* espessura da letra*/
-	line-height: 16px;
-	text-align: right;
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-size: 16px; /* tamanho da letra (16px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	text-align: right; /* alinha o texto à direita */
 }
 
 .ranking-barra {
-	margin-top: 4px;
-	height: 9px;
-	grid-column: 1 / -1;
-	overflow: hidden;
-	background-color: var(--borda);
-	border-radius: 4.5px; /* arredonda os cantos */
+	grid-column: 1 / -1; /* ocupa todas as colunas do grid (1 / -1 = da primeira até a última) */
+	margin-top: 6px; /* espaço acima do elemento (6px) */
+	height: 9px; /* altura (9px) */
+	overflow: hidden; /* esconde o que passar do tamanho do elemento */
+	background-color: var(--borda); /* cor de fundo (usa a variável --borda) */
+	border-radius: 999px; /* cantos totalmente arredondados (formato de pílula) */
 }
 
 .ranking-barra-preenchimento {
-	width: calc(var(--valor) * 1%);
-	height: 100%;
-	border-radius: 4.5px; /* arredonda os cantos */
+	width: calc(var(--valor) * 1%); /* largura proporcional ao valor de --valor (porcentagem) */
+	height: 100%; /* altura igual à do elemento pai */
+	border-radius: 999px; /* cantos totalmente arredondados (formato de pílula) */
 }
 
 .ranking-item-critico .ranking-barra-preenchimento {
-	background-color: var(--vermelho);
+	background-color: var(--vermelho); /* cor de fundo (usa a variável --vermelho) */
 }
 
 .ranking-item-atencao .ranking-barra-preenchimento {
-	background-color: var(--amarelo);
+	background-color: var(--amarelo); /* cor de fundo (usa a variável --amarelo) */
 }
 
 /* final card-ranking*/
@@ -476,634 +420,388 @@ body {
 /* BLOCO: HISTÓRICO */
 
 .historico-topo {
-	display: flex; /* flex coloca os itens internos lado a lado */ 
-}
-
-.historico-titulo {
-	font-weight: 700; /* espessura da letra*/
-	font-size: 20px;
-	color: var(--escuro);
-}
-
-.historico-descricao {
-	font-size: 13px;
-	color: #5e7468;
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
+	align-items: flex-start; /* alinha os itens no topo */
+	justify-content: space-between; /* distribui os itens um em cada ponta */
+	gap: 12px 24px; /* espaço entre os itens do grid ou do flex (vertical 12px, horizontal 24px) */
 }
 
 .historico-periodo {
-	border: 1px solid rgb(206, 204, 204);
-	border-radius: 15px; /* arredonda os cantos */
-	padding: 20px; /* padding = espaço entre a borda e o conteúdo */
-	margin-top: 20px;
-	margin-left: auto;
+	padding: 10px 14px; /* padding = espaço entre a borda e o conteúdo (10px 14px) */
+	font: inherit; /* usa a mesma fonte do elemento pai (botões e selects não herdam sozinhos) */
+	font-size: 14px; /* tamanho da letra (14px) */
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	background-color: #fff; /* cor de fundo (#fff) */
+	border: 1px solid var(--borda); /* borda: espessura, estilo e cor (1px solid --borda) */
+	border-radius: 10px; /* arredonda os cantos (10px) */
+	cursor: pointer; /* mostra a mãozinha ao passar o mouse */
 }
 
+/* caixa da tabela: se faltar espaço, rola na horizontal em vez de vazar */
 .lista-historico {
-	padding: 10px; /* padding = espaço entre a borda e o conteúdo */
-	border: 1px solid rgb(206, 204, 204);
-	border-radius: 10px; /* arredonda os cantos */
-	margin: 20px 0px 20px 0px;
+	margin-top: 20px; /* espaço acima do elemento (20px) */
+	overflow-x: auto; /* cria rolagem horizontal só se o conteúdo não couber */
+	border: 1px solid var(--borda); /* borda: espessura, estilo e cor (1px solid --borda) */
+	border-radius: 12px; /* arredonda os cantos (12px) */
+}
+
+/* mesmas colunas para o cabeçalho e para as linhas, todas proporcionais */
+.historico-cabecalho,
+.historico-registro {
+	display: grid; /* grid organiza os itens internos em linhas e colunas */
+	grid-template-columns: /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
+		minmax(36px, 0.5fr)    /* ID */
+		minmax(92px, 1fr)      /* Data */
+		minmax(64px, 0.8fr)    /* Horário */
+		minmax(80px, 0.9fr)    /* Status */
+		minmax(150px, 1.8fr)   /* Logradouro */
+		minmax(140px, 1.6fr)   /* Bairro */
+		minmax(64px, 0.7fr);   /* Volume */
+	column-gap: 16px; /* espaço horizontal entre as colunas (16px) */
+	align-items: center; /* centraliza os itens na vertical */
+	min-width: 720px; /* largura mínima (720px) — abaixo disso a caixa rola (ou vira cards no celular) */
+	padding: 14px 20px; /* padding = espaço entre a borda e o conteúdo (14px 20px) */
+	border-bottom: 1px solid var(--borda); /* linha na parte de baixo do elemento */
+	text-align: left; /* alinha o texto à esquerda */
+}
+
+.historico-registro:last-child {
+	border-bottom: none; /* remove a borda de baixo */
+}
+
+.historico-cabecalho {
+	background-color: var(--fundo); /* cor de fundo (usa a variável --fundo) */
 }
 
 .historico-sub {
-	display: grid;
-	color: var(--escuro);
-	font-weight: bold;
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-size: 13px; /* tamanho da letra (13px) */
+	font-weight: 700; /* espessura da letra (negrito) */
 }
 
-.historico-cabecalho,
-.historico-registro {
-	display: grid;
-	grid-template-columns: 50px 120px 90px 120px minmax(160px, 1.3fr) minmax(160px, 1.2fr) 80px; /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-	column-gap: 16px; /* espaço entre os itens do grid ou do flex */
-	border-bottom: 1px solid rgb(206, 204, 204);
-	align-items: center; /* centraliza os itens na vertical */
-	width: 100%; /* largura; 100% ocupa todo o espaço disponível */
-	padding: 40px 40px 40px 20px; /* padding = espaço entre a borda e o conteúdo - ordem: cima  direita baixo esquerda */
-	margin: 0;
-	min-width: 0;
-	text-align: left;
+.historico-item {
+	color: #1d2925; /* cor do texto (#1d2925) */
+	font-size: 14px; /* tamanho da letra (14px) */
+	line-height: 1.35; /* altura da linha do texto (1.35x o tamanho da letra) */
+	overflow-wrap: anywhere; /* quebra palavras longas para não vazar do espaço */
+}
+
+/* última coluna (Volume) alinhada à direita */
+.historico-sub:last-child,
+.historico-item:last-child {
+	text-align: right; /* alinha o texto à direita */
 }
 
 
 
 
 .historico-botoes {
-	margin-top: 16px;
-	display: flex; /* flex coloca os itens internos lado a lado */ 
+	margin-top: 16px; /* espaço acima do elemento (16px) */
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
 	align-items: center; /* centraliza os itens na vertical */
-	justify-content: space-between; /* distribui os itens um em cada ponta da faixa */ /* um botão em cada ponta */
-	gap: 12px; /* espaço entre os itens do grid ou do flex */
-	flex-wrap: wrap;
+	justify-content: space-between; /* distribui os itens um em cada ponta */
+	gap: 12px; /* espaço entre os itens do grid ou do flex (12px) */
 }
 
 .botao-principal,
 .botao-secundario {
-	display: flex; /* flex coloca os itens internos lado a lado */ 
+	display: inline-flex; /* flex que ocupa só o tamanho do conteúdo, como um texto */
 	align-items: center; /* centraliza os itens na vertical */
-	justify-content: center; /* deixa o conteudo centralizado na horizontal */ /* centraliza o texto dentro do botão */
-	font-style: normal;
-	padding: 20px; /* padding = espaço entre a borda e o conteúdo */
-	border-radius: 8px; /* arredonda os cantos */
-	letter-spacing: 0px;
+	justify-content: center; /* centraliza os itens na horizontal */
+	padding: 12px 20px; /* padding = espaço entre a borda e o conteúdo (12px 20px) */
+	font: inherit; /* usa a mesma fonte do elemento pai (botões e selects não herdam sozinhos) */
+	font-size: 14px; /* tamanho da letra (14px) */
+	border-radius: 8px; /* arredonda os cantos (8px) */
+	cursor: pointer; /* mostra a mãozinha ao passar o mouse */
 }
 
 .botao-principal {
-	color: #1d2925;
-	background-color: rgba(255, 255, 255, 0);
-	border: 1px solid #d9e3de;
+	color: #1d2925; /* cor do texto (#1d2925) */
+	background-color: transparent; /* fundo transparente */
+	border: 1px solid #d9e3de; /* borda: espessura, estilo e cor (1px solid #d9e3de) */
 }
 
 .botao-secundario {
-	color: #fff;
-	background-color: #1f7a4d;
-	border: 1px solid rgba(255, 255, 255, 0);
+	color: #fff; /* cor do texto (#fff) */
+	background-color: #1f7a4d; /* cor de fundo (#1f7a4d) */
+	border: 1px solid transparent; /* borda invisível (mantém o mesmo tamanho dos outros botões) */
 }
-
-
-
-
-/* BLOCO GRAFICO CHART.JS: TEMPO ATENDIMENTO POR BAIRRO */
-
-.grafico-atendimento {
-	position: relative;
-	margin-top: 14px;
-	height: 180px;
-}
-
-.grafico-atendimento-canvas {
-	display: block; /* block faz o elemento ocupar uma linha inteira */
-	width: 100% !important;
-	height: 100% !important;
-}
-
-/* final GRAFICO: TEMPO ATENDIMENTO POR BAIRRO*/
 
 
 /* LAYOUT COM BARRA LATERAL */
 .layout {
-	display: flex;
-	min-height: 100vh;
+	display: flex; /* flex coloca os itens internos lado a lado */
+	min-height: 100vh; /* altura mínima igual à altura da tela */
 }
 
 .conteudo {
-	flex: 1;
-	min-width: 0;          /* evita que gráficos/tabela estourem a coluna */
-	padding: 0 24px 24px 24px;
+	container: conteudo / inline-size; /* marca o elemento como container; as @container queries usam a largura dele (seção 7) */
+	flex: 1; /* ocupa todo o espaço que sobrar no flex */
+	min-width: 0; /* permite o elemento encolher abaixo do tamanho do conteúdo (evita vazar) — evita que gráficos/tabela estourem a coluna */
+	padding: 0 clamp(16px, 3vw, 40px); /* padding = espaço entre a borda e o conteúdo (vertical 0, lateral fluido) */
 }
 
 /* BARRA LATERAL */
 .barra-lateral {
-	width: 240px;
-	flex-shrink: 0;
-	position: sticky;      /* fica parada enquanto a página rola */
-	top: 0;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	gap: 32px;
-	padding: 24px 16px;
-	background-color: #fff;
-	border-right: 1px solid var(--borda);
-	box-shadow: 6px 0 20px 0 rgba(16, 41, 30, 0.06);
+	width: 240px; /* largura (240px) */
+	flex-shrink: 0; /* impede o elemento de encolher quando falta espaço */
+	position: sticky; /* fica parado na tela enquanto a página rola */
+	top: 0; /* distância do topo (0 = gruda no topo) */
+	height: 100vh; /* altura igual à altura da tela */
+	overflow-y: auto; /* cria rolagem vertical só se o conteúdo não couber — com zoom alto, a barra rola em vez de cortar os botões */
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+	gap: 32px; /* espaço entre os itens do grid ou do flex (32px) */
+	padding: 24px 16px; /* padding = espaço entre a borda e o conteúdo (24px 16px) */
+	background-color: #fff; /* cor de fundo (#fff) */
+	border-right: 1px solid var(--borda); /* linha no lado direito do elemento */
+	box-shadow: 6px 0 20px 0 rgba(16, 41, 30, 0.06); /* sombra suave para dar profundidade */
 }
 
 .barra-lateral-logo {
-	display: flex;
-	align-items: center;
-	gap: 0px;
-	padding: 5px;
+	display: flex; /* flex coloca os itens internos lado a lado */
+	align-items: center; /* centraliza os itens na vertical */
+	gap: 8px; /* espaço entre os itens do grid ou do flex (8px) */
+	padding: 4px 6px; /* padding = espaço entre a borda e o conteúdo (4px 6px) */
 }
 
 .barra-lateral-logo-marca {
-	width: 34px;
-	padding: 8px;
-	flex-shrink: 0;
-	/* background-color: var(--verde); */
-	border-radius: 8px;
+	display: flex; /* flex coloca os itens internos lado a lado */
+	align-items: center; /* centraliza os itens na vertical */
+	width: 28px; /* largura (28px) */
+	flex-shrink: 0; /* impede o elemento de encolher quando falta espaço */
 }
 
 .barra-lateral-logo-icone {
-	height: 20px;
-	align-content: center;
-	justify-content: center;
+	display: block; /* block faz o elemento ocupar uma linha inteira */
+	width: 100%; /* largura; 100% ocupa todo o espaço disponível */
+	height: 22px; /* altura (22px) */
 }
 
 .barra-lateral-logo-nome {
-    font-size: 20px;
-    font-weight: 700;
-    color: #01472B;
-    white-space: nowrap;
-	padding: 8px;
+	font-size: 20px; /* tamanho da letra (20px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	color: #01472B; /* cor do texto (#01472B) */
+	white-space: nowrap; /* impede o texto de quebrar linha */
 }
 
 .barra-lateral-logo-nome span {
-    color: #1F7A4D;
+	color: #1F7A4D; /* cor do texto (#1F7A4D) */
 }
 
 /* LINKS */
 .barra-lateral-menu {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+	gap: 4px; /* espaço entre os itens do grid ou do flex (4px) */
 }
 
 .barra-link {
-	padding: 12px 14px;
-	font-size: 15px;
-	font-weight: 500;
-	color: var(--cinzado);
-	text-decoration: none;
-	border-radius: 10px;
+	padding: 12px 14px; /* padding = espaço entre a borda e o conteúdo (12px 14px) */
+	font-size: 15px; /* tamanho da letra (15px) */
+	font-weight: 500; /* espessura da letra (média) */
+	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
+	text-decoration: none; /* remove o sublinhado do link */
+	border-radius: 10px; /* arredonda os cantos (10px) */
+	white-space: nowrap; /* impede o texto de quebrar linha */
 }
 
 .barra-link:hover {
-	background-color: var(--fundo);
-	color: var(--escuro);
+	background-color: var(--fundo); /* cor de fundo (usa a variável --fundo) */
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
 }
 
 .barra-link-ativo {
-	background-color: rgba(2, 146, 93, 0.12);
-	color: var(--verde);
-	font-weight: 700;
+	background-color: rgba(2, 146, 93, 0.12); /* cor de fundo (cor com transparência) */
+	color: var(--verde); /* cor do texto (usa a variável --verde) */
+	font-weight: 700; /* espessura da letra (negrito) */
 }
 
 /* BOTÕES (ficam no rodapé da barra) */
 .barra-lateral-botoes {
-	margin-top: auto;      /* empurra para o fim da barra */
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
+	margin-top: auto; /* empurra o elemento para o final (baixo) do flex — empurra para o fim da barra */
+	display: flex; /* flex coloca os itens internos lado a lado */
+	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+	gap: 10px; /* espaço entre os itens do grid ou do flex (10px) */
 }
 
 .barra-botao {
-	padding: 12px;
-	font-size: 14px;
-	border-radius: 8px;
-	cursor: pointer;
+	padding: 12px; /* padding = espaço entre a borda e o conteúdo (12px) */
+	font: inherit; /* usa a mesma fonte do elemento pai (botões e selects não herdam sozinhos) */
+	font-size: 14px; /* tamanho da letra (14px) */
+	border-radius: 8px; /* arredonda os cantos (8px) */
+	cursor: pointer; /* mostra a mãozinha ao passar o mouse */
+	white-space: nowrap; /* impede o texto de quebrar linha */
 }
 
 .barra-botao-perfil {
-	color: var(--escuro);
-	background-color: transparent;
-	border: 1px solid var(--borda);
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	background-color: transparent; /* fundo transparente */
+	border: 1px solid var(--borda); /* borda: espessura, estilo e cor (1px solid --borda) */
 }
 
 .barra-botao-config {
-	color: #fff;
-	background-color: var(--verde);
-	border: 1px solid transparent;
+	color: #fff; /* cor do texto (#fff) */
+	background-color: var(--verde); /* cor de fundo (usa a variável --verde) */
+	border: 1px solid transparent; /* borda invisível (mantém o mesmo tamanho dos outros botões) */
 }
 
 .barra-botao:hover {
-	filter: brightness(0.9);
+	filter: brightness(0.9); /* escurece um pouco o elemento */
 }
 
 /* CELULAR / TELA ESTREITA: barra vira faixa no topo */
 @media screen and (max-width: 900px) {
 	.layout {
-		flex-direction: column;
+		flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
 	}
 
 	.barra-lateral {
-		width: 100%;
-		height: auto;
-		position: static;
-		gap: 16px;
-		border-right: none;
-		border-bottom: 1px solid var(--borda);
+		width: 100%; /* largura; 100% ocupa todo o espaço disponível */
+		height: auto; /* altura automática, conforme o conteúdo */
+		position: static; /* posição normal, segue o fluxo da página */
+		overflow: visible; /* mostra o conteúdo mesmo se passar do tamanho */
+		flex-direction: row; /* faz os itens do flex ficarem lado a lado */
+		flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
+		align-items: center; /* centraliza os itens na vertical */
+		justify-content: space-between; /* distribui os itens um em cada ponta */
+		gap: 12px 16px; /* espaço entre os itens do grid ou do flex (vertical 12px, horizontal 16px) */
+		padding: 12px clamp(16px, 3vw, 40px); /* padding = espaço entre a borda e o conteúdo (vertical 12px, lateral fluido) */
+		border-right: none; /* remove a borda da direita */
+		border-bottom: 1px solid var(--borda); /* linha na parte de baixo do elemento */
+		box-shadow: 0 6px 20px 0 rgba(16, 41, 30, 0.06); /* sombra suave para dar profundidade */
 	}
 
 	.barra-lateral-menu {
-		flex-direction: row;
-		flex-wrap: wrap;
+		flex-direction: row; /* faz os itens do flex ficarem lado a lado */
+		flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
+		order: 3; /* muda a ordem do item no flex (vai para a posição 3) — menu desce para uma linha própria */
+		width: 100%; /* largura; 100% ocupa todo o espaço disponível */
+	}
+
+	.barra-link {
+		padding: 8px 12px; /* padding = espaço entre a borda e o conteúdo (8px 12px) */
+		font-size: 14px; /* tamanho da letra (14px) */
 	}
 
 	.barra-lateral-botoes {
-		flex-direction: row;
+		flex-direction: row; /* faz os itens do flex ficarem lado a lado */
+		margin-top: 0; /* remove o espaço acima */
+	}
+
+	.barra-botao {
+		padding: 8px 14px; /* padding = espaço entre a borda e o conteúdo (8px 14px) */
 	}
 }
 
-
-/** breakpoints (margin / paddings) **/
-
-/* container queries (grids) */
-
-@container body (width < 1280px) {
-	/* .indicadores {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	} */
-
-	.ocupacao {
-		display: grid;
-		grid-template-columns: 420px minmax(0, 1fr); /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-		gap: 24px; /* espaço entre os itens do grid ou do flex */
-	}
-
-	.detalhamento {
-		display: grid;
-		grid-template-columns: 600px minmax(0, 1fr); /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-		gap: 24px; /* espaço entre os itens do grid ou do flex */
-	}
-
-	.banner-alerta {
-		padding-right: 172px;
-	}
-
-	.painel {
-		display: flex; /* flex coloca os itens internos lado a lado */ 
-		flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro*/
-		gap: 24px; /* espaço entre os itens do grid ou do flex */
-		margin: 20px 40px 20px 40px;
-	}
-
-	.patamares {
-		justify-content: center; /* deixa o conteudo centralizado na horizontal */
-		margin: 20px 0px 20px 0px;
-		padding-right: 50px;
-	}
-
-	.card-patamares,
-	.card-atendimento {
-		min-height: 320px;
-	}
-
-	.indicador-dado {
-		color: var(--escuro);
-		font-size: 32px;
-
-
-	}
-
-	@container body (width < 760px) {
-
-		/* .cabecalho {
-		height: auto;
-		flex-wrap: wrap;
-		justify-content: space-between; /* distribui os itens um em cada ponta da faixa
-		gap: 12px 24px;
-		padding: 12px 20px;
-	}
-	.cabecalho-subtitulo {
-		order: 3;
-		width: 100%; /* largura; 100% ocupa todo o espaço disponível */
-	} */
-		.cabecalho-selo {
-			margin-left: 0;
-		}
-
-		.banner-alerta {
-			flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro*/
-			align-items: flex-start;
-			padding: 18px 20px 18px 20px;
-		}
-
-		.mascote {
-			display: none;
-		}
-
-		.patamares {
-			flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro*/
-			margin-right: 0;
-		}
-
-		.grafico-ocupacao {
-			height: 260px;
-		}
-	}
-
-	@container body (width < 600px) {
-		.indicadores {
-			grid-template-columns: minmax(0, 1fr); /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-		}
-
-		.ranking-item {
-			grid-template-columns: minmax(0, 1fr) auto; /* define o espaçamento das colunas do grid, minmax(menor tam., maior tam.), px = tam. fixo, fr = tam. variavel */
-		}
-
-		.ranking-item-bairro {
-			grid-column: 1;
-			grid-row: 2;
-		}
-
-		.ranking-item-percentual {
-			grid-column: 2;
-			grid-row: 1;
-		}
-
-		.ranking-barra {
-			grid-row: 3;
-		}
-
-		.grafico-atendimento {
-			height: 220px;
-		}
-	}
-.menu {
-	text-align: left;
-}
-
-/* ===== NOVOS SELETORES ===== */
-.menu.ativo {
-	color: #1f7a4d;
-	font-weight: 600;
-	text-decoration: underline;
-}
-
-.texto-descricao {
-	margin-left: 34px;
-	width: 100%;
-	max-width: 1174px;
-	color: #1d2925;
-	--fonte-tam-min: 12; --fonte-tam-max: 14; font-size: var(--interpolate);
-	font-weight: 400;
-	line-height: 1.55;
-	letter-spacing: 0px;
-}
-
-.cabecalho {
-	container: cabecalho / inline-size;
-	box-shadow: 0px 6px 20px 0px rgba(16, 41, 30, 0.08);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 250px;
-	font-size: 14px;
-	line-height: normal;
-	background-color: #fff;
-	padding: 16px 80px;
-	overflow: hidden;
-}
-
-.cabecalho-header {
-	container: inline-size;
-	box-shadow: 0px 6px 20px 0px rgba(16, 41, 30, 0.08);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 250px;
-	font-size: 14px;
-	line-height: normal;
-	background-color: #fff;
-	padding: 16px 80px;
-	overflow: hidden;
-}
-
-.cabecalho-logo-area {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	font-size: 19px;
-}
-
-.cabecalho-logo-marca {
-	width: 34px;
-	flex-shrink: 0;
-	background-color: #1f7a4d;
-	padding: 8px;
-	border-radius: 8px;
-}
-
-.cabecalho-logo-marca-recycle {
-	height: 19px;
-}
-
-.cabecalho-nome-marca {
-	display: flex;
-	align-items: flex-start;
-}
-
-.cabecalho-nome-smart {
-	color: #123c2b;
-	font-weight: 800;
-	letter-spacing: 0px;
-	text-align: left;
-}
-
-.cabecalho-nome-coleta {
-	color: #1f7a4d;
-	font-weight: 400;
-	letter-spacing: -0.7px;
-	text-align: left;
-}
-
-.cabecalho-menu {
-	margin-left: 63px;
-	display: flex;
-	align-items: center;
-	gap: 28px;
-	color: #4e5e58;
-	font-weight: 500;
-	letter-spacing: 0px;
-}
-
-.cabecalho-botoes {
-	width: 224px;
-	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
-	flex-shrink: 0;
-	font-weight: 400;
-	padding-left: 6px;
-}
-
-.botao {
-	min-height: 48px;
-	display: flex;
-	font-style: normal;
-	letter-spacing: 0px;
-	text-align: left;
-	padding: 15px 22px 15px 0;
-	border-radius: 8px;
-}
-
-.botao-entrar {
-	color: #1d2925;
-	background-color: rgba(255, 255, 255, 0);
-	padding-left: 22px;
-	border: 1px solid #d9e3de;
-}
-
-.botao-cadastrar {
-	color: #fff;
-	background-color: #1f7a4d;
-	padding-left: 21px;
-	border: 1px solid rgba(255, 255, 255, 0);
-}
-
-/* utilitárias de texto */
-.text1 {
-	font-size: 16px;
-	font-weight: 400;
-	line-height: 1.6;
-	letter-spacing: 0px;
-}
-
-.text2 {
-	font-size: 14px;
-	line-height: 1.5;
-}
-
-/* utilitárias de seção / objetos */
-.section {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 0 80px;
-}
-
-.circle1 {
-	display: flex;
-	align-items: flex-start;
-	border-radius: 50%;
-}
 
 /* hover dos botões */
 .hover-escuro:hover {
-	filter: brightness(0.85);
+	filter: brightness(0.92); /* escurece um pouco o elemento */
 }
 
+<<<<<<< HEAD
+=======
 .hover-claro:hover {
-	filter: brightness(1.2);
+	filter: brightness(1.15); /* clareia um pouco o elemento */
 }
 
-/* ===== MEDIA QUERIES ===== */
-@media screen and (max-width: 1280px) {
-	.texto-descricao { margin-inline: 0; }
-	.historia-titulo { margin-inline: 0; }
-	.cabecalho { padding-inline: var(--margem-med); }
-	.quem-somos-logo { margin-inline: 0; }
-	.quem-somos-titulo { margin-inline: 0; }
-	.quem-somos-texto { margin-inline: 0; }
-	.card-valores { padding-inline: var(--margem-peq); }
-	.card-valores-subtitulos { margin-inline: 0; }
-	.card-valores-texto { margin-inline: 0; }
-	.rodape { padding-inline: var(--margem-med); }
-}
 
-@media screen and (max-width: 576px) {
-	.cabecalho { padding-inline: var(--margem-peq); }
-	.rodape { padding-inline: var(--margem-peq); }
-}
 
-/* ===== CONTAINER QUERIES ===== */
-@container body (width < 1280px) {
-	.cabecalho {
-		align-items: center;
-		text-align: center;
-		gap: 155px;
-		font-size: 12px;
+>>>>>>> 62c1e83458a325ed99ca515b2a2089692c428429
+/* container queries (grids) */
+
+/* notebook / tela média: indicadores em 2 x 2 */
+@container conteudo (width < 1000px) {
+	.indicadores {
+		grid-template-columns: repeat(2, minmax(0, 1fr)); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
+	}
+
+	.indicador-dado {
+		font-size: 36px; /* tamanho da letra (36px) */
 	}
 }
 
-@container body (width < 1000px) {
-	.cabecalho {
-		flex-direction: column;
-		align-items: center;
-		gap: 13px;
-		font-size: 12px;
-	}
-
-	.cabecalho>* {
-		margin-left: unset !important;
-		text-align: center;
+/* tablet: os cards de gráfico ficam um embaixo do outro */
+@container conteudo (width < 820px) {
+	.patamar-div,
+	.ranking-secao {
+		grid-template-columns: minmax(0, 1fr); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
 	}
 }
 
-@container cabecalho (width < 544px) {
-	.cabecalho-menu {
-		margin-left: 0;
-		flex-direction: column;
-		align-items: center;
-		gap: 12px;
+/* celular: tabela do histórico vira uma lista de cards */
+@container conteudo (width < 640px) {
+	.lista-historico {
+		overflow: visible; /* mostra o conteúdo mesmo se passar do tamanho */
+		border: none; /* remove a borda */
+		display: flex; /* flex coloca os itens internos lado a lado */
+		flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+		gap: 12px; /* espaço entre os itens do grid ou do flex (12px) */
 	}
 
-	.cabecalho-menu>* {
-		text-align: center;
+	.historico-cabecalho {
+		display: none; /* esconde o elemento da tela — os rótulos aparecem dentro de cada card */
+	}
+
+	.historico-registro {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
+		gap: 10px 16px; /* espaço entre os itens do grid ou do flex (vertical 10px, horizontal 16px) */
+		min-width: 0; /* permite o elemento encolher abaixo do tamanho do conteúdo (evita vazar) */
+		padding: 14px 16px; /* padding = espaço entre a borda e o conteúdo (14px 16px) */
+		border: 1px solid var(--borda); /* borda: espessura, estilo e cor (1px solid --borda) */
+		border-radius: 12px; /* arredonda os cantos (12px) */
+	}
+
+	.historico-registro:last-child {
+		border-bottom: 1px solid var(--borda); /* linha na parte de baixo do elemento */
+	}
+
+	/* rótulo de cada campo vem do atributo data-rotulo do HTML */
+	.historico-item::before {
+		content: attr(data-rotulo); /* texto do ::before vem do atributo data-rotulo do HTML */
+		display: block; /* block faz o elemento ocupar uma linha inteira */
+		margin-bottom: 2px; /* espaço abaixo do elemento (2px) */
+		color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
+		font-size: 11.5px; /* tamanho da letra (11.5px) */
+		font-weight: 700; /* espessura da letra (negrito) */
+		text-transform: uppercase; /* deixa o texto em letras maiúsculas */
+		letter-spacing: 0.03em; /* espaço extra entre as letras */
+	}
+
+	.historico-item:last-child {
+		text-align: left; /* alinha o texto à esquerda */
+	}
+
+	.historico-botoes > button {
+		flex: 1 1 100%; /* faz cada botão ocupar a linha inteira */
+	}
+
+	.historico-periodo {
+		width: 100%; /* largura; 100% ocupa todo o espaço disponível */
 	}
 }
 
-@container principios (width < 1084px) {
-	.principios-superior {
-		margin-left: 0;
-		flex-direction: column;
-		align-items: center;
-		gap: 48px;
+/* celular estreito: tudo em uma coluna */
+@container conteudo (width < 520px) {
+	.indicadores {
+		grid-template-columns: minmax(0, 1fr); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
 	}
 
-	.principios>* {
-		margin-left: 0;
-		margin-right: 0;
+	.ranking-item {
+		grid-template-columns: minmax(0, 1fr) auto; /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
 	}
 
-	.principios-superior>* {
-		margin-top: unset !important;
-		text-align: center;
+	.ranking-item-bairro {
+		grid-column: 1; /* coloca o elemento na coluna 1 do grid */
+		grid-row: 2; /* coloca o elemento na linha 2 do grid */
 	}
 
-	.principios-superior>.card-missao {
-		width: 100%;
-		max-width: 508px;
+	.ranking-item-percentual {
+		grid-column: 2; /* coloca o elemento na coluna 2 do grid */
+		grid-row: 1; /* coloca o elemento na linha 1 do grid */
 	}
 
-	.principios-superior>.card-visao {
-		width: 100%;
-		max-width: 489px;
-	}
-}
-
-@container rodape (width < 1000px) {
-	.rodape-conteudo {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 22px;
-	}
-
-	.rodape-conteudo>.rodape-company {
-		width: 100%;
-	}
-
-	.rodape-conteudo>.rodape-contact-links {
-		width: 100%;
-	}
 }

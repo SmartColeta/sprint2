@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartColeta | Criar conta</title>
+
+  <!-- FONTE: Inter (Google Fonts). Se preferir outra, troque aqui e em --fonte no CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ORDEM IMPORTA: global.css -> cadastro.css -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/cadastro.css">
+  <link rel="icon" href="logos/smartcoleta-logo.svg">
+</head>
+
+<body>
+
+  <!-- =====================================================
+       BLOCO 1: CABEÇALHO (igual ao da página de login)
+       ===================================================== -->
+  <header class="header">
+
+    <div class="logo">
+      <img src="logos/smartcoleta-logo.svg" alt="Logo SmartColeta">
+      <span class="nome-logo">
+        Smart<span>Coleta</span>
+      </span>
+    </div>
+
+    <nav class="menu">
+      <a href="index.html">Início</a>
+      <a href="solucoes.html">Soluções</a>
+      <a href="simulador_financeiro.html">Simulador Financeiro</a>
+      <a href="sobre.html">Sobre</a>
+      <a href="contato.html">Fale Conosco</a>
+    </nav>
+
+    <div class="botoes-header">
+      <a href="login.html" class="btn-login">Login</a>
+      <a href="cadastro-v2.html" class="btn-cadastro">Cadastre-se</a>
+    </div>
+
+  </header>
+
+  <!-- =====================================================
+       BLOCO 2: ÁREA PRINCIPAL (2 colunas no desktop)
+       ===================================================== -->
+  <main class="principal">
+
+    <!-- ---------- 2.1 PAINEL ESQUERDO ---------- -->
+    <section class="painel">
+
+      <!-- Etiqueta do topo -->
+      <div class="painel-etiqueta">Comece agora</div>
+
+      <!-- Título principal -->
+      <h1>Leve a inteligência da SmartColeta ao seu município.</h1>
+
+      <!-- Subtítulo -->
+      <p class="painel-sub">Crie sua conta e tenha acesso aos dados que ajudam a planejar uma coleta de resíduos mais eficiente.</p>
+
+      <!-- Lista de benefícios (ícone + texto) — edite os textos à vontade -->
+      <ul class="beneficios">
+        <li>
+          <img src="icons/radio-tower.svg" alt="">
+          Painel de monitoramento em tempo real
+        </li>
+        <li>
+          <img src="icons/route-1.svg" alt="">
+          Planejamento de rotas pela demanda
+        </li>
+        <li>
+          <img src="icons/chart-no-axes-combined.svg" alt="">
+          Relatórios para a gestão pública
+        </li>
+      </ul>
+    </section>
+
+    <!-- ---------- 2.2 LADO DIREITO: FORMULÁRIO ---------- -->
+    <section class="lado-form">
+      <div class="form-box">
+
+        <!-- Abas Entrar / Criar conta (aqui a ativa é "Criar conta") -->
+        <div class="abas" role="tablist">
+          <a href="login.html" class="aba" role="tab" aria-selected="false">Entrar</a>
+          <a href="cadastro-v2.html" class="aba ativa" role="tab" aria-selected="true">Criar conta</a>
+        </div>
+
+        <!-- Título e descrição -->
+        <h2>Crie sua conta</h2>
+        <p class="form-desc">Preencha os dados abaixo para começar a usar a SmartColeta.</p>
+
+        <!-- Mensagem de erro do formulário (aparece via JavaScript) -->
+        <div class="msg-erro" id="mensagemErro" role="alert"></div>
+
+         <!-- Formulário -->
+        <form id="formCadastro">
+
+
+          <!-- Campo Nome completo -->
+          <div class="campo" id="campoNome">
+            <label for="nome">Nome da Prefeitura</label>
+            <input type="text" id="input_nome" name="nome" placeholder="Digite o nome da sua prefeitura" required>
+          </div>
+
+          <!-- Campo E-mail -->
+          <div class="campo" id="campoEmail">
+            <label for="email">E-mail</label>
+            <input type="email" id="input_email" name="email" placeholder="Digite o email para contato" required>
+          </div>
+
+          <!-- Campo Senha (mínimo 8 caracteres) + botão mostrar/ocultar -->
+          <div class="campo" id="campoSenha">
+            <label for="senha">Senha</label>
+            <input type="password" id="input_senha" name="senha" placeholder="Crie uma senha" minlength="8" required>
+            <button type="button" class="btn-olho" data-alvo="input_senha" aria-label="Mostrar senha">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.7 10.7 0 0 1 12 20C5 20 1 12 1 12a18 18 0 0 1 5.1-5.9M9.9 4.2A10.6 10.6 0 0 1 12 4c7 0 11 8 11 8a18 18 0 0 1-2.2 3.2M1 1l22 22"/></svg>
+            </button>
+          </div>
+            <p class="dica">Use 8 ou mais caracteres, com letras maiúsculas e minúsculas, números e caracteres especiais (!, @, #, $...).</p>
+
+          <!-- Campo Confirmar senha + botão mostrar/ocultar -->
+          <div class="campo" id="campoConfirmar">
+            <label for="confirmar">Confirmar senha</label>
+            <input type="password" id="input_confirmar" name="confirmar" placeholder="Repita a senha" autocomplete="new-password" required>
+            <button type="button" class="btn-olho" data-alvo="input_confirmar" aria-label="Mostrar senha">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.7 10.7 0 0 1 12 20C5 20 1 12 1 12a18 18 0 0 1 5.1-5.9M9.9 4.2A10.6 10.6 0 0 1 12 4c7 0 11 8 11 8a18 18 0 0 1-2.2 3.2M1 1l22 22"/></svg>
+            </button>
+          </div>
+
+
+          <!--
+            PARA ADICIONAR OUTRO CAMPO : copie um bloco <div class="campo"> acima,
+            troque id, name, label e placeholder.
+          -->
+
+          <!-- Botão principal (reaproveita o estilo do botão Entrar) -->
+          <button type="submit" class="btn-entrar" id="btnCadastrar">
+            Criar conta
+            <img src="icons/arrow-right.svg" alt="">
+          </button>
+        </form>
+
+        <!-- Link para quem já tem conta -->
+        <p class="criar-conta">Já tem uma conta? <a href="login.html" class="link-forte">Entre aqui</a></p>
+
+        <!-- Selo de segurança -->
+        <div class="selo-seguranca">
+          <img src="icons/shield-check.svg" alt="">
+          Seus dados tratados com segurança e responsabilidade.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================
+       BLOCO 3: RODAPÉ DA PÁGINA (igual ao da página de login)
+       ===================================================== -->
+  <footer class="rodape">
+    <div class="conteudo-rodape">
+
+      <div class="rodape-empresa">
+
+        <div class="logo-rodape">
+          <img src="logos/smartcoleta-logo.svg" alt="Logo SmartColeta">
+          <span>Smart<span>Coleta</span></span>
+        </div>
+
+        <p>
+          Tecnologia brasileira para monitoramento e inteligência
+          na coleta de resíduos de municípios de pequeno porte.
+        </p>
+
+        <p class="seguranca">
+          Dados tratados com segurança e responsabilidade.
+        </p>
+
+      </div>
+
+      <div class="coluna-rodape">
+        <h3><u>Institucional</u></h3>
+        <a href="index.html">Início</a>
+        <a href="solucoes.html">Soluções</a>
+        <a href="sobre.html">Sobre a SmartColeta</a>
+        <a href="simulador_financeiro.html">Simulador Financeiro</a>
+        <a href="contato.html">Fale Conosco</a>
+      </div>
+
+      <div class="coluna-rodape">
+        <h3><u>FAQ & Suporte</u></h3>
+        <a href="faq.html">Perguntas Frequentes</a>
+        <a href="contato.html">Central de Ajuda</a>
+        <a href="status.html">Status da Plataforma</a>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <a href="termos.html">Termos de Uso</a>
+      </div>
+
+      <div class="coluna-rodape contato-rodape">
+        <h3><u>Contato</u></h3>
+        <a href="mailto:contato@smartcoleta.com.br">contato@smartcoleta.com.br</a>
+        <a href="tel:+551130907420">(11) 3090-7420</a>
+
+        <div class="redes-sociais">
+          <a href="#" aria-label="LinkedIn"><img src="icons/linkedin.svg" alt=""></a>
+          <a href="#" aria-label="Instagram"><img src="icons/instagram.svg" alt=""></a>
+          <a href="mailto:contato@smartcoleta.com.br" aria-label="E-mail"><img src="icons/mail.svg" alt=""></a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rodape-inferior">
+      <p>© 2026 SmartColeta. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- =====================================================
+       BLOCO 4: JAVASCRIPT (mostrar senha + validação + envio)
+       ===================================================== -->
+  <script> 
+
+  const form = document.getElementById('formCadastro');
+    const msgErro = document.getElementById('mensagemErro');
+    const btnCadastrar = document.getElementById('btnCadastrar');
+    let timerErro;
+
+    // ---- 4.1 Mostrar/ocultar senha (funciona para os dois campos) ----
+    document.querySelectorAll('.btn-olho').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const campo = document.getElementById(btn.dataset.alvo);
+        const mostrar = campo.type === 'password';
+        campo.type = mostrar ? 'text' : 'password';
+        btn.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
+      });
+    });
+
+    // ---- 4.2 Exibe mensagem de erro e marca o campo com problema ----
+    function mostrarErro(texto, idCampo) {
+      document.querySelectorAll('.campo.invalido').forEach(function (c) { c.classList.remove('invalido'); });
+      if (idCampo) document.getElementById(idCampo).classList.add('invalido');
+
+      msgErro.textContent = texto;
+      msgErro.classList.add('visivel');
+
+      clearTimeout(timerErro);
+      timerErro = setTimeout(limparErro, 5000);
+    }
+
+    function limparErro() {
+      msgErro.classList.remove('visivel');
+      document.querySelectorAll('.campo.invalido').forEach(function (c) { c.classList.remove('invalido'); });
+
+      
+    }
+
+    // ---- 4.3 Envio do formulário ----
+    form.addEventListener('submit', function (evento) {
+      evento.preventDefault();
+      limparErro();
+
+ 
+
+      // Os valores agora são lidos NO MOMENTO DO ENVIO (antes eram lidos ao carregar a página, vazios)
+      const nome = document.getElementById('input_nome').value.trim();
+      const email = document.getElementById('input_email').value.trim();
+      const senha = document.getElementById('input_senha').value;
+      const confirmar = document.getElementById('input_confirmar').value;
+
+      if (nome.length < 3) return mostrarErro('Informe o nome da sua prefeitura. (ex: Prefeitura de São Paulo)', 'campoNome');
+      if (!email.includes('@') || !email.includes('.')) return mostrarErro('Informe um e-mail válido.', 'campoEmail');
+
+    //Validação de senha forte
+      let temMaiuscula = false;
+      let temMinuscula = false;
+      let temNumero = false;
+      let temEspecial = false;
+      const especiais = "!@#$%&*()-_=+[]{};:,.<>?/|~";
+
+      // Olha cada caractere da senha, um por um
+      for (let i = 0; i < senha.length; i++) {
+        const letra = senha[i];
+
+        if (letra >= 'A' && letra <= 'Z') {
+          temMaiuscula = true;
+        } else if (letra >= 'a' && letra <= 'z') {
+          temMinuscula = true;
+        } else if (letra >= '0' && letra <= '9') {
+          temNumero = true;
+        } else if (especiais.includes(letra)) {
+          temEspecial = true;
+        }
+      }
+
+      if (senha.length < 8) return mostrarErro('A senha precisa ter pelo menos 8 caracteres.', 'campoSenha');
+      if (!temMaiuscula) return mostrarErro('A senha precisa ter pelo menos uma letra maiúscula.', 'campoSenha');
+      if (!temMinuscula) return mostrarErro('A senha precisa ter pelo menos uma letra minúscula.', 'campoSenha');
+      if (!temNumero) return mostrarErro('A senha precisa ter pelo menos um número.', 'campoSenha');
+      if (!temEspecial) return mostrarErro('A senha precisa ter pelo menos um caractere especial (!, @, #, $...).', 'campoSenha');
+      
+//
+      if (senha !== confirmar) return mostrarErro('As senhas não conferem.', 'campoConfirmar');
+
+      btnCadastrar.disabled = true;
+
+      fetch('/usuarios/cadastrar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nomeServer: nome,
+          emailServer: email,
+          senhaServer: senha
+          // codigoAcessoServer removido
+        })
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            window.location = 'login.html';
+          } else {
+            resposta.text().then(function (texto) {
+              mostrarErro(texto || 'Não foi possível criar a conta. Tente novamente.');
+              btnCadastrar.disabled = false;
+            });
+          }
+        })
+        .catch(function () {
+          mostrarErro('Erro de conexão. Verifique sua internet e tente novamente.');
+          btnCadastrar.disabled = false;
+        });
+    });
+  </script>
+</body>
+</html>

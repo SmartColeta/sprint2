@@ -1,0 +1,331 @@
+/* =====================================================
+   1. VARIÁVEIS (cores, fonte, medidas)
+   ===================================================== */
+:root {
+  --verde-escuro: #123f2e;   /* painel esquerdo e títulos */
+  --verde-marca:  #1f7a4d;   /* botões, links */
+  --verde-claro:  #eaf4ee;
+  --fundo:        #f7f9f8;   /* fundo do lado direito */
+  --branco:       #ffffff;
+  --texto:        #1c2b24;
+  --texto-suave:  #6b7a73;
+  --borda:        #dfe5e2;
+  --erro:         #c0392b;
+
+  /* Usa DM Sans se o global.css carregar; senão cai na Inter (link do HTML) */
+  --fonte: "DM Sans", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --raio: 10px;              /* arredondamento de campos e botões */
+}
+
+/* =====================================================
+   2. ÁREA PRINCIPAL (divide em 2 colunas)
+   ===================================================== */
+.principal {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 40.6% 1fr;   /* esquerda ~40% / direita o resto */
+}
+
+/* =====================================================
+   3. PAINEL ESQUERDO (texto + imagem do caminhão)
+   ===================================================== */
+.painel {
+  --pad-x: 42px;                      /* espaçamento lateral (a imagem usa este valor) */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 44px var(--pad-x) 0;       /* sem padding embaixo: a imagem encosta no fundo */
+  min-height: 560px;
+  overflow: hidden;
+  background: var(--verde-escuro);
+  color: var(--branco);
+}
+
+/* 3.1 Etiqueta pequena do topo */
+.painel-etiqueta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #cfe3d8;
+}
+.painel-etiqueta::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #9fd3b6;
+}
+
+/* 3.2 Título e subtítulo */
+.painel h1 {
+  margin: 0 0 16px;
+  max-width: 14em;
+  font-size: 52px;
+  font-weight: 600;
+  line-height: 1.16;
+}
+.painel-sub {
+  margin: 0 0 24px;
+  max-width: 32em;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #b9cfc3;
+}
+
+/* 3.3 Lista de benefícios */
+.beneficios {
+  list-style: none;
+  margin: 0 0 32px;                   /* espaço mínimo entre a lista e a imagem */
+  padding: 0;
+  display: grid;
+  gap: 14px;
+  font-size: 16px;
+}
+.beneficios li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e6f0ea;
+}
+/* Ícones SVG (<img>) ficam brancos para aparecer no fundo verde */
+.beneficios img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1);
+}
+
+/* =====================================================
+   4. LADO DIREITO (formulário)
+   ===================================================== */
+.lado-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+.form-box {
+  width: 100%;
+  max-width: 341px;
+}
+
+/* 4.1 Abas (Entrar / Criar conta) */
+.abas {
+  display: flex;
+  gap: 17px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--borda);
+}
+.aba {
+  padding-bottom: 8px;
+  font-size: 15px;
+  color: var(--texto-suave);
+}
+.aba.ativa {
+  margin-bottom: -1px;
+  border-bottom: 2px solid var(--verde-marca);
+  font-weight: 500;
+  color: var(--verde-marca);
+}
+
+/* 4.2 Título e descrição do formulário */
+.form-box h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--verde-escuro);
+}
+.form-desc {
+  margin: 0 0 24px;
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+
+/* 4.3 Campos (nome, e-mail, senha, confirmar senha) */
+.campo {
+  position: relative;
+  margin-bottom: 10px;
+  padding: 9px 14px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+}
+.campo:focus-within {
+  border-color: var(--verde-marca);
+  box-shadow: 0 0 0 3px rgba(31, 122, 77, .12);
+}
+.campo label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--verde-escuro);
+}
+.campo input {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 12px;
+  color: var(--texto);
+}
+.campo input::placeholder { color: #98a59f; }
+
+/* Campo com erro (classe adicionada pelo JavaScript) */
+.campo.invalido {
+  border-color: var(--erro);
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, .12);
+}
+
+/* 4.4 Botão "mostrar senha" dentro do campo */
+.btn-olho {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  padding: 4px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--texto-suave);
+}
+
+/* 4.5 Dica abaixo do campo (ex.: "Use pelo menos 8 caracteres") */
+.dica {
+  margin: -4px 0 10px 4px;
+  font-size: 11px;
+  color: var(--texto-suave);
+}
+
+/* 4.6 Caixa de mensagem de erro (escondida até o JavaScript mostrar) */
+.msg-erro {
+  display: none;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid #f5c6c0;
+  border-radius: var(--raio);
+  background: #fdecea;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #a12a1f;
+}
+.msg-erro.visivel { display: block; }
+
+/* 4.7 Checkbox dos termos de uso */
+.lembrar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.lembrar input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--verde-marca);
+}
+.termos {
+  align-items: flex-start;            /* checkbox alinhado à primeira linha do texto */
+  margin: 14px 0 16px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--texto-suave);
+}
+.termos input { margin-top: 2px; flex-shrink: 0; }
+
+.link-forte { font-weight: 600; color: var(--verde-marca); }
+.link-forte:hover { text-decoration: underline; }
+
+/* 4.8 Botão principal "Criar conta" */
+.btn-entrar {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: var(--raio);
+  background: var(--verde-marca);
+  color: var(--branco);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-entrar:hover { background: #196a42; }
+.btn-entrar:disabled { opacity: .65; cursor: not-allowed; }   /* enquanto envia */
+.btn-entrar img {
+  width: 14px;
+  height: 14px;
+  filter: brightness(0) invert(1);    /* seta branca */
+}
+
+/* 4.9 Link "Entre aqui" */
+.criar-conta {
+  margin: 22px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+
+/* 4.10 Selo de segurança */
+.selo-seguranca {
+  margin-top: 22px;
+  padding-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-top: 1px solid var(--borda);
+  font-size: 10px;
+  color: var(--texto-suave);
+}
+.selo-seguranca img { width: 14px; height: 14px; }
+
+/* =====================================================
+   5. RESPONSIVIDADE
+   (cabeçalho e rodapé responsivos ficam no global.css)
+   ===================================================== */
+
+/* 5.1 Tablet (até 960px): colunas empilhadas, painel em cima */
+@media (max-width: 960px) {
+  .principal { grid-template-columns: 1fr; }
+
+  .painel { --pad-x: 32px; min-height: 0; padding-top: 36px; }
+  .painel h1 { font-size: 40px; }
+  #caminhao { height: 240px; }
+
+  .lado-form { padding: 40px 24px 48px; }
+}
+
+/* 5.2 Celular (até 560px): textos e campos maiores para toque */
+@media (max-width: 560px) {
+  .painel { --pad-x: 20px; padding-top: 28px; }
+  .painel h1 { font-size: 30px; }
+  .painel-sub { font-size: 14px; }
+  .beneficios { font-size: 14px; }
+  #caminhao { height: 190px; }
+
+  .aba { font-size: 14px; }
+  .form-box h2 { font-size: 24px; }
+  .form-desc,
+  .campo input,
+  .criar-conta,
+  .termos,
+  .msg-erro,
+  .dica { font-size: 13px; }
+  .campo label { font-size: 14px; }
+  .campo { padding: 11px 14px; }
+  .btn-entrar { height: 46px; }
+  .selo-seguranca { font-size: 11px; }
+}
+
+/* Respeita quem prefere menos animação */
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

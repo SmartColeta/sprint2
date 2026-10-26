@@ -1,3 +1,4 @@
+CREATE DATABASE smartcoleta;
 use smartcoleta;
 
 CREATE TABLE ponto_coleta (
@@ -12,13 +13,13 @@ statuss TINYINT
 
 CREATE TABLE compartimento (
 idCompartimento INT PRIMARY KEY AUTO_INCREMENT,
-ponto_coleta_idPonto INT,
+fkPontoColeta INT,
+	CONSTRAINT fkCompartimentoPonto FOREIGN KEY (fkPontoColeta)
+		REFERENCES ponto_coleta(idPonto),
 statuss TINYINT,
 tipoResiduo VARCHAR(30),
 limiteAtencao DECIMAL(5,2),
-limiteCritico DECIMAL(5,2),
-    FOREIGN KEY (ponto_coleta_idPonto)
-        REFERENCES ponto_coleta(idPonto)
+limiteCritico DECIMAL(5,2)
 );
 
 CREATE TABLE sensor (
@@ -34,7 +35,7 @@ statuss TINYINT,
 CREATE TABLE leitura (
 idLeitura INT PRIMARY KEY AUTO_INCREMENT,
 distanciaCm DECIMAL(6,2),
-dataHora DATETIME DEFAULT,
+dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
 fkSensor INT,
     FOREIGN KEY (fkSensor)
         REFERENCES sensor(idSensor)
@@ -55,10 +56,18 @@ CREATE TABLE prefeitura (
     razaoSocial VARCHAR(50),
     cnpj CHAR(14),
     qtdHabitantes INT,
-    codigoAtivacao CHAR(8) UNIQUE,
     fkEndereco INT,
 		CONSTRAINT fkPrefeituraEnd FOREIGN KEY (fkEndereco)
 			REFERENCES endereco(idEndereco)
+);
+
+CREATE TABLE emailsAutorizados(
+	idEmailAutorizados		INT PRIMARY KEY AUTO_INCREMENT,
+    email					VARCHAR(45) UNIQUE,
+		CONSTRAINT fkEmailAutorizado CHECK (email IN('%@%.%')),
+	fkPrefeitura			INT,
+		CONSTRAINT fkEmailPrefeitura FOREIGN KEY (fkPrefeitura)
+			REFERENCES prefeitura(idPrefeitura)
 );
 
 CREATE TABLE endereco (
