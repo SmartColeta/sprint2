@@ -55,6 +55,7 @@ CREATE TABLE prefeitura (
 	idPrefeitura INT PRIMARY KEY AUTO_INCREMENT,
     razaoSocial VARCHAR(50),
     cnpj CHAR(14),
+    uf CHAR(2),
     qtdHabitantes INT,
     fkEndereco INT,
 		CONSTRAINT fkPrefeituraEnd FOREIGN KEY (fkEndereco)
@@ -68,17 +69,6 @@ CREATE TABLE emailsAutorizados(
 	fkPrefeitura			INT,
 		CONSTRAINT fkEmailPrefeitura FOREIGN KEY (fkPrefeitura)
 			REFERENCES prefeitura(idPrefeitura)
-);
-
-CREATE TABLE endereco (
-	idEndereco INT PRIMARY KEY AUTO_INCREMENT,
-    municipio VARCHAR(50),
-    rua VARCHAR(50),
-	numero VARCHAR(50),
-    bairro VARCHAR(50),
-    uf CHAR(2),
-    codigoPostal VARCHAR(8),
-    pais VARCHAR(50)
 );
 
 CREATE TABLE usuario (
@@ -119,10 +109,10 @@ INSERT INTO coleta (fkCompartimentoSensor, dataHoraColeta, coletaAntes) VALUES
 (4, '2026-10-13 18:10:00', 82.30);
 
 -- TABELA PREFEITURA INSERTS
-INSERT INTO prefeitura (razaoSocial, cnpj, qtdHabitantes, codigoAtivacao) VALUES
-('MUNICIPIO DE CAMPO NOVO DE RONDONIA', '63762033000199', 9225, 'SMCL0001'),
-('MUNICIPIO DE CEREJEIRAS', '04914925000107', 16975, 'SMCL0002'),
-('MUNICIPIO DE BANDEIRANTES', '03501491000142', 8276, 'SMCL0003');
+INSERT INTO prefeitura (razaoSocial, cnpj, uf, qtdHabitantes) VALUES
+('MUNICIPIO DE CAMPO NOVO DE RONDONIA', '63762033000199', 'RO' 9225, 'SMCL0001'),
+('MUNICIPIO DE CEREJEIRAS', '04914925000107', 'RO', 16975, 'SMCL0002'),
+('MUNICIPIO DE BANDEIRANTES', '03501491000142', 'MS' 8276, 'SMCL0003');
 
 -- 1. Exibir todos os pontos de coleta cadastrados
 SELECT * FROM ponto_coleta;
