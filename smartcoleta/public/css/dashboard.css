@@ -727,22 +727,6 @@ body {
 
 /** breakpoints (margin / paddings) **/
 
-@media screen and (max-width: 1024px) {
-
-	body {
-		padding-inline: 16px;
-	}
-	.banner-alerta {
-		padding-inline: 10px;
-	}
-
-	.card {
-		padding-inline: 10px;
-	}
-}
-
-
-
 /* container queries (grids) */
 
 @container body (width < 1280px) {
