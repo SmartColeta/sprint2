@@ -20,7 +20,7 @@ const serial = async (
         {
             host: 'localhost',
             user: 'user_insert',
-            password: 'smartcoleta2026',
+            password: 'Smartcoleta2026#',
             database: 'smartcoleta',
             port: 3307
         }
