@@ -57,15 +57,12 @@ CREATE TABLE prefeitura (
     cnpj CHAR(14),
     uf CHAR(2),
     qtdHabitantes INT,
-    fkEndereco INT,
-		CONSTRAINT fkPrefeituraEnd FOREIGN KEY (fkEndereco)
-			REFERENCES endereco(idEndereco)
 );
 
 CREATE TABLE emailsAutorizados(
 	idEmailAutorizados		INT PRIMARY KEY AUTO_INCREMENT,
     email					VARCHAR(45) UNIQUE,
-		CONSTRAINT fkEmailAutorizado CHECK (email IN('%@%.%')),
+		CONSTRAINT fkEmailAutorizado CHECK (email LIKE '%@%.%'),
 	fkPrefeitura			INT,
 		CONSTRAINT fkEmailPrefeitura FOREIGN KEY (fkPrefeitura)
 			REFERENCES prefeitura(idPrefeitura)
