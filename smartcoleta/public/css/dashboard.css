@@ -702,15 +702,9 @@ body {
 	filter: brightness(0.92); /* escurece um pouco o elemento */
 }
 
-<<<<<<< HEAD
-=======
 .hover-claro:hover {
 	filter: brightness(1.15); /* clareia um pouco o elemento */
 }
-
-
-
->>>>>>> 62c1e83458a325ed99ca515b2a2089692c428429
 /* container queries (grids) */
 
 /* notebook / tela média: indicadores em 2 x 2 */
