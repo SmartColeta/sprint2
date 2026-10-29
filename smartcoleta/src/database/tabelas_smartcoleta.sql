@@ -1,15 +1,29 @@
 
--- 1. Tabela Prefeitura
+CREATE DATABASE IF NOT EXISTS smartcoleta;
+USE smartcoleta;
+
+-- 1. Prefeitura (1 código de acesso por prefeitura)
 CREATE TABLE prefeitura (
     idPrefeitura INT PRIMARY KEY AUTO_INCREMENT,
-    razaoSocial VARCHAR(50),
-    cnpj CHAR(14),
+    razaoSocial VARCHAR(50) NOT NULL,
+    cnpj CHAR(14) NOT NULL UNIQUE,
     uf CHAR(2),
     qtdHabitantes INT,
-    codigoAcesso VARCHAR(20)
+    codigoAcesso VARCHAR(20) NOT NULL UNIQUE
 );
 
--- 2. Tabela Ponto de Coleta
+-- 2. Usuário (N usuários para 1 prefeitura)
+CREATE TABLE usuario (
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50),
+    email VARCHAR(50) NOT NULL UNIQUE,
+    senha VARCHAR(255),
+    fkPrefeitura INT NOT NULL,
+    CONSTRAINT fkUsuarioPrefeitura FOREIGN KEY (fkPrefeitura)
+        REFERENCES prefeitura(idPrefeitura)
+);
+
+-- 3. Ponto de coleta (pertence a uma prefeitura)
 CREATE TABLE ponto_coleta (
     idPonto INT PRIMARY KEY AUTO_INCREMENT,
     rua VARCHAR(100),
@@ -17,184 +31,142 @@ CREATE TABLE ponto_coleta (
     cidade VARCHAR(100),
     latitude DECIMAL(10,7),
     longitude DECIMAL(10,7),
-    statuss TINYINT
+    statuss TINYINT,
+    fkPrefeitura INT NOT NULL,
+    CONSTRAINT fkPontoPrefeitura FOREIGN KEY (fkPrefeitura)
+        REFERENCES prefeitura(idPrefeitura)
 );
 
--- 3. Tabela Compartimento
+-- 4. Parametrização (limites em % de enchimento)
+CREATE TABLE parametrizacao (
+    idParametrizacao INT PRIMARY KEY AUTO_INCREMENT,
+    limiteAtencao DECIMAL(5,2) NOT NULL,
+    limiteCritico DECIMAL(5,2) NOT NULL,
+    CONSTRAINT chkLimites CHECK (limiteAtencao < limiteCritico)
+);
+
+-- 5. Compartimento
 CREATE TABLE compartimento (
     idCompartimento INT PRIMARY KEY AUTO_INCREMENT,
-	tipoResiduo VARCHAR(30),
-	statuss TINYINT,
-    fkPontoColeta INT,
+    tipoResiduo VARCHAR(30),
+    alturaCm DECIMAL(6,2) NOT NULL,
+    statuss TINYINT,
+    fkPontoColeta INT NOT NULL,
+    fkParametrizacao INT NOT NULL,
     CONSTRAINT fkCompartimentoPonto FOREIGN KEY (fkPontoColeta)
-        REFERENCES ponto_coleta(idPonto)
+        REFERENCES ponto_coleta(idPonto),
+    CONSTRAINT fkCompartimentoParam FOREIGN KEY (fkParametrizacao)
+        REFERENCES parametrizacao(idParametrizacao)
 );
 
--- 4. Tabela Sensor
+-- 6. Sensor (1 sensor por compartimento)
 CREATE TABLE sensor (
     idSensor INT PRIMARY KEY AUTO_INCREMENT,
-    fkCompartimentoSensor INT,
     numeroSensor INT,
     modelo VARCHAR(50),
     statuss TINYINT,
-    FOREIGN KEY (fkCompartimentoSensor)
+    fkCompartimento INT NOT NULL UNIQUE,
+    CONSTRAINT fkSensorCompartimento FOREIGN KEY (fkCompartimento)
         REFERENCES compartimento(idCompartimento)
 );
 
--- 5. Tabela Leitura
+-- 7. Leitura
 CREATE TABLE leitura (
     idLeitura INT PRIMARY KEY AUTO_INCREMENT,
     distanciaCm DECIMAL(6,2),
     dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fkSensor INT,
-    FOREIGN KEY (fkSensor)
+    fkSensor INT NOT NULL,
+    CONSTRAINT fkLeituraSensor FOREIGN KEY (fkSensor)
         REFERENCES sensor(idSensor)
 );
 
--- 6. Tabela Parametrização
-CREATE TABLE parametrizacao (
-    idParametrizacao INT PRIMARY KEY AUTO_INCREMENT,
-    limiteNormal DECIMAL(5,2),
-    limiteAtencao DECIMAL(5,2),
-    limiteCritico DECIMAL(5,2),
-    fkLeitura INT, 
-    FOREIGN KEY (fkLeitura)
-        REFERENCES leitura(idLeitura)
-);
-
--- 7. Tabela Coleta
+-- 8. Coleta
 CREATE TABLE coleta (
     idColeta INT PRIMARY KEY AUTO_INCREMENT,
-    fkCompartimento INT,
     dataHoraColeta DATETIME,
     coletaAntes DECIMAL(5,2),
-    FOREIGN KEY (fkCompartimento)
+    fkCompartimento INT NOT NULL,
+    CONSTRAINT fkColetaCompartimento FOREIGN KEY (fkCompartimento)
         REFERENCES compartimento(idCompartimento)
 );
 
--- 8. Tabela Usuário (com e-mail pré-cadastrado para validação/atualização)
-CREATE TABLE usuario (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(50),
-    email VARCHAR(50) UNIQUE,
-    senha VARCHAR(50)
-);
-
-
--- INSERÇÃO DE DADOS EM TODAS AS TABELAS
-
+-- INSERTS
 INSERT INTO prefeitura (razaoSocial, cnpj, uf, qtdHabitantes, codigoAcesso) VALUES
 ('MUNICIPIO DE CAMPO NOVO DE RONDONIA', '63762033000199', 'RO', 9225, 'SMCL0001'),
 ('MUNICIPIO DE CEREJEIRAS', '04914925000107', 'RO', 16975, 'SMCL0002'),
 ('MUNICIPIO DE BANDEIRANTES', '03501491000142', 'MS', 8276, 'SMCL0003');
 
-INSERT INTO ponto_coleta (rua, bairro, cidade, latitude, longitude, statuss) VALUES
-('Rua Haddock Lobo', 'Cerqueira César', 'São Paulo', -23.5562000, -46.6621000, 1),
-('Av. Paulista', 'Bela Vista', 'São Paulo', -23.5618000, -46.6565000, 1),
-('Rua Augusta', 'Consolação', 'São Paulo', -23.5505000, -46.6558000, 1),
-('Rua Bela Cintra', 'Consolação', 'São Paulo', -23.5534000, -46.6589000, 1);
+INSERT INTO ponto_coleta (rua, bairro, cidade, latitude, longitude, statuss, fkPrefeitura) VALUES
+('Rua Haddock Lobo', 'Cerqueira César', 'São Paulo', -23.5562000, -46.6621000, 1, 1),
+('Av. Paulista', 'Bela Vista', 'São Paulo', -23.5618000, -46.6565000, 1, 1),
+('Rua Augusta', 'Consolação', 'São Paulo', -23.5505000, -46.6558000, 1, 2),
+('Rua Bela Cintra', 'Consolação', 'São Paulo', -23.5534000, -46.6589000, 1, 3);
 
-INSERT INTO compartimento (fkPontoColeta, statuss, tipoResiduo, limiteAtencao, limiteCritico) VALUES
-(1, 1, 'Orgânico', 70.00, 90.00),
-(2, 1, 'Reciclável', 65.00, 85.00),
-(3, 1, 'Papel', 75.00, 95.00),
-(4, 1, 'Plástico', 60.00, 80.00);
+INSERT INTO parametrizacao (limiteAtencao, limiteCritico) VALUES
+(70.00, 90.00),
+(65.00, 85.00),
+(75.00, 95.00),
+(60.00, 80.00);
 
-INSERT INTO sensor (fkCompartimentoSensor, numeroSensor, modelo, statuss) VALUES
-(1, 101, 'HC-SR04', 1),
-(2, 102, 'HC-SR04', 1),
-(3, 103, 'HC-SR04', 1),
-(4, 104, 'HC-SR04', 1);
+INSERT INTO compartimento (tipoResiduo, alturaCm, statuss, fkPontoColeta, fkParametrizacao) VALUES
+('Orgânico',   100.00, 1, 1, 1),
+('Reciclável', 100.00, 1, 2, 2),
+('Papel',      100.00, 1, 3, 3),
+('Plástico',   100.00, 1, 4, 4);
 
-INSERT INTO leitura (idSensor, distanciaCm, dataHora) VALUES
+INSERT INTO sensor (numeroSensor, modelo, statuss, fkCompartimento) VALUES
+(101, 'HC-SR04', 1, 1),
+(102, 'HC-SR04', 1, 2),
+(103, 'HC-SR04', 1, 3),
+(104, 'HC-SR04', 1, 4);
+
+INSERT INTO leitura (fkSensor, distanciaCm, dataHora) VALUES
 (1, 15.50, '2026-10-14 08:30:00'),
 (2, 45.00, '2026-10-14 09:15:00'),
 (3, 10.20, '2026-10-14 10:00:00'),
 (4, 30.80, '2026-10-14 10:45:00');
 
-INSERT INTO parametrizacao (limiteNormal, limiteAtencao, limiteCritico, fkLeitura) VALUES
-(40.00, 70.00, 90.00, 1),
-(35.00, 65.00, 85.00, 2),
-(50.00, 75.00, 95.00, 3),
-(30.00, 60.00, 80.00, 4);
-
-INSERT INTO coleta (fkCompartimentoSensor, dataHoraColeta, coletaAntes) VALUES
+INSERT INTO coleta (fkCompartimento, dataHoraColeta, coletaAntes) VALUES
 (1, '2026-10-13 14:00:00', 92.50),
 (2, '2026-10-13 15:30:00', 88.00),
 (3, '2026-10-13 16:45:00', 96.10),
 (4, '2026-10-13 18:10:00', 82.30);
 
--- Inserindo usuários com e-mails já cadastrados (pré-autorizados na própria tabela)
-INSERT INTO usuario (nome, email, senha) VALUES
-(NULL, 'admin.sp@smartcoleta.com', NULL),
-(NULL, 'fiscal.sp@smartcoleta.com', NULL),
-('Gestor Operacional', 'operador@smartcoleta.com', 'senha123');
+-- CADASTRO VIA CÓDIGO DE ACESSO
+-- O mesmo código ('SMCL0001') serve para vários usuários da mesma prefeitura
+INSERT INTO usuario (nome, email, senha, fkPrefeitura)
+SELECT 'Gestor Operacional', 'operador@smartcoleta.com', 'senha123', idPrefeitura
+FROM prefeitura WHERE codigoAcesso = 'SMCL0001';
 
+INSERT INTO usuario (nome, email, senha, fkPrefeitura)
+SELECT 'Fiscal de Coleta', 'fiscal@smartcoleta.com', 'senha123', idPrefeitura
+FROM prefeitura WHERE codigoAcesso = 'SMCL0001';
+-- Se o código não existir, o SELECT não retorna nada e nenhum usuário é inserido
 
--- VISUALIZAR DADOS DE TODAS AS TABELAS
+-- CONSULTAS
+-- Usuários e suas prefeituras
+SELECT u.nome, u.email, p.razaoSocial, p.codigoAcesso
+FROM usuario u
+JOIN prefeitura p ON u.fkPrefeitura = p.idPrefeitura;
 
-SELECT * FROM prefeitura;
-SELECT * FROM ponto_coleta;
-SELECT * FROM compartimento;
-SELECT * FROM sensor;
-SELECT * FROM leitura;
-SELECT * FROM parametrizacao;
-SELECT * FROM coleta;
-SELECT * FROM usuario;
-
--- Exibir compartimentos junto com os dados do ponto de coleta correspondente
-SELECT 
-    c.idCompartimento,
-    p.rua,
-    p.bairro,
-    c.tipoResiduo,
-    c.limiteCritico
+-- Compartimentos com ponto e limites
+SELECT c.idCompartimento, p.rua, p.bairro, c.tipoResiduo, pa.limiteCritico
 FROM compartimento c
-JOIN ponto_coleta p ON c.fkPontoColeta = p.idPonto;
+JOIN ponto_coleta p    ON c.fkPontoColeta = p.idPonto
+JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao;
 
--- Exibir todos os pontos de coleta, mesmo os que não tenham compartimentos cadastrados
-SELECT 
-    p.idPonto,
-    p.rua,
-    c.idCompartimento,
-    c.tipoResiduo
-FROM ponto_coleta p
-LEFT JOIN compartimento c ON p.idPonto = c.fkPontoColeta;
-
--- Exibir todos os sensores e seus compartimentos (priorizando a tabela sensor)
-SELECT 
-    s.idSensor,
-    s.numeroSensor,
-    s.modelo,
-    c.tipoResiduo
-FROM compartimento c
-RIGHT JOIN sensor s ON c.idCompartimento = s.fkCompartimentoSensor;
-
--- Filtrar pontos de coleta localizados em ruas que contêm 'Paulista' ou 'Haddock'
-SELECT * 
-FROM ponto_coleta 
-WHERE rua LIKE '%Paulista%' OR rua LIKE '%Haddock%';
-
--- Classificar o nível do resíduo com base na distância medida pelo sensor
-SELECT 
+-- Status da leitura usando a parametrização do compartimento
+SELECT
     l.idLeitura,
-    l.distanciaCm,
     s.numeroSensor,
-    CASE 
-        WHEN l.distanciaCm < 20.00 THEN 'Crítico (Muito Cheio)'
-        WHEN l.distanciaCm BETWEEN 20.00 AND 50.00 THEN 'Atenção (Meio Cheio)'
-        ELSE 'Normal (Vazio)'
+    l.distanciaCm,
+    ROUND((1 - l.distanciaCm / c.alturaCm) * 100, 2) AS nivelPct,
+    CASE
+        WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.limiteCritico THEN 'Crítico'
+        WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.limiteAtencao THEN 'Atenção'
+        ELSE 'Normal'
     END AS statusPreenchimento
 FROM leitura l
-JOIN sensor s ON l.idSensor = s.idSensor;
-
-
--- Consultar se o e-mail já existe/está cadastrado na tabela de usuários
-SELECT email 
-FROM usuario 
-WHERE email = 'fiscal.sp@smartcoleta.com';
-
--- Realizar o UPDATE de nome e senha utilizando o e-mail como filtro
-UPDATE usuario 
-SET nome = 'Fiscal de Coleta SP', senha = 'senha123'
-WHERE email = 'fiscal.sp@smartcoleta.com';
+JOIN sensor s          ON l.fkSensor = s.idSensor
+JOIN compartimento c   ON s.fkCompartimento = c.idCompartimento
+JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao;
