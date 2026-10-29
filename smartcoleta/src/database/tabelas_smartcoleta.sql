@@ -65,10 +65,10 @@ CREATE TABLE parametrizacao (
 -- 7. Tabela Coleta
 CREATE TABLE coleta (
     idColeta INT PRIMARY KEY AUTO_INCREMENT,
-    fkCompartimentoSensor INT,
+    fkCompartimento INT,
     dataHoraColeta DATETIME,
     coletaAntes DECIMAL(5,2),
-    FOREIGN KEY (fkCompartimentoSensor)
+    FOREIGN KEY (fkCompartimento)
         REFERENCES compartimento(idCompartimento)
 );
 
