@@ -359,7 +359,7 @@ button {
 /* --------------------------------------------------------------------------
    2. CARD DE ALERTA (visão geral) E DIAGNÓSTICO (visão do ponto)
    A cor muda conforme o pior patamar: alerta-critico, alerta-atencao ou
-   alerta-normal (classe colocada pelo dashboard.js).
+   alerta-normal (classe colocada pelo script do dashboard.html).
    -------------------------------------------------------------------------- */
 .alerta {
 	gap: 6px; /* espaço entre título, texto e lista */
