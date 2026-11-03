@@ -4,20 +4,15 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Painel de Gestão | SmartColeta</title>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<title>Monitoramento das lixeiras | SmartColeta</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 	<!-- Importando icone da aba do navegador -->
-	<link rel="icon" href="logos/smartcoleta-logo.svg">
+	<link rel="icon" href="/logos/smartcoleta-logo.svg">
 
-	<link
-		href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-		rel="stylesheet">
-	<link rel="stylesheet" href="/css/reset.css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
 	<link rel="stylesheet" href="/css/dashboard.css">
-	<link rel="stylesheet" href="/css/global.css">
-
-
 </head>
 
 <body>
@@ -26,13 +21,13 @@
 		<aside class="barra-lateral">
 			<div class="barra-lateral-logo">
 				<div class="barra-lateral-logo-marca">
-					<object data="logos/isologo.svg" class="barra-lateral-logo-icone" type="image/svg+xml"></object>
+					<object data="/logos/isologo.svg" class="barra-lateral-logo-icone" type="image/svg+xml"></object>
 				</div>
 				<p class="barra-lateral-logo-nome">Smart<span>Coleta</span></p>
 			</div>
 
 			<nav class="barra-lateral-menu">
-				<a class="barra-link barra-link-ativo" href="dashboard.html">Dashboard</a>
+				<a class="barra-link barra-link-ativo" href="dashboard.html">Monitoramento</a>
 				<a class="barra-link" href="#">Relatórios</a>
 				<a class="barra-link" href="/contato.html">Suporte</a>
 			</nav>
@@ -47,352 +42,195 @@
 		</aside>
 
 		<main class="conteudo">
-			<div class="painel secao">
-				<!-- <div class="banner-alerta">  NOTIFICACAO COM ALERTAS
-					<div class="banner-alerta-conteudo">
-						<p> Notificação </p>
-						<h2 class="banner-alerta-titulo">4 compartimentos estão em nível crítico</h2>
-						<p class="banner-alerta-texto">Acima de 90% de preenchimento. Priorize a coleta nesses pontos.
-						</p>
+			<div class="painel">
+
+				<!-- TOPO: título, filtro de visão e horário da última leitura -->
+				<header class="painel-topo">
+					<div class="painel-topo-textos">
+						<button class="botao-voltar hover-escuro" type="button" id="botao-voltar" style="display: none"
+							onclick="abrirVisao(0)">&larr; Visão geral</button>
+						<h1 class="painel-titulo" id="painel-titulo">Monitoramento das lixeiras da cidade</h1>
+						<p class="painel-subtitulo" id="painel-subtitulo">Saiba quais pontos estão enchendo e colete antes
+							que o lixo transborde</p>
 					</div>
 
-					<a class="banner-alerta-link" href="#compartimentos-cheios">Ver os 4 pontos</a>
-					<img class="mascote" src="assets/mascote.png" alt="Mascote da SmartColeta" width="109" height="130" />
-				</div> -->
+					<div class="painel-topo-filtro">
+						<label class="filtro-rotulo" for="filtro-visao">Visualizar</label>
+						<select class="filtro-visao" id="filtro-visao" onchange="trocarVisao()"></select>
+						<p class="painel-atualizacao" id="painel-atualizacao"></p>
+					</div>
+				</header>
 
-				<div class="indicadores">
-					<div class="indicador indicador-ocupacao">
-						<h2 class="indicador-titulo">Ocupação média da frota</h2>
-						<div class="indicador-linha">
-							<p class="indicador-dado">58%</p>
+				<!-- ======================= VISÃO GERAL DA CIDADE ======================= -->
+				<section class="visao visao-geral" id="visao-geral">
+					<div class="linha-resumo">
+						<!-- primeiro card: alerta com os pontos em atenção e crítico (montado pelo script) -->
+						<div class="card alerta" id="alerta">
+							<h2 class="alerta-titulo" id="alerta-titulo"></h2>
+							<p class="alerta-texto" id="alerta-texto"></p>
+							<div class="alerta-lista" id="alerta-lista"></div>
 						</div>
-						<p class="indicador-descricao">Última leitura de 30 compartimentos</p>
-					</div>
 
-					<div class="indicador indicador-criticos">
-						<h2 class="indicador-titulo">Em nível crítico</h2>
-						<div class="indicador-linha">
-							<p class="indicador-dado">4</p>
-							<p class="indicador-status indicador-status-critico">Acima da meta</p>
+						<div class="indicador">
+							<h2 class="indicador-titulo">Ocupação média</h2>
+							<div class="indicador-linha">
+								<p class="indicador-dado" id="kpi-ocupacao"></p>
+							</div>
+							<p class="indicador-descricao" id="kpi-ocupacao-descricao"></p>
 						</div>
-						<p class="indicador-descricao">13% da frota, meta abaixo de 10%</p>
-					</div>
 
-					<div class="indicador indicador-atendimento">
-						<h2 class="indicador-titulo">Tempo de atendimento</h2>
-						<div class="indicador-linha">
-							<p class="indicador-dado">18 h</p>
-							<p class="indicador-status indicador-status-normal">Dentro da meta</p>
+						<div class="indicador">
+							<h2 class="indicador-titulo">Compartimentos em nível crítico</h2>
+							<div class="indicador-linha">
+								<p class="indicador-dado" id="kpi-criticos"></p>
+								<p class="indicador-status" id="kpi-criticos-status"></p>
+							</div>
+							<p class="indicador-descricao" id="kpi-criticos-descricao"></p>
 						</div>
-						<p class="indicador-descricao">Do alerta crítico até a coleta, meta até 24 h</p>
-					</div>
 
-					<div class="indicador indicador-sensores">
-						<h2 class="indicador-titulo">Sensores disponíveis</h2>
-						<div class="indicador-linha">
-							<p class="indicador-dado">97%</p>
-							<p class="indicador-status indicador-status-normal">Dentro da meta</p>
+						<div class="indicador">
+							<h2 class="indicador-titulo">Sensores ativos</h2>
+							<div class="indicador-linha">
+								<p class="indicador-dado" id="kpi-sensores"></p>
+								<p class="indicador-status" id="kpi-sensores-status"></p>
+							</div>
+							<p class="indicador-descricao" id="kpi-sensores-descricao"></p>
 						</div>
-						<p class="indicador-descricao">Sensores ativos, meta de 95% ou mais</p>
 					</div>
-				</div>
 
-				<div class="patamar-div">
-					<div class="card-patamares card">
-						<h2 class="card-patamares-titulo">Compartimentos por patamar</h2>
-						<p class="card-patamares-subtitulo">Situação atual dos 30 pontos monitorados</p>
+					<div class="linha-detalhe linha-detalhe-geral">
+						<div class="card">
+							<h2 class="card-titulo">Pontos de coleta</h2>
+							<p class="card-subtitulo">Clique em um ponto para ver o motivo do alerta</p>
+							<!-- uma linha por ponto, montada pelo script -->
+							<ul class="lista-pontos" id="lista-pontos"></ul>
+						</div>
 
-						<div class="patamares">
+						<div class="card">
+							<h2 class="card-titulo">Última leitura de cada sensor</h2>
+							<p class="card-subtitulo">Nível de preenchimento dos 3 compartimentos de cada ponto</p>
+							<!-- Gráfico de barras (Chart.js: type 'bar') -->
+							<div class="grafico">
+								<canvas id="grafico-sensores"></canvas>
+							</div>
+						</div>
+
+						<div class="card">
+							<h2 class="card-titulo">Compartimentos por patamar</h2>
+							<p class="card-subtitulo">Conforme os limites de cada compartimento</p>
 							<!-- Gráfico de rosca (Chart.js: type 'doughnut') -->
-							<div class="patamares-grafico">
-								<canvas class="patamares-grafico-canvas" id="myChartRosca"></canvas>
-
-								<div class="patamares-grafico-centro">
-									<p class="patamares-grafico-total">30</p>
-									<p class="patamares-grafico-unidade">pontos de coleta</p>
-								</div>
-							</div>
-
-							<div class="patamares-lista">
-								<div class="patamar patamar-normal">
-									<span class="patamar-marcador"></span>
-									<p class="patamar-nome">Normal</p>
-									<p class="patamar-quantidade">19</p>
-									<p class="patamar-faixa">abaixo de 70%</p>
+							<div class="patamares">
+								<div class="patamares-grafico">
+									<canvas id="grafico-patamares"></canvas>
+									<div class="patamares-grafico-centro">
+										<p class="patamares-grafico-total" id="patamares-total"></p>
+										<p class="patamares-grafico-unidade">compartimentos</p>
+									</div>
 								</div>
 
-								<div class="patamar patamar-atencao">
-									<span class="patamar-marcador"></span>
-									<p class="patamar-nome">Atenção</p>
-									<p class="patamar-quantidade">7</p>
-									<p class="patamar-faixa">de 70% a 90%</p>
-								</div>
-
-								<div class="patamar patamar-critico">
-									<span class="patamar-marcador"></span>
-									<p class="patamar-nome">Crítico</p>
-									<p class="patamar-quantidade">4</p>
-									<p class="patamar-faixa">acima de 90%</p>
+								<div class="patamares-lista">
+									<div class="patamar patamar-normal">
+										<span class="patamar-marcador"></span>
+										<p class="patamar-nome">Normal</p>
+										<p class="patamar-quantidade" id="patamar-normal"></p>
+									</div>
+									<div class="patamar patamar-atencao">
+										<span class="patamar-marcador"></span>
+										<p class="patamar-nome">Atenção</p>
+										<p class="patamar-quantidade" id="patamar-atencao"></p>
+									</div>
+									<div class="patamar patamar-critico">
+										<span class="patamar-marcador"></span>
+										<p class="patamar-nome">Crítico</p>
+										<p class="patamar-quantidade" id="patamar-critico"></p>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+				</section>
 
-					<div class="card-ocupacao card">
-						<h2 class="card-ocupacao-titulo">Ocupação média da frota por dia</h2>
-						<p class="card-ocupacao-subtitulo">Percentual de preenchimento, com os limites de atenção e
-							crítico</p>
+				<!-- ======================= VISÃO DE UM PONTO DE COLETA ======================= -->
+				<section class="visao visao-ponto" id="visao-ponto" style="display: none">
+					<div class="linha-resumo">
+						<!-- diagnóstico: responde "por que este ponto está em alerta?" (montado pelo script) -->
+						<div class="card alerta" id="diagnostico">
+							<h2 class="alerta-titulo" id="diagnostico-titulo"></h2>
+							<p class="alerta-texto" id="diagnostico-texto"></p>
+							<ul class="diagnostico-lista" id="diagnostico-lista"></ul>
+						</div>
 
-						<!-- Gráfico de linha (Chart.js: type 'line') -->
-						<canvas id="myChartLinhas" style="position: relative; height:40vh; width:60vw"></canvas>
+						<div class="indicador">
+							<h2 class="indicador-titulo">Nível médio do ponto</h2>
+							<div class="indicador-linha">
+								<p class="indicador-dado" id="kpi-ponto-media"></p>
+							</div>
+							<p class="indicador-descricao">Média da última leitura dos compartimentos</p>
+						</div>
+
+						<div class="indicador">
+							<h2 class="indicador-titulo">Compartimento mais cheio</h2>
+							<div class="indicador-linha">
+								<p class="indicador-dado" id="kpi-ponto-maximo"></p>
+								<p class="indicador-status" id="kpi-ponto-maximo-status"></p>
+							</div>
+							<p class="indicador-descricao" id="kpi-ponto-maximo-descricao"></p>
+						</div>
+
+						<div class="indicador">
+							<h2 class="indicador-titulo">Última coleta</h2>
+							<div class="indicador-linha">
+								<p class="indicador-dado" id="kpi-ponto-coleta"></p>
+							</div>
+							<p class="indicador-descricao" id="kpi-ponto-coleta-descricao"></p>
+						</div>
 					</div>
-				</div>
 
-				<div class="ranking-secao">
-					<div class="card-ranking card" id="compartimentos-cheios">
-						<h2 class="card-ranking-titulo">Compartimentos mais cheios agora</h2>
-						<p class="card-ranking-subtitulo">Os quatro primeiros pedem coleta imediata</p>
-
-						<!-- Lista montada em HTML/CSS (os itens podem ser gerados com os dados do banco) -->
-						<div class="ranking" id="ranking">
-							<div class="ranking-item ranking-item-critico" style="--valor: 94">
-								<p class="ranking-item-rua">Av. Tancredo Neves</p>
-								<p class="ranking-item-bairro">Centro</p>
-								<p class="ranking-item-percentual">94%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
-							</div>
-
-							<div class="ranking-item ranking-item-critico" style="--valor: 92">
-								<p class="ranking-item-rua">Rua Santa Cruz</p>
-								<p class="ranking-item-bairro">Planalto</p>
-								<p class="ranking-item-percentual">92%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
-							</div>
-
-							<div class="ranking-item ranking-item-critico" style="--valor: 91">
-								<p class="ranking-item-rua">Av. Airton Senna</p>
-								<p class="ranking-item-bairro">Jardim Monte Alegre</p>
-								<p class="ranking-item-percentual">91%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
-							</div>
-
-							<div class="ranking-item ranking-item-critico" style="--valor: 90">
-								<p class="ranking-item-rua">Rua Rio de Janeiro</p>
-								<p class="ranking-item-bairro">Jardim Alvorada</p>
-								<p class="ranking-item-percentual">90%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
-							</div>
-
-							<div class="ranking-item ranking-item-atencao" style="--valor: 78">
-								<p class="ranking-item-rua">Av. Brasil</p>
-								<p class="ranking-item-bairro">Centro</p>
-								<p class="ranking-item-percentual">78%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
+					<div class="linha-detalhe linha-detalhe-ponto">
+						<div class="card">
+							<h2 class="card-titulo">Nível por compartimento</h2>
+							<p class="card-subtitulo">Última leitura, com os limites de atenção e crítico</p>
+							<!-- Gráfico de barras com marcadores de limite (Chart.js: 'bar' + 'line') -->
+							<div class="grafico">
+								<canvas id="grafico-compartimentos"></canvas>
 							</div>
 						</div>
-					</div>
 
-					<div class="card-atendimento card">
-						<h2 class="card-atendimento-titulo">Tempo de atendimento por bairro</h2>
-						<p class="card-atendimento-subtitulo">Horas entre o alerta crítico e a coleta, diferença de 6 h
-							entre
-							bairros</p>
-
-						<!-- Gráfico de barras horizontais (Chart.js: type 'bar' com indexAxis 'y') -->
-						<div class="grafico-barras">
-							<canvas id="myChartBarras" style="position: relative; height:40vh; width:60vw"></canvas><br>
-						</div>
-					</div>
-				</div>
-
-				<!-- historico -->
-				<div class="card card-historico" id="historico">
-					<div class="historico-topo">
-						<div>
-							<h2 class="historico-titulo">Histórico de Registros</h2>
-							<p class="historico-descricao" id="historico-contagem">Último evento registrado por sensor
-								em uso</p>
+						<div class="card">
+							<h2 class="card-titulo">Histórico do ponto nas últimas 24 h</h2>
+							<p class="card-subtitulo">Nível médio e nível do compartimento mais cheio, hora a hora</p>
+							<!-- Gráfico de linha (Chart.js: type 'line') -->
+							<div class="grafico">
+								<canvas id="grafico-historico"></canvas>
+							</div>
 						</div>
 
-						<select class="historico-periodo hover-escuro" id="historico-periodo"
-							aria-label="Selecionar período do histórico">
-							<option value="24">Últimas 24 horas</option>
-							<option value="168">Últimos 7 dias</option>
-							<option value="720">Últimos 30 dias</option>
-						</select>
-					</div>
-
-					<!-- Uma linha por sensor. Preenchida pelo script no fim da página (dados de exemplo) -->
-					<!-- <div class="historico-lista" id="historico-lista" role="list"></div><br> -->
-					<div class="lista-historico">
-						<div class="historico-cabecalho" style="--valor: 90">
-							<p class="historico-sub">ID</p>
-							<p class="historico-sub">Data</p>
-							<p class="historico-sub">Horário</p>
-							<p class="historico-sub">Status</p>
-							<p class="historico-sub">Logradouro</p>
-							<p class="historico-sub">Bairro</p>
-							<p class="historico-sub">Volume</p>
-						</div>
-						<div class="historico-registro" style="--valor: 90">
-							<p class="historico-item">10</p>
-							<p class="historico-item">01/10/2026</p>
-							<p class="historico-item">20:30</p>
-							<p class="historico-item">Coletado</p>
-							<p class="historico-item">Av. Tancredo Neves</p>
-							<p class="historico-item">Centro</p>
-							<p class="historico-item">88%</p>
-						</div>
-						<div class="historico-registro" style="--valor: 90">
-							<p class="historico-item">09</p>
-							<p class="historico-item">01/10/2026</p>
-							<p class="historico-item">20:25</p>
-							<p class="historico-item">Coletado</p>
-							<p class="historico-item">Rua Santa Cruz</p>
-							<p class="historico-item">Planalto</p>
-							<p class="historico-item">86%</p>
-						</div>
-						<div class="historico-registro" style="--valor: 90">
-							<p class="historico-item">08</p>
-							<p class="historico-item">01/10/2026</p>
-							<p class="historico-item">20:21</p>
-							<p class="historico-item">Coletado</p>
-							<p class="historico-item">Av. Airton Senna</p>
-							<p class="historico-item">Jardim Monte Alegre</p>
-							<p class="historico-item">90%</p>
-						</div>
-						<div class="historico-registro" style="--valor: 90">
-							<p class="historico-item">07</p>
-							<p class="historico-item">01/10/2026</p>
-							<p class="historico-item">20:16</p>
-							<p class="historico-item">Coletado</p>
-							<p class="historico-item">Rua Rio de Janeiro</p>
-							<p class="historico-item">Jardim Alvorada</p>
-							<p class="historico-item">89%</p>
+						<div class="card">
+							<h2 class="card-titulo">Leituras recentes</h2>
+							<p class="card-subtitulo">Últimas leituras dos sensores deste ponto</p>
+							<!-- tabela montada pelo script -->
+							<div class="tabela-leituras">
+								<table>
+									<thead>
+										<tr>
+											<th>Horário</th>
+											<th>Compartimento</th>
+											<th>Distância</th>
+											<th>Nível</th>
+										</tr>
+									</thead>
+									<tbody id="tabela-leituras"></tbody>
+								</table>
+							</div>
 						</div>
 					</div>
-
-					<div class="historico-botoes">
-						<button class="botao-principal hover-escuro" type="button" id="historico-mais">Carregar mais
-							registros</button>
-						<button class="botao-secundario hover-claro" type="button" id="historico-exportar">Exportar
-							relatório .csv</button>
-					</div>
-				</div>
-				<!-- end historico -->
+				</section>
 			</div>
 		</main>
+	</div>
 
+	<script src="/js/dados-mock.js"></script>
+	<script src="/js/dashboard.js"></script>
 </body>
 
 </html>
-
-<script>
-	// CHART.JS E SCRIPT
-	Chart.defaults.responsive = true;
-	// Chart.defaults.maintainAspectRatio = false;
-
-	// GRÁFICO DE ROSCA: COMPARTIMENTO POR PATAMAR
-	const gRosca = document.getElementById('myChartRosca')
-	new Chart(gRosca, {
-		type: 'doughnut',
-		data: {
-			labels: ['Normal', 'Atenção', 'Crítico'],
-			datasets: [{
-				data: [19, 7, 4],
-				backgroundColor: ['#62C540', '#F2B705', '#D64545'],
-				borderColor: '#fff',
-				borderWidth: 3,
-			}]
-		},
-		options: {
-			cutout: '72%',
-			plugins: { legend: { display: false } } // a legenda já está no HTML
-		}
-	});
-
-	// GRÁFICO LINHAS: PREENCHIMENTO
-	const gLinha = document.getElementById('myChartLinhas');
-	new Chart(gLinha, {
-		type: 'line',
-		data: {
-			labels: ['Qua', 'Qui', 'Sex', 'Sáb', 'Dom', 'Seg', 'Ter'],
-			datasets: [
-				{
-					label: 'Preenchimento (%)',
-					data: [46, 52, 61, 55, 68, 72, 58],
-					borderWidth: 2,
-					pointRadius: 4,
-					fill: true,
-					tension: 0.3,
-					borderColor: '#02925d',
-					backgroundColor: 'rgba(2, 146, 93, 0.12)',
-				},
-				{
-					label: 'Atenção (70%)', // é a linha tracejada do alerta de atenção
-					data: Array(7).fill(70),
-					borderColor: '#F2B705',
-					borderWidth: 1.5,
-					borderDash: [6, 4],
-					pointRadius: 0,
-				},
-				{
-					label: 'Crítico (90%)', // é a linha tracejada do alerta crítico
-					data: Array(7).fill(90),
-					borderColor: '#D64545',
-					borderWidth: 1.5,
-					borderDash: [6, 4],
-					pointRadius: 0,
-				},
-			]
-		},
-		plugins: { legend: { labels: { boxWidth: 12, boxHeight: 12 } } },
-		scales: {
-			y: {
-				beginAtZero: true, // começa o resultado no 0
-				max: 100, // tamanho máximo é 100
-				ticks: { callback: (valor) => valor + '%' } 
-				// tick = cada degrau de 0% a 100% sendo formatado com %
-				// callback é uma função que modifica o padrão visual do gráfico exibido
-			},
-			x: { grid: { display: false } }
-		}
-	}
-);
-
-	const gBarra = document.getElementById('myChartBarras');
-	new Chart(gBarra, {
-		type: 'bar',
-		data: {
-			labels: ['Centro', 'Planalto', 'Jardim Alvorada', 'Jardim Monte Alegre'],
-			datasets: [{
-				label: 'Horas até a coleta',
-				data: [14, 17, 19, 20],
-				backgroundColor: '#02925D',
-				borderRadius: 6,
-				maxBarThickness: 32,
-			}]
-		},
-		options:{
-			indexAxis: 'y', // barras na horizontal
-			plugins: { legend: { display: false } },
-			scales: {
-				x: {
-					beginAtZero: true,
-					ticks: { callback: (valor) => valor + ' h' }
-				},
-				y: { grid: { display: false } }
-				}
-			}
-	});
-</script>
