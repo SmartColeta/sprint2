@@ -74,13 +74,13 @@
 						<p class="indicador-descricao">13% da frota, meta abaixo de 10%</p>
 					</div>
 
-					<div class="indicador indicador-atendimento">
-						<h2 class="indicador-titulo">Tempo de atendimento</h2>
+					<div class="indicador indicador-coletadas">
+						<h2 class="indicador-titulo">Lixeiras coletadas no prazo</h2>
 						<div class="indicador-linha">
-							<p class="indicador-dado">18 h</p>
+							<p class="indicador-dado">92%</p>
 							<p class="indicador-status indicador-status-normal">Dentro da meta</p>
 						</div>
-						<p class="indicador-descricao">Do alerta crítico até a coleta, meta até 24 h</p>
+						<p class="indicador-descricao">Coletadas até 24 h após o alerta crítico, meta de 90% ou mais</p>
 					</div>
 
 					<div class="indicador indicador-sensores">
@@ -144,148 +144,121 @@
 					</div>
 				</div>
 
-				<div class="ranking-secao">
-					<div class="card-ranking card" id="compartimentos-cheios">
-						<h2 class="card-ranking-titulo">Compartimentos mais cheios agora</h2>
-						<p class="card-ranking-subtitulo">Os quatro primeiros pedem coleta imediata</p>
+				<div class="card-atendimento card">
+					<h2 class="card-atendimento-titulo">Tempo de atendimento por bairro</h2>
+					<p class="card-atendimento-subtitulo">Horas entre o alerta crítico e a coleta, diferença de 6 h
+						entre
+						bairros</p>
 
-						<!-- Lista montada em HTML/CSS (os itens podem ser gerados com os dados do banco) -->
-						<div class="ranking" id="ranking">
-							<div class="ranking-item ranking-item-critico" style="--valor: 94">
-								<p class="ranking-item-rua">Av. Tancredo Neves</p>
-								<p class="ranking-item-bairro">Centro</p>
-								<p class="ranking-item-percentual">94%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
-							</div>
-
-							<div class="ranking-item ranking-item-critico" style="--valor: 92">
-								<p class="ranking-item-rua">Rua Santa Cruz</p>
-								<p class="ranking-item-bairro">Planalto</p>
-								<p class="ranking-item-percentual">92%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
-							</div>
-
-							<div class="ranking-item ranking-item-critico" style="--valor: 91">
-								<p class="ranking-item-rua">Av. Airton Senna</p>
-								<p class="ranking-item-bairro">Jardim Monte Alegre</p>
-								<p class="ranking-item-percentual">91%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
-							</div>
-
-							<div class="ranking-item ranking-item-critico" style="--valor: 90">
-								<p class="ranking-item-rua">Rua Rio de Janeiro</p>
-								<p class="ranking-item-bairro">Jardim Alvorada</p>
-								<p class="ranking-item-percentual">90%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
-							</div>
-
-							<div class="ranking-item ranking-item-atencao" style="--valor: 78">
-								<p class="ranking-item-rua">Av. Brasil</p>
-								<p class="ranking-item-bairro">Centro</p>
-								<p class="ranking-item-percentual">78%</p>
-								<div class="ranking-barra">
-									<div class="ranking-barra-preenchimento"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card-atendimento card">
-						<h2 class="card-atendimento-titulo">Tempo de atendimento por bairro</h2>
-						<p class="card-atendimento-subtitulo">Horas entre o alerta crítico e a coleta, diferença de 6 h
-							entre
-							bairros</p>
-
-						<!-- Gráfico de barras horizontais (Chart.js: type 'bar' com indexAxis 'y') -->
-						<div class="grafico-barras">
-							<canvas id="myChartBarras" style="position: relative; height:40vh; width:60vw"></canvas><br>
-						</div>
+					<!-- Gráfico de barras horizontais (Chart.js: type 'bar' com indexAxis 'y') -->
+					<div class="grafico-barras">
+						<canvas id="myChartBarras" style="position: relative; height:40vh; width:60vw"></canvas><br>
 					</div>
 				</div>
 
-				<!-- historico -->
-				<div class="card card-historico" id="historico">
-					<div class="historico-topo">
+				<!-- ranking de lixeiras por performance (une o antigo histórico com os compartimentos mais cheios) -->
+				<div class="card card-ranking" id="ranking-lixeiras">
+					<div class="ranking-topo">
 						<div>
-							<h2 class="historico-titulo">Histórico de Registros</h2>
-							<p class="historico-descricao" id="historico-contagem">Último evento registrado por sensor
-								em uso</p>
+							<h2 class="card-ranking-titulo">Ranking de lixeiras por performance</h2>
+							<p class="card-ranking-subtitulo">Ordenado pela ocupação atual, com as coletas e o tempo
+								de atendimento do período</p>
 						</div>
 
-						<select class="historico-periodo hover-escuro" id="historico-periodo"
-							aria-label="Selecionar período do histórico">
+						<select class="ranking-periodo hover-escuro" id="ranking-periodo"
+							aria-label="Selecionar período do ranking">
 							<option value="24">Últimas 24 horas</option>
 							<option value="168">Últimos 7 dias</option>
 							<option value="720">Últimos 30 dias</option>
-						</select><br>
+						</select>
 					</div>
 
-					<!-- Uma linha por sensor. Preenchida pelo script no fim da página (dados de exemplo) -->
-					<!-- <div class="historico-lista" id="historico-lista" role="list"></div><br> -->
-					<div class="lista-historico">
-						<div class="historico-cabecalho" style="--valor: 90">
-							<p class="historico-sub">ID</p>
-							<p class="historico-sub">Data</p>
-							<p class="historico-sub">Horário</p>
-							<p class="historico-sub">Status</p>
-							<p class="historico-sub">Logradouro</p>
-							<p class="historico-sub">Bairro</p>
-							<p class="historico-sub">Volume</p>
+					<!-- Uma linha por lixeira (os itens podem ser gerados com os dados do banco) -->
+					<div class="ranking-tabela">
+						<div class="ranking-cabecalho">
+							<p class="ranking-sub">#</p>
+							<p class="ranking-sub">Logradouro</p>
+							<p class="ranking-sub">Bairro</p>
+							<p class="ranking-sub">Ocupação atual</p>
+							<p class="ranking-sub">Coletas</p>
+							<p class="ranking-sub">Tempo médio</p>
+							<p class="ranking-sub">Status</p>
 						</div>
-						<div class="historico-registro" style="--valor: 90">
-							<p class="historico-item">10</p>
-							<p class="historico-item">01/10/2026</p>
-							<p class="historico-item">20:30</p>
-							<p class="historico-item">Coletado</p>
-							<p class="historico-item">Av. Tancredo Neves</p>
-							<p class="historico-item">Centro</p>
-							<p class="historico-item">88%</p>
+
+						<div class="ranking-linha ranking-linha-critico" style="--valor: 94">
+							<p class="ranking-celula ranking-posicao" data-rotulo="Posição">1º</p>
+							<p class="ranking-celula ranking-rua" data-rotulo="Logradouro">Av. Tancredo Neves</p>
+							<p class="ranking-celula" data-rotulo="Bairro">Centro</p>
+							<div class="ranking-celula ranking-ocupacao" data-rotulo="Ocupação atual">
+								<span class="ranking-percentual">94%</span>
+								<div class="ranking-barra"><div class="ranking-barra-preenchimento"></div></div>
+							</div>
+							<p class="ranking-celula" data-rotulo="Coletas">3</p>
+							<p class="ranking-celula" data-rotulo="Tempo médio">14 h</p>
+							<p class="ranking-celula" data-rotulo="Status"><span class="ranking-status ranking-status-critico">Crítico</span></p>
 						</div>
-						<div class="historico-registro" style="--valor: 90">
-							<p class="historico-item">09</p>
-							<p class="historico-item">01/10/2026</p>
-							<p class="historico-item">20:25</p>
-							<p class="historico-item">Coletado</p>
-							<p class="historico-item">Rua Santa Cruz</p>
-							<p class="historico-item">Planalto</p>
-							<p class="historico-item">86%</p>
+
+						<div class="ranking-linha ranking-linha-critico" style="--valor: 92">
+							<p class="ranking-celula ranking-posicao" data-rotulo="Posição">2º</p>
+							<p class="ranking-celula ranking-rua" data-rotulo="Logradouro">Rua Santa Cruz</p>
+							<p class="ranking-celula" data-rotulo="Bairro">Planalto</p>
+							<div class="ranking-celula ranking-ocupacao" data-rotulo="Ocupação atual">
+								<span class="ranking-percentual">92%</span>
+								<div class="ranking-barra"><div class="ranking-barra-preenchimento"></div></div>
+							</div>
+							<p class="ranking-celula" data-rotulo="Coletas">3</p>
+							<p class="ranking-celula" data-rotulo="Tempo médio">17 h</p>
+							<p class="ranking-celula" data-rotulo="Status"><span class="ranking-status ranking-status-critico">Crítico</span></p>
 						</div>
-						<div class="historico-registro" style="--valor: 90">
-							<p class="historico-item">08</p>
-							<p class="historico-item">01/10/2026</p>
-							<p class="historico-item">20:21</p>
-							<p class="historico-item">Coletado</p>
-							<p class="historico-item">Av. Airton Senna</p>
-							<p class="historico-item">Jardim Monte Alegre</p>
-							<p class="historico-item">90%</p>
+
+						<div class="ranking-linha ranking-linha-critico" style="--valor: 91">
+							<p class="ranking-celula ranking-posicao" data-rotulo="Posição">3º</p>
+							<p class="ranking-celula ranking-rua" data-rotulo="Logradouro">Av. Airton Senna</p>
+							<p class="ranking-celula" data-rotulo="Bairro">Jardim Monte Alegre</p>
+							<div class="ranking-celula ranking-ocupacao" data-rotulo="Ocupação atual">
+								<span class="ranking-percentual">91%</span>
+								<div class="ranking-barra"><div class="ranking-barra-preenchimento"></div></div>
+							</div>
+							<p class="ranking-celula" data-rotulo="Coletas">2</p>
+							<p class="ranking-celula" data-rotulo="Tempo médio">20 h</p>
+							<p class="ranking-celula" data-rotulo="Status"><span class="ranking-status ranking-status-critico">Crítico</span></p>
 						</div>
-						<div class="historico-registro" style="--valor: 90">
-							<p class="historico-item">07</p>
-							<p class="historico-item">01/10/2026</p>
-							<p class="historico-item">20:16</p>
-							<p class="historico-item">Coletado</p>
-							<p class="historico-item">Rua Rio de Janeiro</p>
-							<p class="historico-item">Jardim Alvorada</p>
-							<p class="historico-item">89%</p>
+
+						<div class="ranking-linha ranking-linha-critico" style="--valor: 90">
+							<p class="ranking-celula ranking-posicao" data-rotulo="Posição">4º</p>
+							<p class="ranking-celula ranking-rua" data-rotulo="Logradouro">Rua Rio de Janeiro</p>
+							<p class="ranking-celula" data-rotulo="Bairro">Jardim Alvorada</p>
+							<div class="ranking-celula ranking-ocupacao" data-rotulo="Ocupação atual">
+								<span class="ranking-percentual">90%</span>
+								<div class="ranking-barra"><div class="ranking-barra-preenchimento"></div></div>
+							</div>
+							<p class="ranking-celula" data-rotulo="Coletas">2</p>
+							<p class="ranking-celula" data-rotulo="Tempo médio">19 h</p>
+							<p class="ranking-celula" data-rotulo="Status"><span class="ranking-status ranking-status-critico">Crítico</span></p>
+						</div>
+
+						<div class="ranking-linha ranking-linha-atencao" style="--valor: 78">
+							<p class="ranking-celula ranking-posicao" data-rotulo="Posição">5º</p>
+							<p class="ranking-celula ranking-rua" data-rotulo="Logradouro">Av. Brasil</p>
+							<p class="ranking-celula" data-rotulo="Bairro">Centro</p>
+							<div class="ranking-celula ranking-ocupacao" data-rotulo="Ocupação atual">
+								<span class="ranking-percentual">78%</span>
+								<div class="ranking-barra"><div class="ranking-barra-preenchimento"></div></div>
+							</div>
+							<p class="ranking-celula" data-rotulo="Coletas">1</p>
+							<p class="ranking-celula" data-rotulo="Tempo médio">13 h</p>
+							<p class="ranking-celula" data-rotulo="Status"><span class="ranking-status ranking-status-atencao">Atenção</span></p>
 						</div>
 					</div>
 
-					<div class="historico-botoes">
-						<button class="botao-principal hover-escuro" type="button" id="historico-mais">Carregar mais
-							registros</button>
-						<button class="botao-secundario hover-claro" type="button" id="historico-exportar">Exportar
+					<div class="ranking-botoes">
+						<button class="botao-principal hover-escuro" type="button" id="ranking-mais">Carregar mais
+							lixeiras</button>
+						<button class="botao-secundario hover-claro" type="button" id="ranking-exportar">Exportar
 							relatório .csv</button>
 					</div>
 				</div>
-				<!-- end historico -->
+				<!-- end ranking -->
 			</div>
 		</main>
 
