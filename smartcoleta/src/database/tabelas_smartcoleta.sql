@@ -1,4 +1,4 @@
--- ATENÇÃO: a linha abaixo apaga o banco inteiro, com todos os dados,
+-- Atencao: a linha abaixo apaga o banco inteiro, com todos os dados,
 -- para o script poder ser executado de novo do zero. Use só em
 -- desenvolvimento e na demonstração;
 DROP DATABASE IF EXISTS smartcoleta;
@@ -31,15 +31,15 @@ CREATE TABLE ponto_coleta (
     bairro VARCHAR(100),
     latitude DECIMAL(10,7),
     longitude DECIMAL(10,7),
-    statuss VARCHAR(10) NOT NULL DEFAULT 'normal',
+    statuss VARCHAR(10) NOT NULL DEFAULT 'Normal',
     fkPrefeitura INT NOT NULL,
-    CONSTRAINT chkPontoStatus CHECK (statuss IN ('normal','atenção','crítico')),
+    CONSTRAINT chkPontoStatus CHECK (statuss IN ('Normal','Atencao','Critico')),
     CONSTRAINT fkPontoPrefeitura FOREIGN KEY (fkPrefeitura)
         REFERENCES prefeitura(idPrefeitura)
 );
 
 -- 4. Parametrização (limites em % de enchimento)
---    minEsperado = início da faixa de Atenção | maxEsperado = início da faixa Crítica
+--    minEsperado = início da faixa de Atencao | maxEsperado = início da faixa Crítica
 CREATE TABLE parametrizacao (
     idParametrizacao INT PRIMARY KEY AUTO_INCREMENT,
     minEsperado DECIMAL(5,2) NOT NULL,
@@ -51,10 +51,10 @@ CREATE TABLE compartimento (
     idCompartimento INT PRIMARY KEY AUTO_INCREMENT,
     tipoResiduo VARCHAR(30),
     alturaCm DECIMAL(6,2) NOT NULL,
-    statuss VARCHAR(10) NOT NULL DEFAULT 'normal',
+    statuss VARCHAR(10) NOT NULL DEFAULT 'Normal',
     fkPontoColeta INT NOT NULL,
     fkParametrizacao INT NOT NULL,
-    CONSTRAINT chkCompartimentoStatus CHECK (statuss IN ('normal','atenção','crítico')),
+    CONSTRAINT chkCompartimentoStatus CHECK (statuss IN ('Normal','Atencao','Critico')),
     CONSTRAINT fkCompartimentoPonto FOREIGN KEY (fkPontoColeta)
         REFERENCES ponto_coleta(idPonto),
     CONSTRAINT fkCompartimentoParam FOREIGN KEY (fkParametrizacao)
@@ -71,13 +71,16 @@ CREATE TABLE sensor (
 
 -- 7. Leitura
 CREATE TABLE leitura (
-    idLeitura INT PRIMARY KEY AUTO_INCREMENT,
-    distanciaCm DECIMAL(6,2), dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    distanciaCm DECIMAL(6,2),
+    dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
     fkSensor INT NOT NULL,
-    CONSTRAINT fkLeituraSensor FOREIGN KEY (fkSensor) REFERENCES sensor(idSensor)
+    PRIMARY KEY (fkSensor, dataHora),
+    CONSTRAINT fkLeituraSensor FOREIGN KEY (fkSensor)
+        REFERENCES sensor(idSensor)
 );
 
--- 8. Coleta (o caminhão é acionado quando um compartimento entra em atenção e
+
+-- 8. Coleta (o caminhão é acionado quando um compartimento entra em Atencao e
 --    recolhe TODOS os compartimentos do ponto, inclusive os normais: coleta é do PONTO)
 CREATE TABLE coleta (
     idColeta INT PRIMARY KEY AUTO_INCREMENT,
@@ -94,10 +97,10 @@ INSERT INTO prefeitura (razaoSocial, cnpj, cidade, uf, qtdHabitantes, codigoAces
 ('MUNICIPIO DE BANDEIRANTES', '03501491000142', 'Bandeirantes', 'MS', 8276, 'SMCL0003');
 
 INSERT INTO ponto_coleta (rua, bairro, latitude, longitude, statuss, fkPrefeitura) VALUES
-('Rua Principal, 100', 'Centro', -10.5969000, -63.6122000, 'atenção', 1),
-('Avenida Central, 250', 'Centro', -10.5990000, -63.6150000, 'normal', 1),
-('Rua das Flores, 45', 'Centro', -13.1889000, -60.8122000, 'atenção', 2),
-('Rua Sete de Setembro, 80', 'Centro', -19.9178000, -54.3639000, 'atenção', 3);
+('Rua Principal, 100', 'Centro', -10.5969000, -63.6122000, 'Atencao', 1),
+('Avenida Central, 250', 'Centro', -10.5990000, -63.6150000, 'Normal', 1),
+('Rua das Flores, 45', 'Centro', -13.1889000, -60.8122000, 'Atencao', 2),
+('Rua Sete de Setembro, 80', 'Centro', -19.9178000, -54.3639000, 'Atencao', 3);
 
 INSERT INTO parametrizacao (minEsperado, maxEsperado) VALUES
 (70.00, 90.00), (65.00, 85.00), (75.00, 95.00), (60.00, 80.00);
@@ -105,12 +108,12 @@ INSERT INTO parametrizacao (minEsperado, maxEsperado) VALUES
 -- Os compartimentos 5 e 6 ficam no ponto_coleta 1, junto com o 1: quando o 1 entra
 -- em atenção, o caminhão leva também o 5 e o 6 (normais).
 INSERT INTO compartimento (tipoResiduo, alturaCm, statuss, fkPontoColeta, fkParametrizacao) VALUES
-('Orgânico',   100.00, 'atenção', 1, 1),
-('Reciclável', 100.00, 'normal',  2, 2),
-('Papel',      100.00, 'atenção', 3, 3),
-('Plástico',   100.00, 'atenção', 4, 4),
-('Reciclável', 100.00, 'normal',  1, 1),
-('Papel',      100.00, 'normal',  1, 1);
+('Orgânico',   100.00, 'Atencao', 1, 1),
+('Reciclável', 100.00, 'Normal',  2, 2),
+('Papel',      100.00, 'Atencao', 3, 3),
+('Plástico',   100.00, 'Atencao', 4, 4),
+('Reciclável', 100.00, 'Normal',  1, 1),
+('Papel',      100.00, 'Normal',  1, 1);
 
 INSERT INTO sensor (numeroSensor, modelo, statuss, fkCompartimento) VALUES
 (101, 'HC-SR04', 1, 1), (102, 'HC-SR04', 1, 2), (103, 'HC-SR04', 1, 3),
@@ -158,47 +161,47 @@ JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao;
 -- (para ver só um sensor, acrescente WHERE s.idSensor = 1 no final)
 SELECT pr.cidade, p.rua, c.tipoResiduo, s.numeroSensor, l.dataHora,
        ROUND((1 - l.distanciaCm / c.alturaCm) * 100, 2) AS nivelPct,
-       CASE WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.maxEsperado THEN 'Crítico'
-            WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.minEsperado THEN 'Atenção'
+       CASE WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.maxEsperado THEN 'Critico'
+            WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.minEsperado THEN 'Atencao'
             ELSE 'Normal' END AS statusPreenchimento
 FROM sensor s
-JOIN leitura l ON l.idLeitura = (
-        SELECT l2.idLeitura FROM leitura l2
-        WHERE l2.fkSensor = s.idSensor
-        ORDER BY l2.dataHora DESC LIMIT 1)
+JOIN leitura l ON l.fkSensor = s.idSensor
+              AND l.dataHora = (
+        SELECT MAX(l2.dataHora) FROM leitura l2
+        WHERE l2.fkSensor = s.idSensor)
 JOIN compartimento c   ON s.fkCompartimento = c.idCompartimento
 JOIN ponto_coleta p    ON c.fkPontoColeta = p.idPonto
 JOIN prefeitura pr     ON p.fkPrefeitura = pr.idPrefeitura
 JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao;
 
--- Regra do caminhão: o ponto é acionado se ALGUM compartimento está em atenção
+-- Regra do caminhão: o ponto é acionado se ALGUM compartimento está em Atencao
 -- ou pior; a lista traz TODOS os compartimentos dele, inclusive os normais
 SELECT t.idPonto, t.cidade, t.rua, t.idCompartimento, t.tipoResiduo,
        t.nivelPct, t.statusPreenchimento
 FROM (
     SELECT pr.cidade, p.idPonto, p.rua, c.idCompartimento, c.tipoResiduo,
            ROUND((1 - l.distanciaCm / c.alturaCm) * 100, 2) AS nivelPct,
-           CASE WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.maxEsperado THEN 'Crítico'
-                WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.minEsperado THEN 'Atenção'
+           CASE WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.maxEsperado THEN 'Critico'
+                WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.minEsperado THEN 'Atencao'
                 ELSE 'Normal' END AS statusPreenchimento
     FROM sensor s
-    JOIN leitura l ON l.idLeitura = (
-            SELECT l2.idLeitura FROM leitura l2
-            WHERE l2.fkSensor = s.idSensor
-            ORDER BY l2.dataHora DESC LIMIT 1)
+    JOIN leitura l ON l.fkSensor = s.idSensor
+                  AND l.dataHora = (
+            SELECT MAX(l2.dataHora) FROM leitura l2
+            WHERE l2.fkSensor = s.idSensor)
     JOIN compartimento c   ON s.fkCompartimento = c.idCompartimento
     JOIN ponto_coleta p    ON c.fkPontoColeta = p.idPonto
     JOIN prefeitura pr     ON p.fkPrefeitura = pr.idPrefeitura
     JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao
 ) t
 JOIN (
-    -- pontos com pelo menos um compartimento em atenção ou pior
+    -- pontos com pelo menos um compartimento em Atencao ou pior
     SELECT DISTINCT c.fkPontoColeta AS idPonto
     FROM sensor s
-    JOIN leitura l ON l.idLeitura = (
-            SELECT l2.idLeitura FROM leitura l2
-            WHERE l2.fkSensor = s.idSensor
-            ORDER BY l2.dataHora DESC LIMIT 1)
+    JOIN leitura l ON l.fkSensor = s.idSensor
+                  AND l.dataHora = (
+            SELECT MAX(l2.dataHora) FROM leitura l2
+            WHERE l2.fkSensor = s.idSensor)
     JOIN compartimento c   ON s.fkCompartimento = c.idCompartimento
     JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao
     WHERE (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.minEsperado
@@ -209,17 +212,16 @@ ORDER BY t.idPonto, t.nivelPct DESC;
 -- (última leitura do sensor até o horário da coleta)
 SELECT co.idColeta, co.dataHoraColeta, p.rua, c.idCompartimento, c.tipoResiduo,
        ROUND((1 - l.distanciaCm / c.alturaCm) * 100, 2) AS nivelPct,
-       CASE WHEN l.idLeitura IS NULL THEN 'Sem leitura'
-            WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.maxEsperado THEN 'Crítico'
-            WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.minEsperado THEN 'Atenção'
+       CASE WHEN l.dataHora IS NULL THEN 'Sem leitura'
+            WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.maxEsperado THEN 'Critico'
+            WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.minEsperado THEN 'Atencao'
             ELSE 'Normal' END AS statusNaColeta
 FROM coleta co
 JOIN ponto_coleta p    ON co.fkPontoColeta = p.idPonto
 JOIN compartimento c   ON c.fkPontoColeta = p.idPonto
 JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao
 JOIN sensor s          ON s.fkCompartimento = c.idCompartimento
-LEFT JOIN leitura l ON l.idLeitura = (
-        SELECT l2.idLeitura FROM leitura l2
-        WHERE l2.fkSensor = s.idSensor AND l2.dataHora <= co.dataHoraColeta
-        ORDER BY l2.dataHora DESC LIMIT 1)
-ORDER BY co.dataHoraColeta DESC, c.idCompartimento;
+LEFT JOIN leitura l ON l.fkSensor = s.idSensor
+                   AND l.dataHora = (
+        SELECT MAX(l2.dataHora) FROM leitura l2
+        WHERE l2.fkSensor = s.idSensor AND l2.dataHora <= co.dataHoraColeta);
