@@ -192,8 +192,7 @@ body {
 .card-patamares-titulo,
 .card-ocupacao-titulo,
 .card-ranking-titulo,
-.card-atendimento-titulo,
-.historico-titulo {
+.card-atendimento-titulo {
 	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
 	font-size: clamp(18px, 1.4vw, 20px); /* tamanho da letra (tamanho fluido: mínimo 18px, máximo 20px) */
 	font-weight: 700; /* espessura da letra (negrito) */
@@ -203,8 +202,7 @@ body {
 .card-patamares-subtitulo,
 .card-ocupacao-subtitulo,
 .card-ranking-subtitulo,
-.card-atendimento-subtitulo,
-.historico-descricao {
+.card-atendimento-subtitulo {
 	margin-top: 4px; /* espaço acima do elemento (4px) */
 	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
 	font-size: 13px; /* tamanho da letra (13px) */
@@ -346,80 +344,9 @@ body {
 
 
 
-/* BLOCO: ranking COMPARTIMENTOS MAIS CHEIOS AGORA */
+/* BLOCO: RANKING DE LIXEIRAS POR PERFORMANCE (une o histórico com os compartimentos mais cheios) */
 
-.ranking-secao {
-	display: grid; /* grid organiza os itens internos em linhas e colunas */
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
-	gap: var(--espaco); /* espaço entre os itens do grid ou do flex (usa a variável --espaco) */
-}
-
-
-
-/* card-ranking */
-
-.ranking {
-	margin-top: 20px; /* espaço acima do elemento (20px) */
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	gap: 14px; /* espaço entre os itens do grid ou do flex (14px) */
-}
-
-.ranking-item {
-	display: grid; /* grid organiza os itens internos em linhas e colunas */
-	grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto; /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
-	align-items: baseline; /* alinha os itens pela linha de base do texto */
-	column-gap: 12px; /* espaço horizontal entre as colunas (12px) */
-}
-
-.ranking-item-rua {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-size: 15px; /* tamanho da letra (15px) */
-	font-weight: 700; /* espessura da letra (negrito) */
-	line-height: 1.3; /* altura da linha do texto (1.3x o tamanho da letra) */
-}
-
-.ranking-item-bairro {
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	font-size: 13px; /* tamanho da letra (13px) */
-	line-height: 1.3; /* altura da linha do texto (1.3x o tamanho da letra) */
-}
-
-.ranking-item-percentual {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-size: 16px; /* tamanho da letra (16px) */
-	font-weight: 700; /* espessura da letra (negrito) */
-	text-align: right; /* alinha o texto à direita */
-}
-
-.ranking-barra {
-	grid-column: 1 / -1; /* ocupa todas as colunas do grid (1 / -1 = da primeira até a última) */
-	margin-top: 6px; /* espaço acima do elemento (6px) */
-	height: 9px; /* altura (9px) */
-	overflow: hidden; /* esconde o que passar do tamanho do elemento */
-	background-color: var(--borda); /* cor de fundo (usa a variável --borda) */
-	border-radius: 999px; /* cantos totalmente arredondados (formato de pílula) */
-}
-
-.ranking-barra-preenchimento {
-	width: calc(var(--valor) * 1%); /* largura proporcional ao valor de --valor (porcentagem) */
-	height: 100%; /* altura igual à do elemento pai */
-	border-radius: 999px; /* cantos totalmente arredondados (formato de pílula) */
-}
-
-.ranking-item-critico .ranking-barra-preenchimento {
-	background-color: var(--vermelho); /* cor de fundo (usa a variável --vermelho) */
-}
-
-.ranking-item-atencao .ranking-barra-preenchimento {
-	background-color: var(--amarelo); /* cor de fundo (usa a variável --amarelo) */
-}
-
-/* final card-ranking*/
-
-/* BLOCO: HISTÓRICO */
-
-.historico-topo {
+.ranking-topo {
 	display: flex; /* flex coloca os itens internos lado a lado */
 	flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
 	align-items: flex-start; /* alinha os itens no topo */
@@ -427,7 +354,7 @@ body {
 	gap: 12px 24px; /* espaço entre os itens do grid ou do flex (vertical 12px, horizontal 24px) */
 }
 
-.historico-periodo {
+.ranking-periodo {
 	padding: 10px 14px; /* padding = espaço entre a borda e o conteúdo (10px 14px) */
 	font: inherit; /* usa a mesma fonte do elemento pai (botões e selects não herdam sozinhos) */
 	font-size: 14px; /* tamanho da letra (14px) */
@@ -439,7 +366,7 @@ body {
 }
 
 /* caixa da tabela: se faltar espaço, rola na horizontal em vez de vazar */
-.lista-historico {
+.ranking-tabela {
 	margin-top: 20px; /* espaço acima do elemento (20px) */
 	overflow-x: auto; /* cria rolagem horizontal só se o conteúdo não couber */
 	border: 1px solid var(--borda); /* borda: espessura, estilo e cor (1px solid --borda) */
@@ -447,56 +374,114 @@ body {
 }
 
 /* mesmas colunas para o cabeçalho e para as linhas, todas proporcionais */
-.historico-cabecalho,
-.historico-registro {
+.ranking-cabecalho,
+.ranking-linha {
 	display: grid; /* grid organiza os itens internos em linhas e colunas */
 	grid-template-columns: /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
-		minmax(36px, 0.5fr)    /* ID */
-		minmax(92px, 1fr)      /* Data */
-		minmax(64px, 0.8fr)    /* Horário */
-		minmax(80px, 0.9fr)    /* Status */
+		minmax(32px, 0.4fr)    /* Posição */
 		minmax(150px, 1.8fr)   /* Logradouro */
-		minmax(140px, 1.6fr)   /* Bairro */
-		minmax(64px, 0.7fr);   /* Volume */
+		minmax(130px, 1.4fr)   /* Bairro */
+		minmax(140px, 1.6fr)   /* Ocupação atual */
+		minmax(64px, 0.7fr)    /* Coletas */
+		minmax(84px, 0.8fr)    /* Tempo médio */
+		minmax(84px, 0.8fr);   /* Status */
 	column-gap: 16px; /* espaço horizontal entre as colunas (16px) */
 	align-items: center; /* centraliza os itens na vertical */
-	min-width: 720px; /* largura mínima (720px) — abaixo disso a caixa rola (ou vira cards no celular) */
+	min-width: 780px; /* largura mínima (780px) — abaixo disso a caixa rola (ou vira cards no celular) */
 	padding: 14px 20px; /* padding = espaço entre a borda e o conteúdo (14px 20px) */
 	border-bottom: 1px solid var(--borda); /* linha na parte de baixo do elemento */
 	text-align: left; /* alinha o texto à esquerda */
 }
 
-.historico-registro:last-child {
+.ranking-linha:last-child {
 	border-bottom: none; /* remove a borda de baixo */
 }
 
-.historico-cabecalho {
+.ranking-cabecalho {
 	background-color: var(--fundo); /* cor de fundo (usa a variável --fundo) */
 }
 
-.historico-sub {
+.ranking-sub {
 	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
 	font-size: 13px; /* tamanho da letra (13px) */
 	font-weight: 700; /* espessura da letra (negrito) */
 }
 
-.historico-item {
+.ranking-celula {
 	color: #1d2925; /* cor do texto (#1d2925) */
 	font-size: 14px; /* tamanho da letra (14px) */
 	line-height: 1.35; /* altura da linha do texto (1.35x o tamanho da letra) */
 	overflow-wrap: anywhere; /* quebra palavras longas para não vazar do espaço */
 }
 
-/* última coluna (Volume) alinhada à direita */
-.historico-sub:last-child,
-.historico-item:last-child {
-	text-align: right; /* alinha o texto à direita */
+.ranking-posicao,
+.ranking-rua {
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-weight: 700; /* espessura da letra (negrito) */
 }
 
+/* ocupação: percentual ao lado de uma barra proporcional a --valor */
+.ranking-ocupacao {
+	display: flex; /* flex coloca os itens internos lado a lado */
+	align-items: center; /* centraliza os itens na vertical */
+	gap: 10px; /* espaço entre os itens do grid ou do flex (10px) */
+}
 
+.ranking-percentual {
+	min-width: 38px; /* largura mínima (38px) — mantém as barras alinhadas */
+	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	font-weight: 700; /* espessura da letra (negrito) */
+}
 
+.ranking-barra {
+	flex: 1; /* ocupa todo o espaço que sobrar no flex */
+	height: 9px; /* altura (9px) */
+	overflow: hidden; /* esconde o que passar do tamanho do elemento */
+	background-color: var(--borda); /* cor de fundo (usa a variável --borda) */
+	border-radius: 999px; /* cantos totalmente arredondados (formato de pílula) */
+}
 
-.historico-botoes {
+.ranking-barra-preenchimento {
+	width: calc(var(--valor) * 1%); /* largura proporcional ao valor de --valor (porcentagem) */
+	height: 100%; /* altura igual à do elemento pai */
+	border-radius: 999px; /* cantos totalmente arredondados (formato de pílula) */
+	background-color: var(--lima); /* cor de fundo (usa a variável --lima) */
+}
+
+.ranking-linha-critico .ranking-barra-preenchimento {
+	background-color: var(--vermelho); /* cor de fundo (usa a variável --vermelho) */
+}
+
+.ranking-linha-atencao .ranking-barra-preenchimento {
+	background-color: var(--amarelo); /* cor de fundo (usa a variável --amarelo) */
+}
+
+/* selo de status (mesmo formato de pílula dos indicadores) */
+.ranking-status {
+	display: inline-flex; /* flex que ocupa só o tamanho do conteúdo, como um texto */
+	padding: 4px 10px; /* padding = espaço entre a borda e o conteúdo (4px 10px) */
+	font-size: 12.5px; /* tamanho da letra (12.5px) */
+	font-weight: 700; /* espessura da letra (negrito) */
+	white-space: nowrap; /* impede o texto de quebrar linha */
+	border-radius: 999px; /* cantos totalmente arredondados (formato de pílula) */
+}
+
+.ranking-status-critico {
+	color: var(--vermelho); /* cor do texto (usa a variável --vermelho) */
+	background-color: rgba(214, 69, 69, 0.14); /* cor de fundo (cor com transparência) */
+}
+
+.ranking-status-atencao {
+	color: #9a7400; /* cor do texto (amarelo escurecido para ter contraste) */
+	background-color: rgba(242, 183, 5, 0.18); /* cor de fundo (cor com transparência) */
+}
+
+.ranking-status-normal {
+	color: var(--verde); /* cor do texto (usa a variável --verde) */
+	background-color: rgba(2, 146, 93, 0.14); /* cor de fundo (cor com transparência) */
+}
+
+.ranking-botoes {
 	margin-top: 16px; /* espaço acima do elemento (16px) */
 	display: flex; /* flex coloca os itens internos lado a lado */
 	flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
@@ -720,15 +705,14 @@ body {
 
 /* tablet: os cards de gráfico ficam um embaixo do outro */
 @container conteudo (width < 820px) {
-	.patamar-div,
-	.ranking-secao {
+	.patamar-div {
 		grid-template-columns: minmax(0, 1fr); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
 	}
 }
 
-/* celular: tabela do histórico vira uma lista de cards */
+/* celular: tabela do ranking vira uma lista de cards */
 @container conteudo (width < 640px) {
-	.lista-historico {
+	.ranking-tabela {
 		overflow: visible; /* mostra o conteúdo mesmo se passar do tamanho */
 		border: none; /* remove a borda */
 		display: flex; /* flex coloca os itens internos lado a lado */
@@ -736,11 +720,11 @@ body {
 		gap: 12px; /* espaço entre os itens do grid ou do flex (12px) */
 	}
 
-	.historico-cabecalho {
+	.ranking-cabecalho {
 		display: none; /* esconde o elemento da tela — os rótulos aparecem dentro de cada card */
 	}
 
-	.historico-registro {
+	.ranking-linha {
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
 		gap: 10px 16px; /* espaço entre os itens do grid ou do flex (vertical 10px, horizontal 16px) */
 		min-width: 0; /* permite o elemento encolher abaixo do tamanho do conteúdo (evita vazar) */
@@ -749,14 +733,21 @@ body {
 		border-radius: 12px; /* arredonda os cantos (12px) */
 	}
 
-	.historico-registro:last-child {
+	.ranking-linha:last-child {
 		border-bottom: 1px solid var(--borda); /* linha na parte de baixo do elemento */
 	}
 
+	/* a barra de ocupação ocupa a linha inteira do card */
+	.ranking-ocupacao {
+		grid-column: 1 / -1; /* ocupa todas as colunas do grid (1 / -1 = da primeira até a última) */
+		flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
+	}
+
 	/* rótulo de cada campo vem do atributo data-rotulo do HTML */
-	.historico-item::before {
+	.ranking-celula::before {
 		content: attr(data-rotulo); /* texto do ::before vem do atributo data-rotulo do HTML */
 		display: block; /* block faz o elemento ocupar uma linha inteira */
+		flex-basis: 100%; /* dentro do flex da ocupação, o rótulo fica numa linha própria */
 		margin-bottom: 2px; /* espaço abaixo do elemento (2px) */
 		color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
 		font-size: 11.5px; /* tamanho da letra (11.5px) */
@@ -765,15 +756,11 @@ body {
 		letter-spacing: 0.03em; /* espaço extra entre as letras */
 	}
 
-	.historico-item:last-child {
-		text-align: left; /* alinha o texto à esquerda */
-	}
-
-	.historico-botoes > button {
+	.ranking-botoes > button {
 		flex: 1 1 100%; /* faz cada botão ocupar a linha inteira */
 	}
 
-	.historico-periodo {
+	.ranking-periodo {
 		width: 100%; /* largura; 100% ocupa todo o espaço disponível */
 	}
 }
@@ -783,19 +770,4 @@ body {
 	.indicadores {
 		grid-template-columns: minmax(0, 1fr); /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
 	}
-
-	.ranking-item {
-		grid-template-columns: minmax(0, 1fr) auto; /* define as colunas do grid; fr = fração do espaço livre, minmax(menor, maior) = limites de tamanho */
-	}
-
-	.ranking-item-bairro {
-		grid-column: 1; /* coloca o elemento na coluna 1 do grid */
-		grid-row: 2; /* coloca o elemento na linha 2 do grid */
-	}
-
-	.ranking-item-percentual {
-		grid-column: 2; /* coloca o elemento na coluna 2 do grid */
-		grid-row: 1; /* coloca o elemento na linha 1 do grid */
-	}
-
 }
