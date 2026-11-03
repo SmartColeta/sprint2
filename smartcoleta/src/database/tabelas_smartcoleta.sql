@@ -193,7 +193,9 @@ FROM (
     JOIN ponto_coleta p    ON c.fkPontoColeta = p.idPonto
     JOIN prefeitura pr     ON p.fkPrefeitura = pr.idPrefeitura
     JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao
-) t
+)
+-- TODOS OS COMPARTIMENTOS, APELIDO t
+ t
 JOIN (
     -- pontos com pelo menos um compartimento em Atencao ou pior
     SELECT DISTINCT c.fkPontoColeta AS idPonto
