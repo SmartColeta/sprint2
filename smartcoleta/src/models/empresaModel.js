@@ -1,9 +1,9 @@
 var database = require("../database/config");
 
 function buscarPorId(id) {
-  var instrucaoSql = `SELECT * FROM empresa WHERE id = '${id}'`;
+  var instrucaoSql = `SELECT * FROM empresa WHERE id = ?`;
 
-  return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql, [id]);
 }
 
 function listar() {
@@ -13,15 +13,15 @@ function listar() {
 }
 
 function buscarPorCnpj(cnpj) {
-  var instrucaoSql = `SELECT * FROM empresa WHERE cnpj = '${cnpj}'`;
+  var instrucaoSql = `SELECT * FROM empresa WHERE cnpj = ?`;
 
-  return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql, [cnpj]);
 }
 
 function cadastrar(razaoSocial, cnpj) {
-  var instrucaoSql = `INSERT INTO empresa (razao_social, cnpj) VALUES ('${razaoSocial}', '${cnpj}')`;
+  var instrucaoSql = `INSERT INTO empresa (razao_social, cnpj) VALUES (?, ?)`;
 
-  return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql, [razaoSocial, cnpj]);
 }
 
 module.exports = { buscarPorCnpj, buscarPorId, cadastrar, listar };

@@ -9,20 +9,30 @@ var mySqlConfig = {
     port: process.env.DB_PORT
 };
 
-function executar(instrucao) {
+// instrucao: o SQL com "?" no lugar de cada valor
+// valores: a lista com os valores, na mesma ordem dos "?"
+// O execute (o mesmo da API dat-acqu-ino) manda o SQL e os valores separados
+// para o MySQL, então o que o usuário digita nunca vira parte do comando
+// (proteção contra SQL injection).
+function executar(instrucao, valores) {
 
     if (process.env.AMBIENTE_PROCESSO !== "producao" && process.env.AMBIENTE_PROCESSO !== "desenvolvimento") {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM .env OU dev.env OU app.js\n");
         return Promise.reject("AMBIENTE NÃO CONFIGURADO EM .env");
     }
 
+    if (valores == undefined) {
+        valores = [];
+    }
+
     return new Promise(function (resolve, reject) {
         var conexao = mysql.createConnection(mySqlConfig);
         conexao.connect();
-        conexao.query(instrucao, function (erro, resultados) {
+        conexao.execute(instrucao, valores, function (erro, resultados) {
             conexao.end();
             if (erro) {
                 reject(erro);
+                return;
             }
             console.log(resultados);
             resolve(resultados);

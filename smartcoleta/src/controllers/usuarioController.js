@@ -27,11 +27,12 @@ function autenticar(req, res) {
             if (resultadoAutenticar.length == 1) {
               console.log(resultadoAutenticar);
 
+              // a senha não volta para o navegador; vai a prefeitura do usuário
               res.json({
                 id: resultadoAutenticar[0].id,
                 email: resultadoAutenticar[0].email,
                 nome: resultadoAutenticar[0].nome,
-                senha: resultadoAutenticar[0].senha,
+                fkPrefeitura: resultadoAutenticar[0].fkPrefeitura,
               });
 
               // sprint3: FUNÇÃO AUTENTICAR QUE BUSCA A EMPRESA VINCULADA AO AQUARIO PARA FAZER LOGIN
@@ -100,6 +101,7 @@ function cadastrar(req, res) {
   var nome = req.body.nomeServer;
   var email = req.body.emailServer;
   var senha = req.body.senhaServer;
+  var codigoAcesso = req.body.codigoAcessoServer;
 
   if (nome == undefined) {
     res.status(400).send("Seu nome está undefined!");
@@ -107,16 +109,28 @@ function cadastrar(req, res) {
     res.status(400).send("Seu email está undefined!");
   } else if (senha == undefined) {
     res.status(400).send("Sua senha está undefined!");
+  } else if (codigoAcesso == undefined || codigoAcesso == "") {
+    res.status(400).send("Informe o código de acesso da sua prefeitura.");
   } else if (!senhaForte(senha)) {
     res.status(400).send("A senha deve ter no mínimo 8 caracteres, com letras maiúsculas e minúsculas, números e caracteres especiais.");
   } else {
     usuarioModel
-      .cadastrar(nome, email, senha)
+      .cadastrar(nome, email, senha, codigoAcesso)
       .then(function (resultado) {
-        res.json(resultado);
+        // affectedRows = quantas linhas o INSERT gravou; 0 = código de acesso não existe
+        if (resultado.affectedRows == 0) {
+          res.status(400).send("Código de acesso inválido. Confira o código enviado pela sua prefeitura.");
+        } else {
+          res.json(resultado);
+        }
       })
       .catch(function (erro) {
         console.log(erro);
+        // o e-mail é UNIQUE na tabela usuario
+        if (erro.code == "ER_DUP_ENTRY") {
+          res.status(409).send("Este e-mail já está cadastrado.");
+          return;
+        }
         console.log(
           "\nHouve um erro ao realizar o cadastro! Erro: ",
           erro.sqlMessage,

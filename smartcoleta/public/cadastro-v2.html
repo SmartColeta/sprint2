@@ -100,10 +100,16 @@
         <form id="formCadastro">
 
 
-          <!-- Campo Nome completo -->
+          <!-- Campo Nome completo (nome da pessoa; a prefeitura vem pelo código de acesso) -->
           <div class="campo" id="campoNome">
-            <label for="nome">Nome da Prefeitura</label>
-            <input type="text" id="input_nome" name="nome" placeholder="Digite o nome da sua prefeitura" required>
+            <label for="input_nome">Seu nome</label>
+            <input type="text" id="input_nome" name="nome" placeholder="Digite seu nome" maxlength="50" required>
+          </div>
+
+          <!-- Campo Código de acesso (cada prefeitura tem o seu, ex: SMCL0001) -->
+          <div class="campo" id="campoCodigo">
+            <label for="input_codigo">Código de acesso</label>
+            <input type="text" id="input_codigo" name="codigo" placeholder="Código enviado pela sua prefeitura" maxlength="20" required>
           </div>
 
           <!-- Campo E-mail -->
@@ -265,11 +271,13 @@
 
       // Os valores agora são lidos NO MOMENTO DO ENVIO (antes eram lidos ao carregar a página, vazios)
       const nome = document.getElementById('input_nome').value.trim();
+      const codigoAcesso = document.getElementById('input_codigo').value.trim();
       const email = document.getElementById('input_email').value.trim();
       const senha = document.getElementById('input_senha').value;
       const confirmar = document.getElementById('input_confirmar').value;
 
-      if (nome.length < 3) return mostrarErro('Informe o nome da sua prefeitura. (ex: Prefeitura de São Paulo)', 'campoNome');
+      if (nome.length < 3) return mostrarErro('Informe seu nome.', 'campoNome');
+      if (codigoAcesso == '') return mostrarErro('Informe o código de acesso da sua prefeitura.', 'campoCodigo');
       if (!email.includes('@') || !email.includes('.')) return mostrarErro('Informe um e-mail válido.', 'campoEmail');
 
     //Validação de senha forte
@@ -311,8 +319,8 @@
         body: JSON.stringify({
           nomeServer: nome,
           emailServer: email,
-          senhaServer: senha
-          // codigoAcessoServer removido
+          senhaServer: senha,
+          codigoAcessoServer: codigoAcesso
         })
       })
         .then(function (resposta) {
