@@ -1,84 +1,254 @@
 <!doctype html>
-<html>
+<html lang="pt-BR">
 
 <head>
-    <title>Graphics</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartColeta | Leituras em tempo real</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 24px;
+            background: #F4F7F5;
+            color: #00472A;
+        }
+
+        h1 {
+            margin: 0 0 4px;
+        }
+
+        .subtitulo {
+            margin: 0 0 24px;
+            color: #5E7468;
+        }
+
+        .graficos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .card {
+            flex: 1 1 480px;
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            margin: 0 0 12px;
+            font-size: 18px;
+        }
+
+        .card-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-topo h2 {
+            margin: 0;
+        }
+
+        select {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #5E7468;
+            font-size: 14px;
+        }
+
+        .leitura-atual {
+            margin: 0 0 12px;
+            color: #5E7468;
+        }
+
+        .area-grafico {
+            position: relative;
+            height: 360px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Graphics</h1>
-    <div style="display: flex;">
+    <h1>Leituras em tempo real</h1>
+    <p class="subtitulo">Nível de enchimento dos compartimentos (%). O sensor 1 é o HC-SR04 ligado ao Arduino; os sensores 2 a 30 são simulados.</p>
+
+    <div class="graficos">
+        <div class="card">
+            <div class="card-topo">
+                <h2>Todos os sensores</h2>
+                <select id="selectSensor">
+                    <option value="todos">Todos os 30 sensores</option>
+                </select>
+            </div>
+            <div class="area-grafico">
+                <canvas id="graficoGeral"></canvas>
+            </div>
         </div>
-        <div style="width: 50%;">
-            <canvas id="sensorDistancia"></canvas>
+
+        <div class="card">
+            <h2>Sensor real (sensor 1)</h2>
+            <p class="leitura-atual" id="leituraAtual">Aguardando leituras do Arduino...</p>
+            <div class="area-grafico">
+                <canvas id="graficoReal"></canvas>
+            </div>
         </div>
     </div>
 
     <script>
+        // de quanto em quanto tempo o gráfico busca novas leituras na API (em ms)
+        var INTERVALO_ATUALIZACAO = 2000;
 
-        var sensorDistancia = new Chart(document.getElementById('sensorDistancia').getContext('2d'), {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: 'Digital',
-                    borderColor: '#63B1BC',
-                    backgroundColor: '#0762C8'
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: '(0-1)'
-                        },
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+        var selectSensor = document.getElementById('selectSensor');
+        var leituraAtual = document.getElementById('leituraAtual');
 
-        var paginacao = {};
-        var tempo = {};
+        // última resposta da API, usada para redesenhar quando o filtro muda
+        var ultimosDados = null;
+        var selectMontado = false;
 
-        function obterDados(grafico, endpoint) {
-            fetch('http://localhost:3300/sensores/' + endpoint)
-                .then(response => response.json())
-                .then(valores => {
-                    if (paginacao[endpoint] == null) {
-                        paginacao[endpoint] = 0;
-                    }
-                    if (tempo[endpoint] == null) {
-                        tempo[endpoint] = 0;
-                    }
-
-                    var ultimaPaginacao = paginacao[endpoint];
-                    paginacao[endpoint] = valores.length;
-                    valores = valores.slice(ultimaPaginacao);
-
-                    valores.forEach((valor) => {
-                        if (grafico.data.labels.length == 10 && grafico.data.datasets[0].data.length == 10) {
-                            grafico.data.labels.shift();
-                            grafico.data.datasets[0].data.shift();
-                        }
-
-                        grafico.data.labels.push(tempo[endpoint]++);
-                        grafico.data.datasets[0].data.push(parseFloat(valor));
-                        grafico.update();
-                    });
-                })
-                .catch(error => console.error('Erro ao obter dados:', error));
+        // uma cor diferente para cada sensor (30 tons espalhados no círculo de cores)
+        function corDoSensor(numeroSensor) {
+            return 'hsl(' + ((numeroSensor * 37) % 360) + ', 65%, 42%)';
         }
 
-        setInterval(() => {
-            obterDados(sensorDistancia, 'distancia');
-        }, 1000);
+        function opcoesDoGrafico(mostrarLegenda) {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                interaction: { mode: 'nearest', intersect: false },
+                plugins: {
+                    legend: { display: mostrarLegenda }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Horário da leitura' }
+                    },
+                    y: {
+                        min: 0,
+                        max: 100,
+                        title: { display: true, text: 'Nível de enchimento (%)' }
+                    }
+                }
+            };
+        }
 
+        var graficoGeral = new Chart(document.getElementById('graficoGeral'), {
+            type: 'line',
+            data: { labels: [], datasets: [] },
+            options: opcoesDoGrafico(false)
+        });
+
+        var graficoReal = new Chart(document.getElementById('graficoReal'), {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Sensor 1 (real)',
+                    data: [],
+                    borderColor: '#02925D',
+                    backgroundColor: 'rgba(2, 146, 93, 0.15)',
+                    fill: true,
+                    tension: 0.2
+                }]
+            },
+            options: opcoesDoGrafico(true)
+        });
+
+        // coloca no select uma opção para cada sensor (só na primeira resposta da API)
+        function montarSelect(dados) {
+            for (var numero = 1; numero <= dados.quantidadeSensores; numero++) {
+                var opcao = document.createElement('option');
+                opcao.value = numero;
+                opcao.textContent = numero == dados.idSensorReal
+                    ? 'Sensor ' + numero + ' (real)'
+                    : 'Sensor ' + numero + ' (simulado)';
+                selectSensor.appendChild(opcao);
+            }
+            selectMontado = true;
+        }
+
+        function desenharGraficoGeral() {
+            if (ultimosDados == null) return;
+
+            var leituras = ultimosDados.leituras;
+            var filtro = selectSensor.value;
+
+            // quais sensores aparecem: todos ou só o escolhido no select
+            var sensores = [];
+            if (filtro == 'todos') {
+                for (var numero = 1; numero <= ultimosDados.quantidadeSensores; numero++) {
+                    sensores.push(numero);
+                }
+            } else {
+                sensores.push(Number(filtro));
+            }
+
+            graficoGeral.data.labels = leituras.map(function (leitura) { return leitura.hora; });
+            graficoGeral.data.datasets = sensores.map(function (numero) {
+                return {
+                    label: 'Sensor ' + numero,
+                    // niveis[0] é o sensor 1, niveis[1] é o sensor 2, ...
+                    data: leituras.map(function (leitura) { return leitura.niveis[numero - 1]; }),
+                    borderColor: corDoSensor(numero),
+                    backgroundColor: corDoSensor(numero),
+                    borderWidth: filtro == 'todos' ? 1.5 : 2.5,
+                    pointRadius: filtro == 'todos' ? 0 : 3,
+                    tension: 0.2
+                };
+            });
+            // com um sensor só, a legenda mostra qual é; com 30, ela ocuparia o gráfico todo
+            graficoGeral.options.plugins.legend.display = filtro != 'todos';
+            graficoGeral.update();
+        }
+
+        function desenharGraficoReal() {
+            if (ultimosDados == null) return;
+
+            var leituras = ultimosDados.leituras;
+            var posicao = ultimosDados.idSensorReal - 1;
+
+            graficoReal.data.labels = leituras.map(function (leitura) { return leitura.hora; });
+            graficoReal.data.datasets[0].data = leituras.map(function (leitura) { return leitura.niveis[posicao]; });
+            graficoReal.update();
+
+            if (leituras.length > 0) {
+                var ultima = leituras[leituras.length - 1];
+                var nivel = ultima.niveis[posicao];
+                var status = 'Normal';
+                if (nivel >= ultimosDados.limiteCritico) status = 'Crítico';
+                else if (nivel >= ultimosDados.limiteAtencao) status = 'Atenção';
+
+                leituraAtual.textContent = 'Última leitura (' + ultima.hora + '): '
+                    + ultima.distancias[posicao] + ' cm até o lixo, ' + nivel + '% cheio (' + status + ')';
+            }
+        }
+
+        function obterDados() {
+            fetch('/sensores')
+                .then(function (resposta) { return resposta.json(); })
+                .then(function (dados) {
+                    ultimosDados = dados;
+                    if (!selectMontado) montarSelect(dados);
+                    desenharGraficoGeral();
+                    desenharGraficoReal();
+                })
+                .catch(function (erro) {
+                    console.error('Erro ao obter dados:', erro);
+                });
+        }
+
+        // trocar o filtro redesenha na hora, sem esperar a próxima busca
+        selectSensor.addEventListener('change', desenharGraficoGeral);
+
+        obterDados();
+        setInterval(obterDados, INTERVALO_ATUALIZACAO);
     </script>
 </body>
 

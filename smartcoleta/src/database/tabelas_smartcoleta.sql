@@ -100,7 +100,14 @@ INSERT INTO ponto_coleta (rua, bairro, latitude, longitude, statuss, fkPrefeitur
 ('Rua Principal, 100', 'Centro', -10.5969000, -63.6122000, 'Atencao', 1),
 ('Avenida Central, 250', 'Centro', -10.5990000, -63.6150000, 'Normal', 1),
 ('Rua das Flores, 45', 'Centro', -13.1889000, -60.8122000, 'Atencao', 2),
-('Rua Sete de Setembro, 80', 'Centro', -19.9178000, -54.3639000, 'Atencao', 3);
+('Rua Sete de Setembro, 80', 'Centro', -19.9178000, -54.3639000, 'Atencao', 3),
+-- pontos 5 a 10: recebem os compartimentos dos sensores simulados pela API dat-acqu-ino
+('Rua Rio Branco, 300', 'Jardim América', -10.6010000, -63.6180000, 'Normal', 1),
+('Avenida Brasil, 1200', 'Vila Nova', -10.5940000, -63.6090000, 'Normal', 1),
+('Rua Dom Pedro II, 75', 'Centro', -13.1905000, -60.8150000, 'Normal', 2),
+('Avenida Tancredo Neves, 510', 'Bela Vista', -13.1860000, -60.8095000, 'Normal', 2),
+('Rua Mato Grosso, 220', 'Vila Rica', -19.9200000, -54.3660000, 'Normal', 3),
+('Avenida Ponta Porã, 890', 'Jardim Paulista', -19.9150000, -54.3610000, 'Normal', 3);
 
 INSERT INTO parametrizacao (minEsperado, maxEsperado) VALUES
 (70.00, 90.00), (65.00, 85.00), (75.00, 95.00), (60.00, 80.00);
@@ -113,11 +120,47 @@ INSERT INTO compartimento (tipoResiduo, alturaCm, statuss, fkPontoColeta, fkPara
 ('Papel',      100.00, 'Atencao', 3, 3),
 ('Plástico',   100.00, 'Atencao', 4, 4),
 ('Reciclável', 100.00, 'Normal',  1, 1),
-('Papel',      100.00, 'Normal',  1, 1);
+('Papel',      100.00, 'Normal',  1, 1),
+-- compartimentos 7 a 30: completam 3 compartimentos por ponto (pontos 2 a 10).
+-- O sensor 1 é o HC-SR04 real ligado ao Arduino; os sensores 2 a 30 são simulados
+-- pela API dat-acqu-ino, que grava as leituras de todos os 30 na tabela leitura.
+('Orgânico',   100.00, 'Normal',  2, 2),
+('Papel',      100.00, 'Normal',  2, 2),
+('Orgânico',   100.00, 'Normal',  3, 3),
+('Reciclável', 100.00, 'Normal',  3, 3),
+('Orgânico',   100.00, 'Normal',  4, 4),
+('Reciclável', 100.00, 'Normal',  4, 4),
+('Orgânico',   100.00, 'Normal',  5, 1),
+('Reciclável', 100.00, 'Normal',  5, 1),
+('Papel',      100.00, 'Normal',  5, 1),
+('Orgânico',   100.00, 'Normal',  6, 2),
+('Reciclável', 100.00, 'Normal',  6, 2),
+('Plástico',   100.00, 'Normal',  6, 2),
+('Orgânico',   100.00, 'Normal',  7, 3),
+('Reciclável', 100.00, 'Normal',  7, 3),
+('Papel',      100.00, 'Normal',  7, 3),
+('Orgânico',   100.00, 'Normal',  8, 4),
+('Reciclável', 100.00, 'Normal',  8, 4),
+('Plástico',   100.00, 'Normal',  8, 4),
+('Orgânico',   100.00, 'Normal',  9, 1),
+('Reciclável', 100.00, 'Normal',  9, 1),
+('Papel',      100.00, 'Normal',  9, 1),
+('Orgânico',   100.00, 'Normal', 10, 2),
+('Reciclável', 100.00, 'Normal', 10, 2),
+('Plástico',   100.00, 'Normal', 10, 2);
 
+-- um sensor por compartimento: idSensor N fica no compartimento N
 INSERT INTO sensor (numeroSensor, modelo, statuss, fkCompartimento) VALUES
-(101, 'HC-SR04', 1, 1), (102, 'HC-SR04', 1, 2), (103, 'HC-SR04', 1, 3),
-(104, 'HC-SR04', 1, 4), (105, 'HC-SR04', 1, 5), (106, 'HC-SR04', 1, 6);
+(101, 'HC-SR04', 1, 1),  (102, 'HC-SR04', 1, 2),  (103, 'HC-SR04', 1, 3),
+(104, 'HC-SR04', 1, 4),  (105, 'HC-SR04', 1, 5),  (106, 'HC-SR04', 1, 6),
+(107, 'HC-SR04', 1, 7),  (108, 'HC-SR04', 1, 8),  (109, 'HC-SR04', 1, 9),
+(110, 'HC-SR04', 1, 10), (111, 'HC-SR04', 1, 11), (112, 'HC-SR04', 1, 12),
+(113, 'HC-SR04', 1, 13), (114, 'HC-SR04', 1, 14), (115, 'HC-SR04', 1, 15),
+(116, 'HC-SR04', 1, 16), (117, 'HC-SR04', 1, 17), (118, 'HC-SR04', 1, 18),
+(119, 'HC-SR04', 1, 19), (120, 'HC-SR04', 1, 20), (121, 'HC-SR04', 1, 21),
+(122, 'HC-SR04', 1, 22), (123, 'HC-SR04', 1, 23), (124, 'HC-SR04', 1, 24),
+(125, 'HC-SR04', 1, 25), (126, 'HC-SR04', 1, 26), (127, 'HC-SR04', 1, 27),
+(128, 'HC-SR04', 1, 28), (129, 'HC-SR04', 1, 29), (130, 'HC-SR04', 1, 30);
 
 INSERT INTO leitura (fkSensor, distanciaCm, dataHora) VALUES
 -- 13/10, pouco antes de cada coleta
