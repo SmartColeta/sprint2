@@ -145,6 +145,7 @@ const serial = async (historico) => {
                     `INSERT INTO leitura (distanciaCm, fkSensor) VALUES ${marcadores}`,
                     valores
                 );
+                console.log(`   ${distancias.length} leituras inseridas no banco (sensores 1 a ${distancias.length})`);
             } catch (erro) {
                 // sem o try/catch, um erro no banco derrubaria a API inteira
                 console.error('Erro ao inserir no banco:', erro.message);
