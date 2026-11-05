@@ -11,6 +11,16 @@ const SERVIDOR_PORTA = 3300;
 // habilita ou desabilita a inserção de dados no banco de dados
 const HABILITAR_OPERACAO_INSERIR = true;
 
+// MODO DE EXECUÇÃO (escolhido pelo comando, sem editar este arquivo):
+//   npm start          -> modo principal: lê o sensor 1 do Arduino pela porta serial
+//   npm run simulado   -> modo de teste: gera a leitura do sensor 1 sem o Arduino
+// Nos dois modos, a leitura do sensor 1 passa pelo mesmo código (tratarLinha),
+// que gera os sensores 2 a 30, grava no banco e alimenta o gráfico.
+const MODO_SIMULADO = process.argv.includes('--simulado');
+
+// no modo simulado, de quanto em quanto tempo sai uma leitura (mesmo ritmo do delay(2000) do Arduino)
+const INTERVALO_SIMULADO_MS = 2000;
+
 // SENSORES
 // o sensor 1 é o HC-SR04 real ligado ao Arduino; os sensores 2 a 30 são simulados
 // a partir da leitura dele. O número do sensor é o idSensor da tabela "sensor".
@@ -53,6 +63,20 @@ function simularDistancia(distanciaReal, numeroSensor) {
     return Number(distancia.toFixed(2));
 }
 
+// MODO SIMULADO: imita o sensor 1 sem o Arduino.
+// Começa com o compartimento quase vazio (90 cm até o lixo) e a distância vai
+// diminuindo aos poucos, como um compartimento enchendo. Quando chega perto de
+// cheio (5 cm), volta para 90 cm, como se o caminhão tivesse feito a coleta.
+let distanciaSimulada = 90;
+function gerarLeituraSimulada() {
+    distanciaSimulada -= 1 + Math.random() * 2;   // enche de 1 a 3 cm por leitura
+    if (distanciaSimulada < 5) {
+        distanciaSimulada = 90;                   // coleta: esvazia o compartimento
+    }
+    // devolve texto, igual ao que chega do Arduino pelo Serial.println
+    return distanciaSimulada.toFixed(2);
+}
+
 // função para comunicação serial
 const serial = async (historico) => {
 
@@ -67,29 +91,9 @@ const serial = async (historico) => {
         }
     ).promise();
 
-    // lista as portas seriais disponíveis e procura pelo Arduino
-    const portas = await serialport.SerialPort.list();
-    const portaArduino = portas.find((porta) => porta.vendorId == 2341 && porta.productId == 43);
-    if (!portaArduino) {
-        throw new Error('O arduino não foi encontrado em nenhuma porta serial');
-    }
-
-    // configura a porta serial com o baud rate especificado
-    const arduino = new serialport.SerialPort(
-        {
-            path: portaArduino.path,
-            baudRate: SERIAL_BAUD_RATE
-        }
-    );
-
-    // evento quando a porta serial é aberta
-    arduino.on('open', () => {
-        console.log(`A leitura do arduino foi iniciada na porta ${portaArduino.path} utilizando Baud Rate de ${SERIAL_BAUD_RATE}`);
-    });
-
-    // processa cada linha recebida do Arduino
+    // processa cada linha com a distância do sensor 1, venha ela do Arduino ou do modo simulado
     // o Arduino envia só a distância em cm, uma por linha: Serial.println(sensor.distance());
-    arduino.pipe(new serialport.ReadlineParser({ delimiter: '\r\n' })).on('data', async (data) => {
+    const tratarLinha = async (data) => {
         const distanciaReal = parseFloat(data);
 
         // o HC-SR04 mede a partir de 2 cm; 0, negativo ou texto = leitura inválida
@@ -120,7 +124,7 @@ const serial = async (historico) => {
             if (status == 'Atenção') emAtencao.push(posicao + 1);
             if (status == 'Crítico') emCritico.push(posicao + 1);
         });
-        console.log(`${hora} | sensor ${ID_SENSOR_REAL} (real): ${distanciaReal} cm, ${niveis[0]}% (${classificarNivel(niveis[0])})`
+        console.log(`${hora} | sensor ${ID_SENSOR_REAL} (${MODO_SIMULADO ? 'simulado' : 'real'}): ${distanciaReal} cm, ${niveis[0]}% (${classificarNivel(niveis[0])})`
             + ` | atenção: [${emAtencao.join(', ')}] | crítico: [${emCritico.join(', ')}]`);
 
         // insere os dados no banco de dados (se habilitado)
@@ -146,7 +150,39 @@ const serial = async (historico) => {
                 console.error('Erro ao inserir no banco:', erro.message);
             }
         }
+    };
+
+    // MODO SIMULADO: gera a leitura do sensor 1 sem procurar o Arduino
+    if (MODO_SIMULADO) {
+        console.log('*** MODO SIMULADO: o sensor 1 é gerado pelo código, o Arduino NÃO está sendo lido ***');
+        setInterval(() => {
+            tratarLinha(gerarLeituraSimulada());
+        }, INTERVALO_SIMULADO_MS);
+        return;
+    }
+
+    // MODO PRINCIPAL: lista as portas seriais disponíveis e procura pelo Arduino
+    const portas = await serialport.SerialPort.list();
+    const portaArduino = portas.find((porta) => porta.vendorId == 2341 && porta.productId == 43);
+    if (!portaArduino) {
+        throw new Error('O arduino não foi encontrado em nenhuma porta serial. Para testar sem ele, use: npm run simulado');
+    }
+
+    // configura a porta serial com o baud rate especificado
+    const arduino = new serialport.SerialPort(
+        {
+            path: portaArduino.path,
+            baudRate: SERIAL_BAUD_RATE
+        }
+    );
+
+    // evento quando a porta serial é aberta
+    arduino.on('open', () => {
+        console.log(`A leitura do arduino foi iniciada na porta ${portaArduino.path} utilizando Baud Rate de ${SERIAL_BAUD_RATE}`);
     });
+
+    // cada linha recebida do Arduino vai para o mesmo tratarLinha do modo simulado
+    arduino.pipe(new serialport.ReadlineParser({ delimiter: '\r\n' })).on('data', tratarLinha);
 
     // evento para lidar com erros na comunicação serial
     arduino.on('error', (mensagem) => {
