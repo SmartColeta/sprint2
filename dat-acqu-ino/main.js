@@ -8,6 +8,7 @@ const path = require('path');
 const SERIAL_BAUD_RATE = 9600;
 const SERVIDOR_PORTA = 3300;
 
+
 // habilita ou desabilita a inserção de dados no banco de dados
 const HABILITAR_OPERACAO_INSERIR = true;
 
@@ -21,6 +22,12 @@ const MODO_SIMULADO = process.argv.includes('--simulado');
 // no modo simulado, de quanto em quanto tempo sai uma leitura (mesmo ritmo do delay(2000) do Arduino)
 const INTERVALO_SIMULADO_MS = 2000;
 
+// tempo mínimo entre duas leituras gravadas; linhas que chegam antes disso são descartadas.
+// A chave primária da leitura é (fkSensor, dataHora) com dataHora em segundos, então duas
+// leituras do mesmo sensor no mesmo segundo dão "Duplicate entry".
+const INTERVALO_MINIMO_MS = 1500;
+
+
 // SENSORES
 // o sensor 1 é o HC-SR04 real ligado ao Arduino; os sensores 2 a 30 são simulados
 // a partir da leitura dele. O número do sensor é o idSensor da tabela "sensor".
@@ -28,7 +35,7 @@ const QTD_SENSORES = 30;
 const ID_SENSOR_REAL = 1;
 
 // altura do compartimento (coluna alturaCm da tabela "compartimento")
-const ALTURA_CM = 100;
+const ALTURA_CM = 24;
 
 // limites de enchimento em % (os mesmos da parametrização 1: minEsperado e maxEsperado)
 const LIMITE_ATENCAO = 70;
@@ -83,13 +90,17 @@ const serial = async (historico) => {
     // conexão com o banco de dados MySQL (que está na VM, porta 3307)
     let poolBancoDados = mysql.createPool(
         {
-            host: 'localhost',
+            host: '10.18.32.26',
             user: 'user_insert',
             password: 'Smartcoleta2026#',
             database: 'smartcoleta',
             port: 3307
         }
     ).promise();
+
+        // momento (em ms) da última leitura aceita; começa em 0 para aceitar a primeira
+    let momentoUltimaLeitura = 0;
+
 
     // processa cada linha com a distância do sensor 1, venha ela do Arduino ou do modo simulado
     // o Arduino envia só a distância em cm, uma por linha: Serial.println(sensor.distance());
@@ -101,6 +112,15 @@ const serial = async (historico) => {
             console.log(`Leitura inválida ignorada: "${data}"`);
             return;
         }
+
+        
+        // descarta a linha se a anterior foi aceita há menos de INTERVALO_MINIMO_MS
+        const agora = Date.now();
+        if (agora - momentoUltimaLeitura < INTERVALO_MINIMO_MS) {
+            return;
+        }
+        momentoUltimaLeitura = agora;
+
 
         // posição 0 = sensor 1 (real), posição 1 = sensor 2, ... posição 29 = sensor 30
         const distancias = [distanciaReal];
