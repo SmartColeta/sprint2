@@ -200,13 +200,15 @@ JOIN ponto_coleta p    ON c.fkPontoColeta = p.idPonto
 JOIN prefeitura pr     ON p.fkPrefeitura = pr.idPrefeitura
 JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao;
 
--- Estado atual: última leitura de cada sensor, com nível e status
--- (para ver só um sensor, acrescente WHERE s.idSensor = 1 no final)
-SELECT pr.cidade, p.rua, c.tipoResiduo, s.numeroSensor, l.dataHora,
+-- Estado atual: última leitura de cada sensor, com distância, nível e status
+-- (inclui as leituras gravadas pela API dat-acqu-ino; com ela rodando,
+--  devem aparecer os 30 sensores com dataHora de hoje)
+-- (para ver só um sensor, troque o ORDER BY por WHERE s.idSensor = 1)
+SELECT s.idSensor, pr.cidade, p.rua, c.tipoResiduo, l.dataHora, l.distanciaCm,
        ROUND((1 - l.distanciaCm / c.alturaCm) * 100, 2) AS nivelPct,
        CASE WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.maxEsperado THEN 'Critico'
             WHEN (1 - l.distanciaCm / c.alturaCm) * 100 >= pa.minEsperado THEN 'Atencao'
-            ELSE 'Normal' END AS statusPreenchimento
+            ELSE 'Normal' END AS status
 FROM sensor s
 JOIN leitura l ON l.fkSensor = s.idSensor
               AND l.dataHora = (
@@ -215,7 +217,8 @@ JOIN leitura l ON l.fkSensor = s.idSensor
 JOIN compartimento c   ON s.fkCompartimento = c.idCompartimento
 JOIN ponto_coleta p    ON c.fkPontoColeta = p.idPonto
 JOIN prefeitura pr     ON p.fkPrefeitura = pr.idPrefeitura
-JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao;
+JOIN parametrizacao pa ON c.fkParametrizacao = pa.idParametrizacao
+ORDER BY s.idSensor;
 
 -- Regra do caminhão: o ponto é acionado se ALGUM compartimento está em Atencao
 -- ou pior; a lista traz TODOS os compartimentos dele, inclusive os normais

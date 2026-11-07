@@ -1,5 +1,5 @@
 -- Usuários do MySQL usados pelas aplicações.
--- Rode DEPOIS do tabelas_smartcoleta.sql, conectado como root (na VM: sudo mysql).
+-- Rode DEPOIS do tabelas_smartcoleta.sql, conectado como root (na VM: mysql -u root -p).
 --
 -- O host '%' aceita conexões de qualquer máquina. É necessário porque o site e a
 -- API dat-acqu-ino rodam no Windows e chegam ao MySQL da VM pela porta 3307
@@ -9,11 +9,12 @@
 -- ALTER USER logo depois garante a senha, mesmo que o usuário tenha sido criado
 -- antes com outra senha.
 
--- Site (web-data-viz): login e cadastro
+-- Site (web-data-viz): consulta todas as tabelas (login, consultas e o dashboard
+-- com dados reais) e grava apenas novos usuários (cadastro)
 CREATE USER IF NOT EXISTS 'user_data'@'%' IDENTIFIED BY 'Smartcoleta2026#';
 ALTER USER 'user_data'@'%' IDENTIFIED BY 'Smartcoleta2026#';
-GRANT SELECT, INSERT ON smartcoleta.usuario TO 'user_data'@'%';
-GRANT SELECT ON smartcoleta.prefeitura TO 'user_data'@'%';
+GRANT SELECT ON smartcoleta.* TO 'user_data'@'%';
+GRANT INSERT ON smartcoleta.usuario TO 'user_data'@'%';
 
 -- API do Arduino (dat-acqu-ino): grava as leituras dos sensores
 CREATE USER IF NOT EXISTS 'user_insert'@'%' IDENTIFIED BY 'Smartcoleta2026#';
