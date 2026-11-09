@@ -3,3 +3,6 @@ node_modules
 package-lock.json
 
 .github
+
+# credenciais reais do banco (modelo em .env.example)
+.env

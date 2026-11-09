@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Monitoramento das lixeiras | SmartColeta</title>
+	<title>Dashboard | SmartColeta</title>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 	<!-- Importando icone da aba do navegador -->
@@ -27,9 +27,8 @@
 			</div>
 
 			<nav class="barra-lateral-menu">
-				<a class="barra-link barra-link-ativo" href="dashboard.html">Monitoramento</a>
-				<a class="barra-link" href="#">Relatórios</a>
-				<a class="barra-link" href="/contato.html">Suporte</a>
+				<a class="barra-link barra-link-ativo" href="dashboard.html">Dashboard</a>
+				<a class="barra-link" href="http://localhost:3300/">Compartimentos</a>
 			</nav>
 
 			<div class="barra-lateral-botoes">
@@ -49,7 +48,7 @@
 					<div class="painel-topo-textos">
 						<button class="botao-voltar hover-escuro" type="button" id="botao-voltar" style="display: none"
 							onclick="abrirVisao(0)">&larr; Visão geral</button>
-						<h1 class="painel-titulo" id="painel-titulo">Monitoramento das lixeiras da cidade</h1>
+						<h1 class="painel-titulo" id="painel-titulo">Monitoramento do Volume das Lixeiras da Cidade</h1>
 						<p class="painel-subtitulo" id="painel-subtitulo">Campo Novo de Rondônia · Saiba quais pontos estão
 							enchendo e colete antes que o lixo transborde</p>
 					</div>
@@ -72,11 +71,12 @@
 						</div>
 
 						<div class="indicador">
-							<h2 class="indicador-titulo">Ocupação média</h2>
+							<h2 class="indicador-titulo">Compartimentos em nível de atenção</h2>
 							<div class="indicador-linha">
-								<p class="indicador-dado" id="kpi-ocupacao"></p>
+								<p class="indicador-dado" id="kpi-atencao"></p>
+								<p class="indicador-status" id="kpi-atencao-status"></p>
 							</div>
-							<p class="indicador-descricao">Última leitura de 30 compartimentos</p>
+							<p class="indicador-descricao" id="kpi-atencao-descricao"></p>
 						</div>
 
 						<div class="indicador">
@@ -490,11 +490,11 @@
 		// o card fica vermelho se tiver ponto crítico, amarelo se tiver só atenção
 		if (qtdPontosCriticos > 0) {
 			document.getElementById('alerta').className = 'card alerta alerta-critico';
-			document.getElementById('alerta-titulo').innerHTML = `${qtdPontosCriticos} pontos em nível crítico e ${qtdPontosAtencao} em atenção`;
+			document.getElementById('alerta-titulo').innerHTML = `${qtdPontosCriticos} pontos de coleta em nível crítico e ${qtdPontosAtencao} em atenção`;
 			document.getElementById('alerta-texto').innerHTML = 'Priorize a coleta nestes pontos. Clique para ver o motivo:';
 		} else if (qtdPontosAtencao > 0) {
 			document.getElementById('alerta').className = 'card alerta alerta-atencao';
-			document.getElementById('alerta-titulo').innerHTML = `${qtdPontosAtencao} pontos em atenção`;
+			document.getElementById('alerta-titulo').innerHTML = `${qtdPontosAtencao} pontos de coleta em atenção`;
 			document.getElementById('alerta-texto').innerHTML = 'Priorize a coleta nestes pontos. Clique para ver o motivo:';
 		} else {
 			document.getElementById('alerta').className = 'card alerta alerta-normal';
@@ -528,7 +528,21 @@
 			}
 		}
 
-		document.getElementById('kpi-ocupacao').innerHTML = Math.round(somaNiveis / qtdCompartimentos) + '%';
+		// Indicador Ocupação Média - MathRandom
+		// document.getElementById('kpi-ocupacao').innerHTML = Math.round(somaNiveis / qtdCompartimentos) + '%';
+
+
+		// meta: menos de 10% dos compartimentos em atencao
+		let pctAtencao = qtdAtencao / qtdCompartimentos * 100;
+		document.getElementById('kpi-atencao').innerHTML = qtdAtencao;
+		document.getElementById('kpi-atencao-descricao').innerHTML = `${Math.round(pctAtencao)}% do total, meta abaixo de 10%`;
+		if (pctAtencao < 10) {
+			document.getElementById('kpi-atencao-status').innerHTML = 'Dentro da meta';
+			document.getElementById('kpi-atencao-status').className = 'indicador-status indicador-status-normal';
+		} else {
+			document.getElementById('kpi-atencao-status').innerHTML = 'Acima da meta';
+			document.getElementById('kpi-atencao-status').className = 'indicador-status indicador-status-atencao';
+		}
 
 		// meta: menos de 10% dos compartimentos em crítico
 		let pctCriticos = qtdCriticos / qtdCompartimentos * 100;
@@ -551,7 +565,7 @@
 			document.getElementById('kpi-sensores-status').className = 'indicador-status indicador-status-normal';
 		} else {
 			document.getElementById('kpi-sensores-status').innerHTML = 'Abaixo da meta';
-			document.getElementById('kpi-sensores-status').className = 'indicador-status indicador-status-critico';
+			document.getElementById('kpi-sensores-status').className = 'indicador-status indicador-status-atencao';
 		}
 
 		// LISTA DE PONTOS DE COLETA (clicar abre a visão do ponto)
@@ -737,7 +751,7 @@
 				document.getElementById('visao-ponto').style.display = 'none';
 				document.getElementById('visao-geral').style.display = 'flex';
 				document.getElementById('botao-voltar').style.display = 'none';
-				document.getElementById('painel-titulo').innerHTML = 'Monitoramento das lixeiras da cidade';
+				document.getElementById('painel-titulo').innerHTML = 'Monitoramento do Volume das Lixeiras da Cidade';
 				document.getElementById('painel-subtitulo').innerHTML = 'Campo Novo de Rondônia · Saiba quais pontos estão enchendo e colete antes que o lixo transborde';
 				return;
 			}
