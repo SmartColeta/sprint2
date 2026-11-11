@@ -9,14 +9,17 @@
 -- ALTER USER logo depois garante a senha, mesmo que o usuário tenha sido criado
 -- antes com outra senha.
 
--- Site (web-data-viz): consulta todas as tabelas (login, consultas e o dashboard
--- com dados reais) e grava apenas novos usuários (cadastro)
+-- Site (web-data-viz): consulta todas as tabelas (login e dashboard), grava
+-- novos usuários (cadastro) e registra coletas (coleta + coleta_compartimento).
+-- Continua sem UPDATE e sem DELETE.
 CREATE USER IF NOT EXISTS 'user_data'@'%' IDENTIFIED BY 'Smartcoleta2026#';
 ALTER USER 'user_data'@'%' IDENTIFIED BY 'Smartcoleta2026#';
 GRANT SELECT ON smartcoleta.* TO 'user_data'@'%';
 GRANT INSERT ON smartcoleta.usuario TO 'user_data'@'%';
+GRANT INSERT ON smartcoleta.coleta TO 'user_data'@'%';
+GRANT INSERT ON smartcoleta.coleta_compartimento TO 'user_data'@'%';
 
--- API do Arduino (dat-acqu-ino): grava as leituras dos sensores
+-- API do Arduino (dat-acqu-ino): só grava as leituras dos sensores
 CREATE USER IF NOT EXISTS 'user_insert'@'%' IDENTIFIED BY 'Smartcoleta2026#';
 ALTER USER 'user_insert'@'%' IDENTIFIED BY 'Smartcoleta2026#';
 GRANT INSERT ON smartcoleta.leitura TO 'user_insert'@'%';

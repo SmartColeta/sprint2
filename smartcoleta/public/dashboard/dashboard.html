@@ -11,8 +11,13 @@
 	<link rel="icon" href="/logos/smartcoleta-logo.svg">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
 	<link rel="stylesheet" href="/css/dashboard.css">
+
+	<!-- defer: os scripts rodam depois que o HTML foi lido, nesta ordem.
+	     dados-exemplo.js primeiro (sai quando a dash ler o banco), depois dashboard.js -->
+	<script src="/js/dashboard/dados-exemplo.js" defer></script>
+	<script src="/js/dashboard/dashboard.js" defer></script>
 </head>
 
 <body>
@@ -27,7 +32,7 @@
 			</div>
 
 			<nav class="barra-lateral-menu">
-				<a class="barra-link barra-link-ativo" href="dashboard.html">Dashboard</a>
+				<a class="barra-link barra-link-ativo" href="/dashboard/dashboard.html">Dashboard</a>
 				<a class="barra-link" href="http://localhost:3300/">Compartimentos</a>
 			</nav>
 
@@ -43,185 +48,166 @@
 		<main class="conteudo">
 			<div class="painel">
 
-				<!-- TOPO: título, filtro de visão e horário da última leitura -->
+				<!-- TOPO: título, cidade e hora da última leitura -->
 				<header class="painel-topo">
 					<div class="painel-topo-textos">
-						<button class="botao-voltar hover-escuro" type="button" id="botao-voltar" style="display: none"
-							onclick="abrirVisao(0)">&larr; Visão geral</button>
-						<h1 class="painel-titulo" id="painel-titulo">Monitoramento do Volume das Lixeiras da Cidade</h1>
-						<p class="painel-subtitulo" id="painel-subtitulo">Campo Novo de Rondônia · Saiba quais pontos estão
-							enchendo e colete antes que o lixo transborde</p>
+						<button class="botao-voltar" type="button" id="botao-voltar" hidden onclick="voltarVisaoGeral()">&larr; Visão geral</button>
+						<h1 class="painel-titulo" id="painel-titulo">Monitoramento das lixeiras</h1>
+						<p class="painel-subtitulo" id="painel-subtitulo"></p>
 					</div>
 
-					<div class="painel-topo-filtro">
-						<label class="filtro-rotulo" for="filtro-visao">Visualizar</label>
-						<select class="filtro-visao" id="filtro-visao" onchange="trocarVisao()"></select>
-						<p class="painel-atualizacao">Última leitura em 03/11 às 18:10</p>
+					<div class="painel-topo-info">
+						<p class="painel-atualizacao" id="painel-atualizacao"></p>
+						<!-- Só para os dados de exemplo: some quando a dash ler o banco -->
+						<label class="cenario" id="cenario-caixa">
+							Dados de exemplo
+							<select id="cenario" onchange="trocarCenario()">
+								<option value="10">10 pontos · 30 compartimentos (POC)</option>
+								<option value="40">40 pontos · 120 compartimentos</option>
+							</select>
+						</label>
 					</div>
 				</header>
 
 				<!-- ======================= VISÃO GERAL DA CIDADE ======================= -->
-				<section class="visao visao-geral" id="visao-geral">
-					<div class="linha-resumo">
-						<!-- primeiro card: alerta com os pontos em atenção e crítico (montado pelo script) -->
+				<section class="visao" id="visao-geral">
+
+					<div class="linha-topo">
+						<!-- ALERTA: a decisão do momento ("onde mando o caminhão?") -->
 						<div class="card alerta" id="alerta">
-							<h2 class="alerta-titulo" id="alerta-titulo"></h2>
-							<p class="alerta-texto" id="alerta-texto"></p>
-							<div class="alerta-lista" id="alerta-lista"></div>
+							<div class="alerta-resumo">
+								<p class="alerta-rotulo" id="alerta-rotulo"></p>
+								<p class="alerta-numero" id="alerta-numero"></p>
+								<h2 class="alerta-titulo" id="alerta-titulo"></h2>
+								<p class="alerta-texto" id="alerta-texto"></p>
+							</div>
+							<div class="alerta-fila">
+								<p class="fila-legenda" id="fila-legenda"></p>
+								<!-- um botão por ponto, na ordem de urgência (montado pelo script) -->
+								<ol class="fila" id="fila"></ol>
+								<button class="fila-ver-todos" type="button" id="fila-ver-todos" hidden onclick="mostrarPontosEmAlerta()"></button>
+							</div>
 						</div>
 
-						<div class="indicador">
-							<h2 class="indicador-titulo">Compartimentos em nível de atenção</h2>
-							<div class="indicador-linha">
-								<p class="indicador-dado" id="kpi-atencao"></p>
-								<p class="indicador-status" id="kpi-atencao-status"></p>
+						<!-- INDICADORES: quantidade de SENSORES (= compartimentos) em cada situação.
+						     Cada um cita o sensor mais urgente e tem "Ver todos" (montado pelo script). -->
+						<div class="indicadores" id="indicadores">
+							<div class="indicador indicador-duplo">
+								<div class="indicador-metade" id="indicador-critico"></div>
+								<div class="indicador-metade" id="indicador-atencao"></div>
 							</div>
-							<p class="indicador-descricao" id="kpi-atencao-descricao"></p>
-						</div>
-
-						<div class="indicador">
-							<h2 class="indicador-titulo">Compartimentos em nível crítico</h2>
-							<div class="indicador-linha">
-								<p class="indicador-dado" id="kpi-criticos"></p>
-								<p class="indicador-status" id="kpi-criticos-status"></p>
-							</div>
-							<p class="indicador-descricao" id="kpi-criticos-descricao"></p>
-						</div>
-
-						<div class="indicador">
-							<h2 class="indicador-titulo">Sensores ativos</h2>
-							<div class="indicador-linha">
-								<p class="indicador-dado" id="kpi-sensores"></p>
-								<p class="indicador-status" id="kpi-sensores-status"></p>
-							</div>
-							<p class="indicador-descricao" id="kpi-sensores-descricao"></p>
+							<div class="indicador" id="indicador-breve"></div>
+							<div class="indicador" id="indicador-semleitura"></div>
 						</div>
 					</div>
 
 					<div class="linha-detalhe linha-detalhe-geral">
-						<div class="card">
-							<h2 class="card-titulo">Pontos de coleta</h2>
-							<p class="card-subtitulo">Clique em um ponto para ver o motivo do alerta</p>
-							<!-- uma linha por ponto, montada pelo script -->
-							<ul class="lista-pontos" id="lista-pontos"></ul>
-						</div>
+						<!-- TABELA COM TODOS OS COMPARTIMENTOS (1 sensor por compartimento) -->
+						<div class="card card-tabela" id="card-tabela">
+							<div class="card-cabecalho">
+								<h2 class="card-titulo">Todos os compartimentos</h2>
+								<div class="filtros">
+									<input class="filtro-busca" type="search" id="filtro-busca" placeholder="Buscar rua, bairro ou sensor"
+										aria-label="Buscar rua, bairro ou sensor" oninput="aoBuscar()">
+									<select class="filtro-bairro" id="filtro-bairro" aria-label="Filtrar por bairro" onchange="aoEscolherBairro()"></select>
+								</div>
+							</div>
 
-						<div class="card">
-							<h2 class="card-titulo">Última leitura de cada sensor</h2>
-							<p class="card-subtitulo">Nível de preenchimento dos 3 compartimentos de cada ponto</p>
-							<!-- Gráfico de barras (Chart.js: type 'bar') -->
-							<div class="grafico">
-								<canvas id="myChartBarras"></canvas>
+							<!-- filtros por situação, com a quantidade de compartimentos em cada uma -->
+							<div class="chips-linha">
+								<div class="chips" id="chips"></div>
+								<p class="tabela-contagem" id="tabela-contagem"></p>
+							</div>
+
+							<div class="tabela-rolagem">
+								<table class="tabela">
+									<thead>
+										<tr>
+											<th><button type="button" data-campo="urgencia" onclick="ordenarPor('urgencia')">Situação</button></th>
+											<th><button type="button" data-campo="ponto" onclick="ordenarPor('ponto')">Ponto de coleta</button></th>
+											<th><button type="button" data-campo="compartimento" onclick="ordenarPor('compartimento')">Compartimento</button></th>
+											<th><button type="button" data-campo="nivel" onclick="ordenarPor('nivel')">Nível</button></th>
+											<th><button type="button" data-campo="previsao" onclick="ordenarPor('previsao')">Previsão</button></th>
+											<th class="col-leitura"><button type="button" data-campo="leitura" onclick="ordenarPor('leitura')">Última leitura</button></th>
+										</tr>
+									</thead>
+									<tbody id="tabela-corpo"></tbody>
+								</table>
+								<p class="tabela-vazia" id="tabela-vazia" hidden>Nenhum compartimento com esses filtros.</p>
 							</div>
 						</div>
 
+						<!-- GRÁFICO POR BAIRRO: onde estão os pontos em alerta -->
 						<div class="card">
-							<h2 class="card-titulo">Compartimentos por patamar</h2>
-							<p class="card-subtitulo">Conforme os limites de cada compartimento</p>
-							<!-- Gráfico de rosca (Chart.js: type 'doughnut') -->
-							<div class="patamares">
-								<div class="patamares-grafico">
-									<canvas id="myChartRosca"></canvas>
-									<div class="patamares-grafico-centro">
-										<p class="patamares-grafico-total" id="patamares-total">30</p>
-										<p class="patamares-grafico-unidade">compartimentos</p>
-									</div>
-								</div>
-
-								<div class="patamares-lista">
-									<div class="patamar patamar-normal">
-										<span class="patamar-marcador"></span>
-										<p class="patamar-nome">Normal</p>
-										<p class="patamar-quantidade" id="patamar-normal"></p>
-									</div>
-									<div class="patamar patamar-atencao">
-										<span class="patamar-marcador"></span>
-										<p class="patamar-nome">Atenção</p>
-										<p class="patamar-quantidade" id="patamar-atencao"></p>
-									</div>
-									<div class="patamar patamar-critico">
-										<span class="patamar-marcador"></span>
-										<p class="patamar-nome">Crítico</p>
-										<p class="patamar-quantidade" id="patamar-critico"></p>
-									</div>
-								</div>
+							<h2 class="card-titulo">Pontos por bairro</h2>
+							<p class="card-subtitulo">Clique num bairro para filtrar a tabela</p>
+							<div class="grafico">
+								<canvas id="graficoBairros"></canvas>
 							</div>
 						</div>
 					</div>
 				</section>
 
 				<!-- ======================= VISÃO DE UM PONTO DE COLETA ======================= -->
-				<section class="visao visao-ponto" id="visao-ponto" style="display: none">
-					<div class="linha-resumo">
-						<!-- diagnóstico: responde "por que este ponto está em alerta?" (montado pelo script) -->
-						<div class="card alerta" id="diagnostico">
-							<h2 class="alerta-titulo" id="diagnostico-titulo"></h2>
-							<p class="alerta-texto" id="diagnostico-texto"></p>
-							<ul class="diagnostico-lista" id="diagnostico-lista"></ul>
+				<section class="visao" id="visao-ponto" hidden>
+					<div class="linha-topo">
+						<!-- DIAGNÓSTICO: a decisão para este ponto e o motivo -->
+						<div class="card alerta diagnostico" id="diagnostico">
+							<p class="alerta-rotulo" id="diag-rotulo"></p>
+							<h2 class="alerta-titulo" id="diag-titulo"></h2>
+							<p class="alerta-texto" id="diag-texto"></p>
+							<ul class="diag-lista" id="diag-lista"></ul>
 						</div>
 
-						<div class="indicador">
-							<h2 class="indicador-titulo">Nível médio do ponto</h2>
-							<div class="indicador-linha">
-								<p class="indicador-dado" id="kpi-ponto-media"></p>
-							</div>
-							<p class="indicador-descricao">Média da última leitura dos compartimentos</p>
-						</div>
-
-						<div class="indicador">
-							<h2 class="indicador-titulo">Compartimento mais cheio</h2>
-							<div class="indicador-linha">
-								<p class="indicador-dado" id="kpi-ponto-maximo"></p>
-								<p class="indicador-status" id="kpi-ponto-maximo-status"></p>
-							</div>
-							<p class="indicador-descricao" id="kpi-ponto-maximo-descricao"></p>
-						</div>
-
-						<div class="indicador">
-							<h2 class="indicador-titulo">Última coleta</h2>
-							<div class="indicador-linha">
-								<p class="indicador-dado" id="kpi-ponto-coleta"></p>
-							</div>
-							<p class="indicador-descricao" id="kpi-ponto-coleta-descricao"></p>
+						<!-- ÚLTIMA COLETA: vem da tabela N:M coleta_compartimento (consulta C4) -->
+						<div class="card coleta">
+							<h2 class="card-titulo">Última coleta</h2>
+							<p class="coleta-data" id="coleta-data"></p>
+							<p class="card-subtitulo" id="coleta-ha"></p>
+							<ul class="coleta-itens" id="coleta-itens"></ul>
+							<p class="coleta-nota" id="coleta-nota"></p>
 						</div>
 					</div>
 
 					<div class="linha-detalhe linha-detalhe-ponto">
+						<!-- HISTÓRICO: uma linha por compartimento, no período escolhido (consultas C3a a C3d) -->
 						<div class="card">
-							<h2 class="card-titulo">Nível por compartimento</h2>
-							<p class="card-subtitulo">Última leitura, com os limites de atenção e crítico</p>
-							<!-- Gráfico de barras com marcadores de limite (Chart.js: 'bar' + 'line') -->
+							<div class="card-cabecalho">
+								<div>
+									<h2 class="card-titulo">Histórico por compartimento</h2>
+									<p class="card-subtitulo" id="historico-subtitulo"></p>
+								</div>
+								<div class="seletor-periodo" id="seletor-periodo" role="group" aria-label="Período do histórico"></div>
+							</div>
 							<div class="grafico">
-								<canvas id="myChartCompartimentos"></canvas>
+								<canvas id="graficoHistorico"></canvas>
 							</div>
 						</div>
 
+						<!-- LEITURAS DO DIA: todas as leituras do ponto na data escolhida (consulta C6) -->
 						<div class="card">
-							<h2 class="card-titulo">Histórico do ponto nas últimas 24 h</h2>
-							<p class="card-subtitulo">Nível médio e nível do compartimento mais cheio, hora a hora</p>
-							<!-- Gráfico de linha (Chart.js: type 'line') -->
-							<div class="grafico">
-								<canvas id="myChartLinhas"></canvas>
+							<div class="card-cabecalho">
+								<div>
+									<h2 class="card-titulo">Leituras do dia</h2>
+									<p class="card-subtitulo" id="leituras-contagem"></p>
+								</div>
+								<input class="filtro-data" type="date" id="leituras-data" aria-label="Data das leituras" onchange="aoEscolherData()">
 							</div>
-						</div>
-
-						<div class="card">
-							<h2 class="card-titulo">Leituras recentes</h2>
-							<p class="card-subtitulo">Últimas leituras dos sensores deste ponto</p>
-							<!-- tabela montada pelo script -->
-							<div class="tabela-leituras">
-								<table>
+							<div class="tabela-rolagem" id="leituras-rolagem">
+								<table class="tabela tabela-leituras">
 									<thead>
 										<tr>
 											<th>Horário</th>
 											<th>Compartimento</th>
+											<th>Sensor</th>
 											<th>Distância</th>
 											<th>Nível</th>
 										</tr>
 									</thead>
-									<tbody id="tabela-leituras"></tbody>
+									<tbody id="leituras-corpo"></tbody>
 								</table>
 							</div>
+							<p class="tabela-vazia" id="leituras-vazia" hidden></p>
 						</div>
 					</div>
 				</section>
@@ -229,687 +215,20 @@
 		</main>
 	</div>
 
-
-	<script>
-		// ==================================================================
-		// DADOS MOCKADOS (por enquanto o dashboard não lê o banco)
-		// Cada ponto de coleta tem 3 compartimentos e cada compartimento
-		// tem 1 sensor HC-SR04. Os pontos estão escritos do mais grave
-		// (crítico) para o menos grave (normal).
-		//   distancia = última leitura do sensor, em cm (altura de 100 cm)
-		//   enche = quantos % o compartimento enche por hora
-		//   limiteAtencao e limiteCritico = tabela parametrizacao
-		//   coleta = última coleta do ponto
-		// ==================================================================
-		let pontos = [
-			{
-				id: 1, rua: 'Av. Tancredo Neves', bairro: 'Centro',
-				coleta: { tipo: 'Rejeito', data: '02/11', hora: '18:00', percentual: 87 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 101, ativo: true, altura: 100, distancia: 6, enche: 3.4, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 102, ativo: true, altura: 100, distancia: 40, enche: 2.1, limiteAtencao: 75, limiteCritico: 95 },
-					{ tipo: 'Rejeito', sensor: 103, ativo: true, altura: 100, distancia: 52, enche: 1.8, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			},
-			{
-				id: 2, rua: 'Rua Santa Cruz', bairro: 'Planalto',
-				coleta: { tipo: 'Orgânico', data: '02/11', hora: '20:00', percentual: 86 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 104, ativo: true, altura: 100, distancia: 30, enche: 3.0, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 105, ativo: true, altura: 100, distancia: 4, enche: 2.6, limiteAtencao: 75, limiteCritico: 95 },
-					{ tipo: 'Rejeito', sensor: 106, ativo: true, altura: 100, distancia: 45, enche: 2.0, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			},
-			{
-				id: 3, rua: 'Av. Airton Senna', bairro: 'Jardim Monte Alegre',
-				coleta: { tipo: 'Reciclável', data: '02/11', hora: '19:00', percentual: 89 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 107, ativo: true, altura: 100, distancia: 19, enche: 3.2, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 108, ativo: true, altura: 100, distancia: 60, enche: 1.6, limiteAtencao: 75, limiteCritico: 95 },
-					{ tipo: 'Rejeito', sensor: 109, ativo: true, altura: 100, distancia: 38, enche: 2.2, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			},
-			{
-				id: 4, rua: 'Rua Rio de Janeiro', bairro: 'Jardim Alvorada',
-				coleta: { tipo: 'Orgânico', data: '03/11', hora: '09:00', percentual: 88 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 110, ativo: true, altura: 100, distancia: 70, enche: 2.8, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 111, ativo: true, altura: 100, distancia: 48, enche: 2.0, limiteAtencao: 75, limiteCritico: 95 },
-					{ tipo: 'Rejeito', sensor: 112, ativo: true, altura: 100, distancia: 24, enche: 2.4, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			},
-			{
-				id: 5, rua: 'Av. Brasil', bairro: 'Centro',
-				coleta: { tipo: 'Orgânico', data: '03/11', hora: '02:00', percentual: 90 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 113, ativo: true, altura: 100, distancia: 55, enche: 2.6, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 114, ativo: true, altura: 100, distancia: 21, enche: 2.8, limiteAtencao: 75, limiteCritico: 95 },
-					{ tipo: 'Rejeito', sensor: 115, ativo: true, altura: 100, distancia: 67, enche: 1.5, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			},
-			{
-				id: 6, rua: 'Rua São Paulo', bairro: 'Centro',
-				coleta: { tipo: 'Orgânico', data: '03/11', hora: '04:00', percentual: 87 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 116, ativo: true, altura: 100, distancia: 62, enche: 2.4, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 117, ativo: true, altura: 100, distancia: 78, enche: 1.2, limiteAtencao: 75, limiteCritico: 95 },
-					{ tipo: 'Rejeito', sensor: 118, ativo: true, altura: 100, distancia: 49, enche: 2.0, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			},
-			{
-				id: 7, rua: 'Rua Mato Grosso', bairro: 'Planalto',
-				coleta: { tipo: 'Orgânico', data: '03/11', hora: '00:00', percentual: 88 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 119, ativo: true, altura: 100, distancia: 45, enche: 2.9, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 120, ativo: true, altura: 100, distancia: 53, enche: 1.8, limiteAtencao: 75, limiteCritico: 95 },
-					{ tipo: 'Rejeito', sensor: 121, ativo: true, altura: 100, distancia: 71, enche: 1.4, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			},
-			{
-				id: 8, rua: 'Av. Rondônia', bairro: 'Setor Industrial',
-				coleta: { tipo: 'Orgânico', data: '03/11', hora: '12:00', percentual: 86 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 122, ativo: true, altura: 100, distancia: 82, enche: 2.2, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 123, ativo: true, altura: 100, distancia: 36, enche: 2.5, limiteAtencao: 75, limiteCritico: 95 },
-					{ tipo: 'Rejeito', sensor: 124, ativo: true, altura: 100, distancia: 59, enche: 1.9, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			},
-			{
-				id: 9, rua: 'Rua Amazonas', bairro: 'Jardim Alvorada',
-				coleta: { tipo: 'Orgânico', data: '03/11', hora: '00:00', percentual: 88 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 125, ativo: true, altura: 100, distancia: 50, enche: 2.5, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 126, ativo: true, altura: 100, distancia: 65, enche: 1.5, limiteAtencao: 75, limiteCritico: 95 },
-					// sensor inativo: a última leitura dele é de 6 h atrás
-					{ tipo: 'Rejeito', sensor: 127, ativo: false, altura: 100, distancia: 67, enche: 1.7, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			},
-			{
-				id: 10, rua: 'Rua Goiás', bairro: 'Bela Vista',
-				coleta: { tipo: 'Orgânico', data: '03/11', hora: '15:00', percentual: 89 },
-				compartimentos: [
-					{ tipo: 'Orgânico', sensor: 128, ativo: true, altura: 100, distancia: 88, enche: 3.1, limiteAtencao: 65, limiteCritico: 85 },
-					{ tipo: 'Reciclável', sensor: 129, ativo: true, altura: 100, distancia: 74, enche: 1.9, limiteAtencao: 75, limiteCritico: 95 },
-					{ tipo: 'Rejeito', sensor: 130, ativo: true, altura: 100, distancia: 80, enche: 1.6, limiteAtencao: 70, limiteCritico: 90 }
-				]
-			}
-		];
-
-		// a última leitura de todos os sensores foi em 03/11 às 18h
-		// (orgânico às 18:08, reciclável às 18:09 e rejeito às 18:10)
-		let HORA_ULTIMA_LEITURA = 18;
-		let HORAS_SEM_LEITURA = 6; // há quanto tempo o sensor inativo parou
-
-		// variação pequena de cada hora, para o histórico não virar uma reta
-		let variacao = [0, 0.6, -0.9, 1.1, -0.4, 0.8, -1.1, 0.2, 1.0, -0.7, 0.5, -0.2, 0.9,
-			-1.0, 0.3, 0.7, -0.5, 1.2, -0.8, 0.1, -0.6, 1.0, -0.3, 0.4, -0.9];
-
-		let cores = { normal: '#62C540', atencao: '#F2B705', critico: '#D64545' };
-		let nomes = { normal: 'Normal', atencao: 'Atenção', critico: 'Crítico' };
-
-
-		// CHART.JS E SCRIPT
-		Chart.defaults.responsive = true;
-		Chart.defaults.maintainAspectRatio = false; // o gráfico ocupa a altura do card
-		Chart.defaults.font.family = "'DM Sans', Arial, sans-serif";
-		Chart.defaults.color = '#5E7468';
-
-
-		// ==================================================================
-		// CÁLCULOS
-		// ==================================================================
-
-		// nível de preenchimento: mesma fórmula do SQL
-		// ROUND((1 - distanciaCm / alturaCm) * 100, 2)
-		function calcularNivel(distancia, altura) {
-			return Math.round((1 - distancia / altura) * 100 * 100) / 100;
-		}
-
-		// normal abaixo do limite de atenção, atenção a partir dele,
-		// crítico a partir do limite crítico
-		function calcularPatamar(nivel, limiteAtencao, limiteCritico) {
-			if (nivel >= limiteCritico) {
-				return 'critico';
-			} else if (nivel >= limiteAtencao) {
-				return 'atencao';
-			} else {
-				return 'normal';
-			}
-		}
-
-		// nível do compartimento "horas" horas atrás.
-		// Simulação: o nível de antes é o de agora menos o que ele enche por hora.
-		// Se der quase zero, é porque houve coleta, e antes dela estava cheio.
-		function nivelNaHora(compartimento, horas) {
-			let horasDesdeLeitura = horas;
-			if (compartimento.ativo == false) {
-				horasDesdeLeitura = horas - HORAS_SEM_LEITURA;
-			}
-			let nivel = compartimento.nivel - compartimento.enche * horasDesdeLeitura;
-			if (nivel < 4) {
-				nivel = nivel + 84;
-			}
-			return nivel + variacao[horas];
-		}
-
-		// o sensor mandou leitura nessa hora? (o inativo parou há 6 h)
-		function temLeitura(compartimento, horas) {
-			return compartimento.ativo == true || horas >= HORAS_SEM_LEITURA;
-		}
-
-		// horário da leitura feita "horas" horas antes das 18h (ex.: 2 horas e minuto 9 = '16:09')
-		function horaDaLeitura(horas, minuto) {
-			let hora = HORA_ULTIMA_LEITURA - horas;
-			if (hora < 0) {
-				hora = hora + 24;
-			}
-			return (hora < 10 ? '0' + hora : hora) + ':' + (minuto < 10 ? '0' + minuto : minuto);
-		}
-
-		// calcula o nível e o patamar de cada compartimento e de cada ponto
-		for (let i = 0; i < pontos.length; i++) {
-			let ponto = pontos[i];
-			let soma = 0;
-			ponto.patamar = 'normal';
-			ponto.maisCheio = ponto.compartimentos[0];
-
-			for (let j = 0; j < ponto.compartimentos.length; j++) {
-				let c = ponto.compartimentos[j];
-				c.nivel = calcularNivel(c.distancia, c.altura);
-				c.patamar = calcularPatamar(c.nivel, c.limiteAtencao, c.limiteCritico);
-				c.minuto = 8 + j; // orgânico lê às :08, reciclável às :09, rejeito às :10
-				soma = soma + c.nivel;
-
-				if (c.nivel > ponto.maisCheio.nivel) {
-					ponto.maisCheio = c;
-				}
-				// o ponto fica no pior patamar entre os seus compartimentos
-				if (c.patamar == 'critico') {
-					ponto.patamar = 'critico';
-				} else if (c.patamar == 'atencao' && ponto.patamar == 'normal') {
-					ponto.patamar = 'atencao';
-				}
-			}
-
-			ponto.nivelMedio = soma / ponto.compartimentos.length;
-		}
-
-
-		// ==================================================================
-		// FILTRO "VISUALIZAR": visão geral e os pontos agrupados por patamar
-		// ==================================================================
-		let filtro = document.getElementById('filtro-visao');
-		filtro.innerHTML = '<option value="0">Visão geral da cidade</option>';
-
-		let grupos = ['critico', 'atencao', 'normal'];
-		for (let g = 0; g < grupos.length; g++) {
-			let opcoes = '';
-			for (let i = 0; i < pontos.length; i++) {
-				if (pontos[i].patamar == grupos[g]) {
-					opcoes += `<option value="${pontos[i].id}">${pontos[i].rua} · ${pontos[i].bairro}</option>`;
-				}
-			}
-			if (opcoes != '') {
-				filtro.innerHTML += `<optgroup label="${nomes[grupos[g]]}">${opcoes}</optgroup>`;
-			}
-		}
-
-		// chamada pelo onchange do select
-		function trocarVisao() {
-			abrirVisao(Number(document.getElementById('filtro-visao').value));
-		}
-
-
-		// ==================================================================
-		// VISÃO GERAL DA CIDADE
-		// ==================================================================
-
-		// CARD DE ALERTA: pontos em crítico e em atenção
-		let qtdPontosCriticos = 0;
-		let qtdPontosAtencao = 0;
-		let listaAlerta = document.getElementById('alerta-lista');
-
-		for (let i = 0; i < pontos.length; i++) {
-			let ponto = pontos[i];
-			if (ponto.patamar == 'critico') {
-				qtdPontosCriticos++;
-			} else if (ponto.patamar == 'atencao') {
-				qtdPontosAtencao++;
-			}
-
-			if (ponto.patamar != 'normal') {
-				listaAlerta.innerHTML += `
-					<button class="alerta-item alerta-item-${ponto.patamar}" type="button" onclick="abrirVisao(${ponto.id})"
-						title="${ponto.rua} · ${ponto.bairro}: ${ponto.maisCheio.tipo} em ${Math.round(ponto.maisCheio.nivel)}%">
-						<span class="alerta-item-rua">${ponto.rua}</span>
-						<span class="alerta-item-nivel">${Math.round(ponto.maisCheio.nivel)}%</span>
-					</button>`;
-			}
-		}
-
-		// o card fica vermelho se tiver ponto crítico, amarelo se tiver só atenção
-		if (qtdPontosCriticos > 0) {
-			document.getElementById('alerta').className = 'card alerta alerta-critico';
-			document.getElementById('alerta-titulo').innerHTML = `${qtdPontosCriticos} pontos de coleta em nível crítico e ${qtdPontosAtencao} em atenção`;
-			document.getElementById('alerta-texto').innerHTML = 'Priorize a coleta nestes pontos. Clique para ver o motivo:';
-		} else if (qtdPontosAtencao > 0) {
-			document.getElementById('alerta').className = 'card alerta alerta-atencao';
-			document.getElementById('alerta-titulo').innerHTML = `${qtdPontosAtencao} pontos de coleta em atenção`;
-			document.getElementById('alerta-texto').innerHTML = 'Priorize a coleta nestes pontos. Clique para ver o motivo:';
-		} else {
-			document.getElementById('alerta').className = 'card alerta alerta-normal';
-			document.getElementById('alerta-titulo').innerHTML = 'Nenhum ponto de coleta em alerta';
-			document.getElementById('alerta-texto').innerHTML = 'Todos os compartimentos estão abaixo do limite de atenção.';
-		}
-
-		// INDICADORES: ocupação média, compartimentos em crítico e sensores ativos
-		let somaNiveis = 0;
-		let qtdCompartimentos = 0;
-		let qtdCriticos = 0;
-		let qtdAtencao = 0;
-		let qtdNormal = 0;
-		let qtdSensoresAtivos = 0;
-
-		for (let i = 0; i < pontos.length; i++) {
-			for (let j = 0; j < pontos[i].compartimentos.length; j++) {
-				let c = pontos[i].compartimentos[j];
-				somaNiveis = somaNiveis + c.nivel;
-				qtdCompartimentos++;
-				if (c.patamar == 'critico') {
-					qtdCriticos++;
-				} else if (c.patamar == 'atencao') {
-					qtdAtencao++;
-				} else {
-					qtdNormal++;
-				}
-				if (c.ativo == true) {
-					qtdSensoresAtivos++;
-				}
-			}
-		}
-
-		// Indicador Ocupação Média - MathRandom
-		// document.getElementById('kpi-ocupacao').innerHTML = Math.round(somaNiveis / qtdCompartimentos) + '%';
-
-
-		// meta: menos de 10% dos compartimentos em atencao
-		let pctAtencao = qtdAtencao / qtdCompartimentos * 100;
-		document.getElementById('kpi-atencao').innerHTML = qtdAtencao;
-		document.getElementById('kpi-atencao-descricao').innerHTML = `${Math.round(pctAtencao)}% do total, meta abaixo de 10%`;
-		if (pctAtencao < 10) {
-			document.getElementById('kpi-atencao-status').innerHTML = 'Dentro da meta';
-			document.getElementById('kpi-atencao-status').className = 'indicador-status indicador-status-normal';
-		} else {
-			document.getElementById('kpi-atencao-status').innerHTML = 'Acima da meta';
-			document.getElementById('kpi-atencao-status').className = 'indicador-status indicador-status-atencao';
-		}
-
-		// meta: menos de 10% dos compartimentos em crítico
-		let pctCriticos = qtdCriticos / qtdCompartimentos * 100;
-		document.getElementById('kpi-criticos').innerHTML = qtdCriticos;
-		document.getElementById('kpi-criticos-descricao').innerHTML = `${Math.round(pctCriticos)}% do total, meta abaixo de 10%`;
-		if (pctCriticos < 10) {
-			document.getElementById('kpi-criticos-status').innerHTML = 'Dentro da meta';
-			document.getElementById('kpi-criticos-status').className = 'indicador-status indicador-status-normal';
-		} else {
-			document.getElementById('kpi-criticos-status').innerHTML = 'Acima da meta';
-			document.getElementById('kpi-criticos-status').className = 'indicador-status indicador-status-critico';
-		}
-
-		// meta: 95% ou mais dos sensores ativos
-		let pctSensores = qtdSensoresAtivos / qtdCompartimentos * 100;
-		document.getElementById('kpi-sensores').innerHTML = Math.round(pctSensores) + '%';
-		document.getElementById('kpi-sensores-descricao').innerHTML = `${qtdSensoresAtivos} de ${qtdCompartimentos} ativos, meta de 95% ou mais`;
-		if (pctSensores >= 95) {
-			document.getElementById('kpi-sensores-status').innerHTML = 'Dentro da meta';
-			document.getElementById('kpi-sensores-status').className = 'indicador-status indicador-status-normal';
-		} else {
-			document.getElementById('kpi-sensores-status').innerHTML = 'Abaixo da meta';
-			document.getElementById('kpi-sensores-status').className = 'indicador-status indicador-status-atencao';
-		}
-
-		// LISTA DE PONTOS DE COLETA (clicar abre a visão do ponto)
-		let listaPontos = document.getElementById('lista-pontos');
-		for (let i = 0; i < pontos.length; i++) {
-			let ponto = pontos[i];
-			listaPontos.innerHTML += `
-				<li>
-					<button class="ponto ponto-${ponto.patamar}" type="button" onclick="abrirVisao(${ponto.id})">
-						<span class="ponto-marcador"></span>
-						<span class="ponto-nome"><span class="ponto-rua">${ponto.rua}</span><span class="ponto-bairro">${ponto.bairro}</span></span>
-						<span class="ponto-nivel">${Math.round(ponto.maisCheio.nivel)}%</span>
-						<span class="ponto-status">${nomes[ponto.patamar]}</span>
-					</button>
-				</li>`;
-		}
-
-		// GRÁFICO DE BARRAS: ÚLTIMA LEITURA DE CADA SENSOR
-		// uma barra por compartimento, agrupadas por ponto; a cor é a do patamar
-		let nomesCurtos = [];
-		let organico = [];
-		let reciclavel = [];
-		let rejeito = [];
-		let coresOrganico = [];
-		let coresReciclavel = [];
-		let coresRejeito = [];
-
-		for (let i = 0; i < pontos.length; i++) {
-			let ponto = pontos[i];
-			nomesCurtos.push(ponto.rua.replace('Av. ', '').replace('Rua ', '')); // "Av. Brasil" vira "Brasil"
-			organico.push(ponto.compartimentos[0].nivel);
-			reciclavel.push(ponto.compartimentos[1].nivel);
-			rejeito.push(ponto.compartimentos[2].nivel);
-			coresOrganico.push(cores[ponto.compartimentos[0].patamar]);
-			coresReciclavel.push(cores[ponto.compartimentos[1].patamar]);
-			coresRejeito.push(cores[ponto.compartimentos[2].patamar]);
-		}
-
-		let gBarra = document.getElementById('myChartBarras');
-		new Chart(gBarra, {
-			type: 'bar',
-			data: {
-				labels: nomesCurtos,
-				datasets: [
-					{ label: 'Orgânico', data: organico, backgroundColor: coresOrganico, borderRadius: 4, categoryPercentage: 0.8, barPercentage: 0.9 },
-					{ label: 'Reciclável', data: reciclavel, backgroundColor: coresReciclavel, borderRadius: 4, categoryPercentage: 0.8, barPercentage: 0.9 },
-					{ label: 'Rejeito', data: rejeito, backgroundColor: coresRejeito, borderRadius: 4, categoryPercentage: 0.8, barPercentage: 0.9 }
-				]
-			},
-			options: {
-				plugins: { legend: { display: false } }, // as cores são de patamar, explicadas no card ao lado
-				scales: {
-					y: {
-						beginAtZero: true, // começa o resultado no 0
-						max: 100, // tamanho máximo é 100
-						ticks: { callback: (valor) => valor + '%' } // cada degrau formatado com %
-					},
-					x: {
-						grid: { display: false },
-						ticks: { autoSkip: false, maxRotation: 45, font: { size: 11 } }
-					}
-				}
-			}
-		});
-
-		// GRÁFICO DE ROSCA: COMPARTIMENTOS POR PATAMAR
-		document.getElementById('patamar-normal').innerHTML = qtdNormal;
-		document.getElementById('patamar-atencao').innerHTML = qtdAtencao;
-		document.getElementById('patamar-critico').innerHTML = qtdCriticos;
-
-		let gRosca = document.getElementById('myChartRosca');
-		new Chart(gRosca, {
-			type: 'doughnut',
-			data: {
-				labels: ['Normal', 'Atenção', 'Crítico'],
-				datasets: [{
-					data: [qtdNormal, qtdAtencao, qtdCriticos],
-					backgroundColor: ['#62C540', '#F2B705', '#D64545'],
-					borderColor: '#fff',
-					borderWidth: 3,
-				}]
-			},
-			options: {
-				cutout: '72%',
-				plugins: { legend: { display: false } } // a legenda já está no HTML
-			}
-		});
-
-
-		// ==================================================================
-		// VISÃO DE UM PONTO DE COLETA
-		// Os dois gráficos são criados vazios. Quando um ponto é aberto,
-		// abrirVisao() coloca os dados dele e chama update().
-		// ==================================================================
-
-		// GRÁFICO DE BARRAS: NÍVEL DE CADA COMPARTIMENTO, COM OS LIMITES
-		// os limites são desenhados como um traço sobre cada barra
-		let gCompartimentos = document.getElementById('myChartCompartimentos');
-		let graficoCompartimentos = new Chart(gCompartimentos, {
-			type: 'bar',
-			data: {
-				labels: [],
-				datasets: [
-					{ label: 'Nível atual', data: [], backgroundColor: [], borderRadius: 6, maxBarThickness: 48 },
-					{
-						type: 'line', label: 'Limite de atenção', data: [],
-						showLine: false, pointStyle: 'line', pointRadius: 24, pointHoverRadius: 24, pointBorderWidth: 3,
-						borderColor: '#8A6700', backgroundColor: '#8A6700' // amarelo escuro, para aparecer em cima da barra
-					},
-					{
-						type: 'line', label: 'Limite crítico', data: [],
-						showLine: false, pointStyle: 'line', pointRadius: 24, pointHoverRadius: 24, pointBorderWidth: 3,
-						borderColor: '#A82E2E', backgroundColor: '#A82E2E' // vermelho escuro, para aparecer em cima da barra
-					}
-				]
-			},
-			options: {
-				plugins: { legend: { labels: { boxWidth: 12, boxHeight: 12, usePointStyle: true, font: { size: 11 } } } },
-				scales: {
-					y: { beginAtZero: true, max: 100, ticks: { callback: (valor) => valor + '%' } },
-					x: { grid: { display: false }, ticks: { autoSkip: false, maxRotation: 0 } }
-				}
-			}
-		});
-
-		// GRÁFICO LINHAS: HISTÓRICO DO PONTO NAS ÚLTIMAS 24 H
-		let gLinha = document.getElementById('myChartLinhas');
-		let graficoLinhas = new Chart(gLinha, {
-			type: 'line',
-			data: {
-				labels: [],
-				datasets: [
-					{
-						label: 'Compartimento mais cheio', // linha tracejada
-						data: [],
-						borderColor: '#00472A',
-						borderWidth: 2,
-						borderDash: [6, 4],
-						pointRadius: 0,
-						tension: 0.3,
-					},
-					{
-						label: 'Nível médio do ponto',
-						data: [],
-						borderWidth: 2,
-						pointRadius: 0,
-						fill: true,
-						tension: 0.3,
-						borderColor: '#02925d',
-						backgroundColor: 'rgba(2, 146, 93, 0.12)',
-					}
-				]
-			},
-			options: {
-				interaction: { mode: 'index', intersect: false }, // passar o mouse mostra as duas linhas da mesma hora
-				plugins: { legend: { labels: { boxWidth: 12, boxHeight: 12, font: { size: 11 } } } },
-				scales: {
-					y: { beginAtZero: true, max: 100, ticks: { callback: (valor) => valor + '%' } },
-					x: { grid: { display: false }, ticks: { maxTicksLimit: 8, maxRotation: 0 } }
-				}
-			}
-		});
-
-
-		// ==================================================================
-		// TROCA ENTRE AS VISÕES
-		// abrirVisao(0) mostra a visão geral; abrirVisao(3) mostra o ponto 3.
-		// É chamada pelo filtro, pelos botões dos pontos e pelo botão "Visão geral".
-		// ==================================================================
-		function abrirVisao(id) {
-			document.getElementById('filtro-visao').value = id;
-
-			// procura o ponto escolhido
-			let ponto = null;
-			for (let i = 0; i < pontos.length; i++) {
-				if (pontos[i].id == id) {
-					ponto = pontos[i];
-				}
-			}
-
-			// VISÃO GERAL
-			if (ponto == null) {
-				document.getElementById('visao-ponto').style.display = 'none';
-				document.getElementById('visao-geral').style.display = 'flex';
-				document.getElementById('botao-voltar').style.display = 'none';
-				document.getElementById('painel-titulo').innerHTML = 'Monitoramento do Volume das Lixeiras da Cidade';
-				document.getElementById('painel-subtitulo').innerHTML = 'Campo Novo de Rondônia · Saiba quais pontos estão enchendo e colete antes que o lixo transborde';
-				return;
-			}
-
-			// VISÃO DO PONTO (mostra a seção antes de atualizar os gráficos)
-			document.getElementById('visao-geral').style.display = 'none';
-			document.getElementById('visao-ponto').style.display = 'flex';
-			document.getElementById('botao-voltar').style.display = 'inline-block';
-			document.getElementById('painel-titulo').innerHTML = `${ponto.rua} · ${ponto.bairro}`;
-			document.getElementById('painel-subtitulo').innerHTML = `Ponto de coleta ${ponto.id} · ${ponto.compartimentos.length} compartimentos · Campo Novo de Rondônia`;
-
-			// DIAGNÓSTICO: por que este ponto está em alerta?
-			document.getElementById('diagnostico').className = `card alerta alerta-${ponto.patamar}`;
-			let diagnostico = document.getElementById('diagnostico-lista');
-			diagnostico.innerHTML = '';
-			let qtdAcimaDoLimite = 0;
-
-			// primeiro os compartimentos em crítico
-			for (let i = 0; i < ponto.compartimentos.length; i++) {
-				let c = ponto.compartimentos[i];
-				if (c.patamar == 'critico') {
-					diagnostico.innerHTML += `
-						<li class="diagnostico-item diagnostico-item-critico">
-							<strong>${c.tipo} em ${Math.round(c.nivel)}%</strong>
-							<span>Crítico a partir de ${c.limiteCritico}% · lido às ${horaDaLeitura(0, c.minuto)}</span>
-						</li>`;
-					qtdAcimaDoLimite++;
-				}
-			}
-			// depois os compartimentos em atenção
-			for (let i = 0; i < ponto.compartimentos.length; i++) {
-				let c = ponto.compartimentos[i];
-				if (c.patamar == 'atencao') {
-					diagnostico.innerHTML += `
-						<li class="diagnostico-item diagnostico-item-atencao">
-							<strong>${c.tipo} em ${Math.round(c.nivel)}%</strong>
-							<span>Atenção a partir de ${c.limiteAtencao}% · lido às ${horaDaLeitura(0, c.minuto)}</span>
-						</li>`;
-					qtdAcimaDoLimite++;
-				}
-			}
-			// por último os sensores inativos
-			for (let i = 0; i < ponto.compartimentos.length; i++) {
-				let c = ponto.compartimentos[i];
-				if (c.ativo == false) {
-					diagnostico.innerHTML += `
-						<li class="diagnostico-item diagnostico-item-inativo">
-							<strong>Sensor ${c.sensor} (${c.tipo}) inativo</strong>
-							<span>Última leitura em 03/11 às ${horaDaLeitura(HORAS_SEM_LEITURA, c.minuto)}</span>
-						</li>`;
-				}
-			}
-
-			if (qtdAcimaDoLimite == 0) {
-				document.getElementById('diagnostico-titulo').innerHTML = 'Ponto em situação normal';
-				document.getElementById('diagnostico-texto').innerHTML = 'Nenhum compartimento chegou ao limite de atenção.';
-			} else {
-				if (ponto.patamar == 'critico') {
-					document.getElementById('diagnostico-titulo').innerHTML = 'Por que este ponto está em nível crítico?';
-				} else {
-					document.getElementById('diagnostico-titulo').innerHTML = 'Por que este ponto está em atenção?';
-				}
-				if (qtdAcimaDoLimite == 1) {
-					document.getElementById('diagnostico-texto').innerHTML = '1 compartimento passou do limite:';
-				} else {
-					document.getElementById('diagnostico-texto').innerHTML = `${qtdAcimaDoLimite} compartimentos passaram do limite:`;
-				}
-			}
-
-			// INDICADORES DO PONTO
-			let maisCheio = ponto.maisCheio;
-			document.getElementById('kpi-ponto-media').innerHTML = Math.round(ponto.nivelMedio) + '%';
-			document.getElementById('kpi-ponto-maximo').innerHTML = Math.round(maisCheio.nivel) + '%';
-			document.getElementById('kpi-ponto-maximo-status').innerHTML = nomes[maisCheio.patamar];
-			document.getElementById('kpi-ponto-maximo-status').className = `indicador-status indicador-status-${maisCheio.patamar}`;
-			document.getElementById('kpi-ponto-maximo-descricao').innerHTML = `${maisCheio.tipo}, limites de ${maisCheio.limiteAtencao}% e ${maisCheio.limiteCritico}%`;
-			document.getElementById('kpi-ponto-coleta').innerHTML = ponto.coleta.hora;
-			document.getElementById('kpi-ponto-coleta-descricao').innerHTML = `${ponto.coleta.tipo} em ${ponto.coleta.data}, estava com ${ponto.coleta.percentual}%`;
-
-			// GRÁFICO DE BARRAS DOS COMPARTIMENTOS: troca os dados e atualiza
-			let tipos = [];
-			let niveis = [];
-			let coresBarras = [];
-			let limitesAtencao = [];
-			let limitesCriticos = [];
-			for (let i = 0; i < ponto.compartimentos.length; i++) {
-				let c = ponto.compartimentos[i];
-				tipos.push(c.tipo);
-				niveis.push(c.nivel);
-				coresBarras.push(cores[c.patamar]);
-				limitesAtencao.push(c.limiteAtencao);
-				limitesCriticos.push(c.limiteCritico);
-			}
-			graficoCompartimentos.data.labels = tipos;
-			graficoCompartimentos.data.datasets[0].data = niveis;
-			graficoCompartimentos.data.datasets[0].backgroundColor = coresBarras;
-			graficoCompartimentos.data.datasets[1].data = limitesAtencao;
-			graficoCompartimentos.data.datasets[2].data = limitesCriticos;
-			graficoCompartimentos.update();
-
-			// GRÁFICO DE LINHAS DO HISTÓRICO: uma hora por vez, de 24 h atrás até agora,
-			// com a média e o maior nível entre os compartimentos do ponto
-			let horas = [];
-			let medias = [];
-			let maximos = [];
-			for (let h = 24; h >= 0; h--) {
-				let soma = 0;
-				let qtd = 0;
-				let maximo = 0;
-				for (let i = 0; i < ponto.compartimentos.length; i++) {
-					let c = ponto.compartimentos[i];
-					if (temLeitura(c, h)) {
-						let nivel = nivelNaHora(c, h);
-						soma = soma + nivel;
-						qtd++;
-						if (nivel > maximo) {
-							maximo = nivel;
-						}
-					}
-				}
-				horas.push(horaDaLeitura(h, 0));
-				medias.push(Math.round(soma / qtd));
-				maximos.push(Math.round(maximo));
-			}
-			graficoLinhas.data.labels = horas;
-			graficoLinhas.data.datasets[0].data = maximos;
-			graficoLinhas.data.datasets[1].data = medias;
-			graficoLinhas.update();
-
-			// TABELA DE LEITURAS RECENTES: as 9 mais novas, da mais nova para a mais antiga
-			let tabela = document.getElementById('tabela-leituras');
-			tabela.innerHTML = '';
-			let qtdLinhas = 0;
-			let h = 0;
-			while (qtdLinhas < 9) {
-				// de trás para frente: rejeito (:10), reciclável (:09), orgânico (:08)
-				for (let i = ponto.compartimentos.length - 1; i >= 0; i--) {
-					let c = ponto.compartimentos[i];
-					if (temLeitura(c, h) && qtdLinhas < 9) {
-						let nivel = nivelNaHora(c, h);
-						let distancia = c.altura * (1 - nivel / 100);
-						let patamar = calcularPatamar(nivel, c.limiteAtencao, c.limiteCritico);
-						tabela.innerHTML += `
-							<tr>
-								<td>${horaDaLeitura(h, c.minuto)}</td>
-								<td>${c.tipo}</td>
-								<td>${distancia.toFixed(1).replace('.', ',')} cm</td>
-								<td><span class="nivel nivel-${patamar}">${Math.round(nivel)}%</span></td>
-							</tr>`;
-						qtdLinhas++;
-					}
-				}
-				h++;
-			}
-		}
-
-		abrirVisao(0);
-	</script>
+	<!-- PAINEL "VER TODOS": lista completa de um indicador (montado pelo script).
+	     Fica ancorado ao card que abriu; em tela pequena vira um modal. -->
+	<div class="painel-lista-fundo" id="painel-lista-fundo" hidden></div>
+	<div class="painel-lista" id="painel-lista" role="dialog" aria-labelledby="painel-lista-titulo" hidden>
+		<div class="painel-lista-cabecalho">
+			<h2 class="painel-lista-titulo" id="painel-lista-titulo"></h2>
+			<button class="painel-lista-fechar" type="button" aria-label="Fechar lista" onclick="fecharLista()">&times;</button>
+		</div>
+		<p class="painel-lista-legenda">Mais urgente primeiro · clique num sensor para abrir o ponto</p>
+		<ul class="painel-lista-itens" id="painel-lista-itens"></ul>
+		<div class="painel-lista-rodape">
+			<button class="link" type="button" id="painel-lista-filtrar" onclick="filtrarPelaLista()">Filtrar na tabela</button>
+		</div>
+	</div>
 </body>
 
 </html>

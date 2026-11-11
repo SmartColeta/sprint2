@@ -1,25 +1,24 @@
 /* ==========================================================================
    DASHBOARD | SMARTCOLETA
    Estilos da página dashboard/dashboard.html
-   Estrutura da página, de cima para baixo:
-     1. Topo (título, filtro de visão e horário da última leitura)
-     2. Linha de resumo (card de alerta + indicadores)
-     3. Linha de detalhe (lista de pontos e gráficos)
-   As duas visões (geral da cidade e de um ponto) usam a mesma estrutura.
 
-   COMO A TELA CABE SEM ROLAR
+   Estrutura da visão geral, de cima para baixo:
+     1. Topo: título, cidade e hora da última leitura
+     2. Linha do topo: ALERTA (o que fazer agora) + 3 indicadores
+     3. Linha de detalhe: tabela com todos os compartimentos + gráfico por bairro
+   A visão de um ponto usa a mesma estrutura (diagnóstico, última coleta,
+   histórico e leituras).
+
+   COMO A TELA CABE SEM ROLAR (notebook e desktop)
    - O .painel tem a altura da janela (100vh) e é um flex em coluna.
-   - A linha de resumo fica com a altura do conteúdo; a linha de detalhe
-     ocupa o que sobrar (flex: 1). Os gráficos esticam até o fim do card.
-   - Em telas pequenas (seção RESPONSIVIDADE no fim do arquivo) a altura
-     fixa é desligada e a página volta a rolar, com tudo em uma coluna.
+   - A linha do topo fica com a altura do conteúdo; a linha de detalhe ocupa
+     o que sobrar (flex: 1). A tabela rola por dentro do card, então 30 ou
+     120 compartimentos ocupam o mesmo espaço na tela.
+   - Em telas estreitas ou baixas (fim do arquivo) a página volta a rolar.
 
-   COMO A RESPONSIVIDADE FUNCIONA
-   - O <main class="conteudo"> é um "container": as @container queries no fim
-     do arquivo olham a LARGURA DO CONTEÚDO (sem a barra lateral), e não a
-     largura da janela. Assim o layout se ajusta igual no celular, no notebook,
-     no desktop e quando o usuário aplica zoom.
-   - Nada tem largura fixa grande: grids usam fr/minmax e textos quebram linha.
+   RESPONSIVIDADE
+   - O <main class="conteudo"> é um "container": as @container queries olham
+     a largura do conteúdo (sem a barra lateral), e não a da janela.
    ========================================================================== */
 
 
@@ -27,787 +26,1341 @@
    CORES DA IDENTIDADE VISUAL
    -------------------------------------------------------------------------- */
 :root {
-	--verde: #02925D;     /* verde principal */
-	--escuro: #00472A;    /* verde escuro */
-	--lima: #62C540;      /* verde lima */
-	--fundo: #F1F6F3;     /* verde clarinho (fundo da página) */
-	--borda: #DCE8E1;     /* cinza claro (bordas) */
-	--cinzado: #5E7468;   /* cinza médio (textos secundários) */
-	--amarelo: #F2B705; /* variável reutilizada no arquivo inteiro */
-	--amarelo-texto: #8A6700; /* amarelo escurecido para ter contraste em texto */
-	--vermelho: #D64545; /* variável reutilizada no arquivo inteiro */
+	--verde: #02925D;          /* verde principal */
+	--escuro: #00472A;         /* verde escuro (textos) */
+	--lima: #62C540;           /* verde lima (normal) */
+	--fundo: #F1F6F3;          /* verde clarinho (fundo da página) */
+	--borda: #DCE8E1;          /* cinza claro (bordas) */
+	--cinzado: #5E7468;        /* cinza médio (textos secundários) */
+	--amarelo: #F2B705;        /* atenção */
+	--amarelo-texto: #8A6700;  /* amarelo escurecido para ter contraste em texto */
+	--vermelho: #D64545;       /* crítico */
+	--vermelho-texto: #A82E2E; /* vermelho escurecido para texto em fundo claro */
+	--cinza-sensor: #9AA9A1;   /* sem leitura */
 
-	/* espaçamentos proporcionais: crescem com a tela, mas com mínimo e máximo */
-	--espaco: clamp(12px, 1.2vw, 20px);         /* espaço entre os cards */
-	--card-padding: clamp(14px, 1.3vw, 22px);   /* espaço interno dos cards */
-	--raio: 20px; /* variável reutilizada no arquivo inteiro */
+	/* fundos das etiquetas sólidas (texto branco). Contraste medido pelo WCAG:
+	   branco em #D64545 dá 4,38:1 (abaixo do mínimo 4,5:1); #C93C3C dá 5,01:1 */
+	--vermelho-etiqueta: #C93C3C;
+	--verde-etiqueta: #027A4E;   /* branco: 5,39:1 (no #02925D seria 3,98:1) */
+	--cinza-etiqueta: #5B6B63;   /* branco: 5,63:1 */
+
+	/* espaçamentos proporcionais: crescem com a tela, com mínimo e máximo */
+	--espaco: clamp(12px, 1.1vw, 18px);
+	--card-padding: clamp(14px, 1.2vw, 20px);
+	--raio: 18px;
 }
 
 *,
 *::before,
 *::after {
-	box-sizing: border-box; /* a largura inclui padding e borda (facilita o cálculo de tamanho) */
+	box-sizing: border-box; /* a largura inclui padding e borda */
 }
 
 h1,
 h2,
 p,
-ul {
-	margin: 0; /* remove o espaço externo */
-	padding: 0; /* remove o espaço interno */
+ul,
+ol {
+	margin: 0;
+	padding: 0;
 }
 
 body {
-	margin: 0; /* remove a margem padrão do navegador */
-	font-family: 'DM Sans', Arial, sans-serif; /* fonte da identidade visual (as outras são reserva) */
-	background: var(--fundo); /* cor de fundo da página (usa a variável --fundo) */
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	margin: 0;
+	font-family: 'DM Sans', Arial, sans-serif;
+	background: var(--fundo);
+	color: var(--escuro);
 }
 
-button {
-	font: inherit; /* botões não herdam a fonte sozinhos */
+button,
+input,
+select {
+	font: inherit; /* campos de formulário não herdam a fonte sozinhos */
+}
+
+[hidden] {
+	display: none !important; /* garante que hidden esconda mesmo com display: flex no CSS */
 }
 
 
 /* --------------------------------------------------------------------------
-   LAYOUT COM BARRA LATERAL
+   LAYOUT COM BARRA LATERAL (igual ao das outras páginas)
    -------------------------------------------------------------------------- */
 .layout {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	min-height: 100vh; /* altura mínima igual à altura da tela */
+	display: flex;
+	min-height: 100vh;
 }
 
 .conteudo {
-	container: conteudo / inline-size; /* marca o elemento como container; as @container queries usam a largura dele */
-	flex: 1; /* ocupa todo o espaço que sobrar no flex */
-	min-width: 0; /* permite o elemento encolher abaixo do tamanho do conteúdo — evita que gráficos estourem a coluna */
-	padding: 0 clamp(16px, 2.4vw, 40px); /* padding lateral fluido */
+	container: conteudo / inline-size; /* as @container queries usam a largura dele */
+	flex: 1;
+	min-width: 0; /* deixa encolher: evita gráfico estourando a coluna */
+	padding: 0 clamp(16px, 2.2vw, 36px);
 }
 
-/* BARRA LATERAL */
 .barra-lateral {
-	width: 240px; /* largura (240px) */
-	flex-shrink: 0; /* impede o elemento de encolher quando falta espaço */
-	position: sticky; /* fica parado na tela enquanto a página rola */
-	top: 0; /* distância do topo (0 = gruda no topo) */
-	height: 100vh; /* altura igual à altura da tela */
-	overflow-y: auto; /* com zoom alto, a barra rola em vez de cortar os botões */
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	gap: 32px; /* espaço entre os itens (32px) */
-	padding: 24px 16px; /* espaço interno (24px em cima e embaixo, 16px nos lados) */
-	background-color: #fff; /* cor de fundo (#fff) */
-	border-right: 1px solid var(--borda); /* linha no lado direito do elemento */
-	box-shadow: 6px 0 20px 0 rgba(16, 41, 30, 0.06); /* sombra suave para dar profundidade */
+	width: 240px;
+	flex-shrink: 0;
+	position: sticky;
+	top: 0;
+	height: 100vh;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	padding: 24px 16px;
+	background-color: #fff;
+	border-right: 1px solid var(--borda);
+	box-shadow: 6px 0 20px 0 rgba(16, 41, 30, 0.06);
 }
 
 .barra-lateral-logo {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	align-items: center; /* centraliza os itens na vertical */
-	gap: 8px; /* espaço entre os itens (8px) */
-	padding: 4px 6px; /* espaço interno (4px 6px) */
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 6px;
 }
 
 .barra-lateral-logo-marca {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	align-items: center; /* centraliza os itens na vertical */
-	width: 28px; /* largura (28px) */
-	flex-shrink: 0; /* impede o elemento de encolher quando falta espaço */
+	display: flex;
+	align-items: center;
+	width: 28px;
+	flex-shrink: 0;
 }
 
 .barra-lateral-logo-icone {
-	display: block; /* block faz o elemento ocupar uma linha inteira */
-	width: 100%; /* ocupa todo o espaço disponível */
-	height: 22px; /* altura (22px) */
+	display: block;
+	width: 100%;
+	height: 22px;
 }
 
 .barra-lateral-logo-nome {
-	font-size: 20px; /* tamanho da letra (20px) */
-	font-weight: 700; /* espessura da letra (negrito) */
-	color: #01472B; /* cor do texto (#01472B) */
-	white-space: nowrap; /* impede o texto de quebrar linha */
+	font-size: 20px;
+	font-weight: 700;
+	color: #01472B;
+	white-space: nowrap;
 }
 
 .barra-lateral-logo-nome span {
-	color: #1F7A4D; /* cor do texto (#1F7A4D) */
+	color: #1F7A4D;
 }
 
-/* LINKS */
 .barra-lateral-menu {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	gap: 4px; /* espaço entre os itens (4px) */
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
 .barra-link {
-	padding: 12px 14px; /* espaço interno (12px 14px) */
-	font-size: 15px; /* tamanho da letra (15px) */
-	font-weight: 500; /* espessura da letra (média) */
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	text-decoration: none; /* remove o sublinhado do link */
-	border-radius: 10px; /* arredonda os cantos (10px) */
-	white-space: nowrap; /* impede o texto de quebrar linha */
+	padding: 12px 14px;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--cinzado);
+	text-decoration: none;
+	border-radius: 10px;
+	white-space: nowrap;
 }
 
 .barra-link:hover {
-	background-color: var(--fundo); /* cor de fundo (usa a variável --fundo) */
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
+	background-color: var(--fundo);
+	color: var(--escuro);
 }
 
 .barra-link-ativo {
-	background-color: rgba(2, 146, 93, 0.12); /* cor de fundo (cor com transparência) */
-	color: var(--verde); /* cor do texto (usa a variável --verde) */
-	font-weight: 700; /* espessura da letra (negrito) */
+	background-color: rgba(2, 146, 93, 0.12);
+	color: var(--verde);
+	font-weight: 700;
 }
 
-/* BOTÕES (ficam no rodapé da barra) */
 .barra-lateral-botoes {
-	margin-top: auto; /* empurra para o fim da barra */
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	gap: 10px; /* espaço entre os itens (10px) */
+	margin-top: auto; /* empurra os botões para o fim da barra */
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .barra-botao {
-	padding: 12px; /* espaço interno (12px) */
-	font-size: 14px; /* tamanho da letra (14px) */
-	border-radius: 8px; /* arredonda os cantos (8px) */
-	cursor: pointer; /* mostra a mãozinha ao passar o mouse */
-	white-space: nowrap; /* impede o texto de quebrar linha */
+	width: 100%;
+	padding: 12px;
+	font-size: 14px;
+	border-radius: 8px;
+	cursor: pointer;
+	white-space: nowrap;
 }
 
 .barra-botao-perfil {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	background-color: transparent; /* fundo transparente */
-	border: 1px solid var(--borda); /* borda: espessura, estilo e cor */
+	color: var(--escuro);
+	background-color: transparent;
+	border: 1px solid var(--borda);
 }
 
 .barra-botao-config {
-	color: #fff; /* cor do texto (#fff) */
-	background-color: var(--verde); /* cor de fundo (usa a variável --verde) */
-	border: 1px solid transparent; /* borda invisível (mantém o mesmo tamanho dos outros botões) */
+	color: #fff;
+	background-color: var(--verde);
+	border: 1px solid transparent;
 }
 
 .barra-botao:hover {
-	filter: brightness(0.9); /* escurece um pouco o elemento */
-}
-
-.hover-escuro:hover {
-	filter: brightness(0.92); /* escurece um pouco o elemento */
+	filter: brightness(0.9);
 }
 
 
 /* --------------------------------------------------------------------------
-   1. TOPO: título, filtro de visão e horário da última leitura
+   1. TOPO
    -------------------------------------------------------------------------- */
-
-/* SECAO INTEIRA DO DASHBOARD: ocupa exatamente a altura da janela */
 .painel {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	gap: var(--espaco); /* espaço entre os itens (usa a variável --espaco) */
-	width: 100%; /* ocupa todo o espaço disponível */
-	max-width: 1600px; /* largura máxima (1600px) */
-	height: 100vh; /* altura igual à da janela: a página não rola */
-	margin: 0 auto; /* centraliza o elemento na horizontal */
-	padding: var(--espaco) 0; /* espaço em cima e embaixo */
+	display: flex;
+	flex-direction: column;
+	gap: var(--espaco);
+	width: 100%;
+	max-width: 1600px;
+	height: 100vh; /* altura da janela: a página não rola */
+	margin: 0 auto;
+	padding: var(--espaco) 0;
 }
 
 .painel-topo {
-	display: grid; /* grid organiza os itens internos em linhas e colunas */
-	grid-template-columns: minmax(0, 1fr) auto; /* título na esquerda, filtro na direita */
-	align-items: end; /* alinha os itens pela base */
-	gap: 8px 24px; /* espaço entre os itens (vertical 8px, horizontal 24px) */
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 8px 24px;
 }
 
 .painel-topo-textos {
-	min-width: 0; /* deixa o título quebrar linha em vez de vazar */
+	min-width: 0;
 }
 
 .painel-titulo {
-	font-size: clamp(20px, 1.6vw, 26px); /* tamanho da letra fluido: mínimo 20px, máximo 26px */
-	font-weight: 700; /* espessura da letra (negrito) */
-	line-height: 1.2; /* altura da linha do texto */
+	font-size: clamp(20px, 1.6vw, 26px);
+	font-weight: 700;
+	line-height: 1.2;
 }
 
 .painel-subtitulo {
-	margin-top: 2px; /* espaço acima do elemento (2px) */
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	font-size: 14px; /* tamanho da letra (14px) */
+	margin-top: 2px;
+	color: var(--cinzado);
+	font-size: 14px;
 }
 
-.botao-voltar {
-	margin-bottom: 6px; /* espaço abaixo do elemento (6px) */
-	padding: 6px 14px; /* espaço interno (6px 14px) */
-	color: var(--verde); /* cor do texto (usa a variável --verde) */
-	font-size: 13px; /* tamanho da letra (13px) */
-	font-weight: 700; /* espessura da letra (negrito) */
-	background-color: rgba(2, 146, 93, 0.12); /* cor de fundo (cor com transparência) */
-	border: none; /* remove a borda */
-	border-radius: 999px; /* formato de pílula */
-	cursor: pointer; /* mostra a mãozinha ao passar o mouse */
-}
-
-.painel-topo-filtro {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
-	align-items: center; /* centraliza os itens na vertical */
-	justify-content: flex-end; /* encosta o filtro na direita */
-	gap: 4px 10px; /* espaço entre os itens */
-}
-
-.filtro-rotulo {
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	font-size: 13px; /* tamanho da letra (13px) */
-	font-weight: 700; /* espessura da letra (negrito) */
-}
-
-.filtro-visao {
-	min-width: 240px; /* largura mínima para caber o nome dos pontos */
-	padding: 9px 12px; /* espaço interno (9px 12px) */
-	font: inherit; /* selects não herdam a fonte sozinhos */
-	font-size: 14px; /* tamanho da letra (14px) */
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	background-color: #fff; /* cor de fundo (#fff) */
-	border: 1.5px solid var(--borda); /* borda: espessura, estilo e cor */
-	border-radius: 10px; /* arredonda os cantos (10px) */
-	cursor: pointer; /* mostra a mãozinha ao passar o mouse */
+.painel-topo-info {
+	margin-left: auto; /* fica à direita mesmo quando desce de linha */
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 4px;
 }
 
 .painel-atualizacao {
-	width: 100%; /* fica numa linha própria, embaixo do filtro */
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	font-size: 12px; /* tamanho da letra (12px) */
-	text-align: right; /* alinha o texto à direita */
+	color: var(--cinzado);
+	font-size: 13px;
+}
+
+.painel-atualizacao strong {
+	color: var(--escuro);
+}
+
+/* seletor dos dados de exemplo (sai quando a dash ler o banco) */
+.cenario {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--cinzado);
+	font-size: 11.5px;
+}
+
+.cenario select {
+	padding: 3px 6px;
+	font-size: 11.5px;
+	color: var(--cinzado);
+	background: transparent;
+	border: 1px dashed var(--borda);
+	border-radius: 6px;
+}
+
+.botao-voltar {
+	margin-bottom: 6px;
+	padding: 6px 14px;
+	color: var(--verde);
+	font-size: 13px;
+	font-weight: 700;
+	background-color: rgba(2, 146, 93, 0.12);
+	border: none;
+	border-radius: 999px;
+	cursor: pointer;
+}
+
+.botao-voltar:hover {
+	filter: brightness(0.92);
 }
 
 
 /* --------------------------------------------------------------------------
-   VISÕES E LINHAS DO GRID
+   VISÕES, LINHAS E CARDS
    -------------------------------------------------------------------------- */
 .visao {
-	flex: 1; /* ocupa toda a altura que sobrou embaixo do topo */
-	min-height: 0; /* deixa a visão encolher para caber na janela */
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	gap: var(--espaco); /* espaço entre as linhas (usa a variável --espaco) */
+	flex: 1; /* ocupa a altura que sobrou embaixo do topo */
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--espaco);
 }
 
-/* linha de resumo: card de alerta (mais largo) + 3 indicadores */
-.linha-resumo {
-	display: grid; /* grid organiza os itens internos em linhas e colunas */
-	grid-template-columns: minmax(0, 2.2fr) repeat(3, minmax(0, 1fr)); /* alerta ocupa pouco mais que 2 indicadores */
-	gap: var(--espaco); /* espaço entre os cards (usa a variável --espaco) */
+/* alerta (mais largo) + coluna de indicadores */
+.linha-topo {
+	display: grid;
+	grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+	gap: var(--espaco);
 }
 
-/* linha de detalhe: ocupa a altura que sobrou */
+/* linha de baixo: ocupa a altura que sobrou */
 .linha-detalhe {
-	flex: 1; /* ocupa toda a altura que sobrou */
-	min-height: 0; /* deixa a linha encolher para caber na janela */
-	display: grid; /* grid organiza os itens internos em linhas e colunas */
-	gap: var(--espaco); /* espaço entre os cards (usa a variável --espaco) */
+	flex: 1;
+	min-height: 0;
+	display: grid;
+	gap: var(--espaco);
 }
 
 .linha-detalhe-geral {
-	grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(0, 0.9fr); /* lista | barras | rosca */
+	grid-template-columns: minmax(0, 1fr) minmax(250px, 0.38fr); /* tabela | bairros */
 }
 
 .linha-detalhe-ponto {
-	grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.5fr) minmax(0, 1.15fr); /* compartimentos | histórico | leituras */
+	grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); /* histórico | leituras */
 }
 
-/* CARD = CADA BLOCO DA DASHBOARD */
 .card {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	min-width: 0; /* deixa o card encolher dentro do grid */
-	min-height: 0; /* deixa o card encolher na altura (o gráfico se ajusta) */
-	background-color: #fff; /* cor de fundo (#fff) */
-	padding: var(--card-padding); /* espaço interno (usa a variável --card-padding) */
-	border: 1.5px solid var(--borda); /* borda: espessura, estilo e cor */
-	border-radius: var(--raio); /* arredonda os cantos (usa a variável --raio) */
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+	background-color: #fff;
+	padding: var(--card-padding);
+	border: 1.5px solid var(--borda);
+	border-radius: var(--raio);
 }
 
 .card-titulo {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-size: clamp(16px, 1.2vw, 19px); /* tamanho da letra fluido: mínimo 16px, máximo 19px */
-	font-weight: 700; /* espessura da letra (negrito) */
-	line-height: 1.25; /* altura da linha do texto */
+	font-size: clamp(16px, 1.15vw, 18px);
+	font-weight: 700;
+	line-height: 1.25;
 }
 
 .card-subtitulo {
-	margin-top: 2px; /* espaço acima do elemento (2px) */
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	font-size: 13px; /* tamanho da letra (13px) */
-	line-height: 1.35; /* altura da linha do texto */
+	margin-top: 2px;
+	color: var(--cinzado);
+	font-size: 13px;
+	line-height: 1.35;
 }
 
 /* caixa do gráfico Chart.js: estica até o fim do card */
 .grafico {
-	position: relative; /* referência para o canvas com position absolute */
-	flex: 1; /* ocupa toda a altura que sobrar no card */
-	min-height: 0; /* deixa a caixa encolher para caber na janela */
-	margin-top: 12px; /* espaço acima do elemento (12px) */
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	margin-top: 10px;
 }
 
 .grafico canvas {
 	position: absolute; /* o canvas não empurra o card */
-	inset: 0; /* preenche a caixa inteira */
+	inset: 0;
+}
+
+/* botão com cara de link (ex.: "limpar filtros") */
+.link {
+	padding: 0;
+	color: var(--verde);
+	font-size: inherit;
+	font-weight: 700;
+	text-decoration: underline;
+	background: none;
+	border: none;
+	cursor: pointer;
 }
 
 
 /* --------------------------------------------------------------------------
-   2. CARD DE ALERTA (visão geral) E DIAGNÓSTICO (visão do ponto)
-   A cor muda conforme o pior patamar: alerta-critico, alerta-atencao ou
-   alerta-normal (classe colocada pelo script do dashboard.html).
+   2. ALERTA: a decisão do momento (o elemento mais forte da tela)
+   A cor muda com a pior situação: alerta-critico, alerta-atencao,
+   alerta-normal ou alerta-semleitura (classe colocada pelo script).
+   O estado aparece na borda inteira (2px), no fundo claro e na etiqueta
+   sólida; nada de faixa colorida na lateral.
    -------------------------------------------------------------------------- */
 .alerta {
-	gap: 6px; /* espaço entre título, texto e lista */
-	border-left-width: 8px; /* faixa colorida grossa na esquerda */
+	display: grid;
+	grid-template-columns: minmax(150px, 0.62fr) minmax(0, 2fr); /* resumo | fila */
+	gap: 8px 22px;
+	border-width: 2px;
 }
 
 .alerta-critico {
-	background-color: #FDF1F1; /* fundo vermelho bem claro */
-	border-color: rgba(214, 69, 69, 0.35); /* borda vermelha suave */
-	border-left-color: var(--vermelho); /* faixa vermelha */
+	background-color: #FDF1F1;
+	border-color: var(--vermelho);
+	box-shadow: 0 8px 24px -10px rgba(214, 69, 69, 0.45);
 }
 
 .alerta-atencao {
-	background-color: #FEF9E8; /* fundo amarelo bem claro */
-	border-color: rgba(242, 183, 5, 0.45); /* borda amarela suave */
-	border-left-color: var(--amarelo); /* faixa amarela */
+	background-color: #FEF9E8;
+	border-color: var(--amarelo);
+	box-shadow: 0 8px 24px -10px rgba(242, 183, 5, 0.5);
 }
 
 .alerta-normal {
-	border-left-color: var(--lima); /* faixa verde */
+	background-color: #F2FAEE;
+	border-color: var(--lima);
+	box-shadow: 0 8px 24px -10px rgba(98, 197, 64, 0.45);
+}
+
+.alerta-semleitura {
+	background-color: #F4F6F5;
+	border-color: var(--cinza-sensor);
+}
+
+.alerta-resumo {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-width: 0;
+}
+
+/* etiqueta sólida do estado ("AÇÃO AGORA"), com ícone de alerta em SVG */
+.alerta-rotulo {
+	display: inline-flex;
+	align-items: center;
+	align-self: flex-start;
+	gap: 6px;
+	padding: 4px 11px 4px 9px;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 800;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	background-color: var(--verde-etiqueta);
+	border-radius: 999px;
+}
+
+.alerta-rotulo .icone {
+	width: 15px;
+	height: 15px;
+	flex-shrink: 0;
+}
+
+.alerta-critico .alerta-rotulo {
+	background-color: var(--vermelho-etiqueta);
+}
+
+.alerta-atencao .alerta-rotulo {
+	color: #3D2E00; /* texto escuro no amarelo: 7,27:1 */
+	background-color: var(--amarelo);
+}
+
+.alerta-semleitura .alerta-rotulo {
+	background-color: var(--cinza-etiqueta);
+}
+
+/* o número grande: quantos pontos precisam do caminhão */
+.alerta-numero {
+	margin-top: 4px;
+	font-size: clamp(72px, 6.6cqi, 88px);
+	font-weight: 800;
+	line-height: 0.9;
+	letter-spacing: -0.02em;
+}
+
+.alerta-critico .alerta-numero {
+	color: var(--vermelho-texto);
+}
+
+.alerta-atencao .alerta-numero {
+	color: var(--amarelo-texto);
 }
 
 .alerta-titulo {
-	font-size: clamp(17px, 1.4vw, 22px); /* tamanho da letra fluido: mínimo 17px, máximo 22px */
-	font-weight: 700; /* espessura da letra (negrito) */
-	line-height: 1.2; /* altura da linha do texto */
-}
-
-.alerta-critico .alerta-titulo {
-	color: #A82E2E; /* vermelho escurecido para ter contraste */
-}
-
-.alerta-atencao .alerta-titulo {
-	color: var(--amarelo-texto); /* amarelo escurecido para ter contraste */
+	font-size: clamp(16px, 1.3vw, 20px);
+	font-weight: 700;
+	line-height: 1.2;
 }
 
 .alerta-texto {
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	font-size: 13px; /* tamanho da letra (13px) */
+	margin-top: 4px;
+	color: #3E5248;
+	font-size: 13px;
+	line-height: 1.45;
 }
 
-/* pontos em alerta: botões em formato de pílula, 2 por linha */
-.alerta-lista {
-	display: grid; /* grid organiza os itens internos em linhas e colunas */
-	grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); /* quantas colunas couberem, mínimo 170px */
-	gap: 6px; /* espaço entre os itens (6px) */
-	margin-top: 4px; /* espaço acima do elemento (4px) */
+/* FILA: pontos em ordem de urgência */
+.alerta-fila {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
 }
 
-.alerta-item {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	align-items: center; /* centraliza os itens na vertical */
-	justify-content: space-between; /* rua na esquerda, nível na direita */
-	gap: 8px; /* espaço entre os itens (8px) */
-	min-width: 0; /* deixa o texto encolher */
-	padding: 6px 12px; /* espaço interno (6px 12px) */
-	font-size: 13px; /* tamanho da letra (13px) */
-	text-align: left; /* alinha o texto à esquerda */
-	background-color: #fff; /* cor de fundo (#fff) */
-	border: 1.5px solid; /* a cor da borda vem do patamar */
-	border-radius: 999px; /* formato de pílula */
-	cursor: pointer; /* mostra a mãozinha ao passar o mouse */
+.fila-legenda {
+	color: var(--cinzado);
+	font-size: 12px;
+	font-weight: 700;
 }
 
-.alerta-item:hover {
-	filter: brightness(0.95); /* escurece um pouco o elemento */
+.fila {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	list-style: none;
 }
 
-.alerta-item-rua {
-	overflow: hidden; /* esconde o que passar do espaço */
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-weight: 700; /* espessura da letra (negrito) */
-	white-space: nowrap; /* impede o texto de quebrar linha */
-	text-overflow: ellipsis; /* coloca "..." quando o nome não cabe */
+.fila-item {
+	display: grid;
+	grid-template-columns: 22px minmax(0, 1fr) auto minmax(84px, auto) 10px; /* nº | local | motivo | previsão | seta */
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	padding: 4px 10px 4px 7px;
+	text-align: left;
+	color: var(--escuro);
+	background-color: #fff;
+	border: 1.5px solid var(--borda);
+	border-radius: 10px;
+	cursor: pointer;
 }
 
-.alerta-item-nivel {
-	flex-shrink: 0; /* o nível nunca encolhe */
-	font-weight: 700; /* espessura da letra (negrito) */
-	white-space: nowrap; /* impede o texto de quebrar linha */
+.fila-item:hover {
+	filter: brightness(0.96);
 }
 
-.alerta-item-critico {
-	border-color: var(--vermelho); /* borda vermelha */
+.fila-item-critico {
+	border-color: rgba(214, 69, 69, 0.55);
 }
 
-.alerta-item-critico .alerta-item-nivel {
-	color: var(--vermelho); /* texto vermelho */
+.fila-item-atencao {
+	border-color: rgba(242, 183, 5, 0.7);
 }
 
-.alerta-item-atencao {
-	border-color: var(--amarelo); /* borda amarela */
+.fila-posicao {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 800;
+	background-color: var(--lima);
+	border-radius: 50%;
 }
 
-.alerta-item-atencao .alerta-item-nivel {
-	color: var(--amarelo-texto); /* amarelo escurecido para ter contraste */
+.fila-item-critico .fila-posicao {
+	background-color: var(--vermelho);
 }
 
-/* DIAGNÓSTICO: compartimentos que passaram do limite */
-.diagnostico-lista {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	gap: 6px; /* espaço entre os itens (6px) */
-	margin-top: 4px; /* espaço acima do elemento (4px) */
-	list-style: none; /* remove as bolinhas da lista */
+.fila-item-atencao .fila-posicao {
+	color: #3D2E00;
+	background-color: var(--amarelo);
 }
 
-.diagnostico-item {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-wrap: wrap; /* se faltar espaço, o detalhe desce para a linha de baixo */
-	align-items: baseline; /* alinha os textos pela base */
-	gap: 2px 10px; /* espaço entre os itens */
-	padding: 6px 12px; /* espaço interno (6px 12px) */
-	font-size: 13px; /* tamanho da letra (13px) */
-	background-color: #fff; /* cor de fundo (#fff) */
-	border-left: 4px solid; /* faixa colorida na esquerda (cor vem do patamar) */
-	border-radius: 8px; /* arredonda os cantos (8px) */
+.fila-local {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	min-width: 0;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
-.diagnostico-item span {
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
+.fila-rua {
+	flex-shrink: 1; /* a rua só encolhe depois do bairro */
+	overflow: hidden;
+	font-size: 14px;
+	font-weight: 700;
+	text-overflow: ellipsis;
 }
 
-.diagnostico-item-critico {
-	border-left-color: var(--vermelho); /* faixa vermelha */
+.fila-bairro {
+	flex-shrink: 1000; /* o bairro encolhe primeiro */
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: var(--cinzado);
+	font-size: 12px;
 }
 
-.diagnostico-item-atencao {
-	border-left-color: var(--amarelo); /* faixa amarela */
+.fila-motivo {
+	font-size: 13px;
+	white-space: nowrap;
 }
 
-.diagnostico-item-inativo {
-	border-left-color: var(--cinzado); /* faixa cinza: sensor sem leitura */
+.fila-item-critico .fila-motivo strong {
+	color: var(--vermelho-texto);
+}
+
+.fila-item-atencao .fila-motivo strong {
+	color: var(--amarelo-texto);
+}
+
+.fila-previsao {
+	color: var(--cinzado);
+	font-size: 12px;
+	text-align: right;
+	white-space: nowrap;
+}
+
+.fila-seta {
+	color: var(--cinzado);
+	font-size: 18px;
+	line-height: 1;
+}
+
+.fila-ver-todos {
+	align-self: flex-start;
+	padding: 2px 0;
+	color: var(--escuro);
+	font-size: 13px;
+	font-weight: 700;
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-decoration: underline;
 }
 
 
 /* --------------------------------------------------------------------------
-   INDICADORES (KPIs)
+   INDICADORES (coluna ao lado do alerta)
+   Ordem: Crítico e Atenção (card duplo), Próximas 6 h e Sensores sem leitura.
+   Cada um mostra a quantidade de sensores, cita o mais urgente e tem o
+   botão "Ver todos", que abre o painel com a lista completa.
    -------------------------------------------------------------------------- */
+.indicadores {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-width: 0;
+}
+
 .indicador {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	gap: 8px; /* espaço entre os itens (8px) */
-	min-width: 0; /* deixa o elemento encolher abaixo do tamanho do conteúdo */
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	background-color: #fff; /* cor de fundo (#fff) */
-	padding: var(--card-padding); /* espaço interno (usa a variável --card-padding) */
-	border: 1.5px solid var(--borda); /* borda: espessura, estilo e cor */
-	border-radius: var(--raio); /* arredonda os cantos (usa a variável --raio) */
+	position: relative;
+	flex: 1 0 auto; /* nunca menor que o conteúdo; divide a sobra com os outros */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 3px;
+	min-width: 0;
+	padding: 9px 14px;
+	text-align: left;
+	color: var(--cinzado);
+	background-color: #fff;
+	border: 1.5px solid var(--borda);
+	border-radius: 14px;
+}
+
+/* card duplo: Crítico | Atenção, lado a lado. O espaço de 1px entre as
+   metades deixa aparecer o fundo cinza do card: vira a linha divisória */
+.indicador-duplo {
+	flex-direction: row;
+	gap: 1px;
+	padding: 0;
+	overflow: hidden;
+	background-color: var(--borda);
+}
+
+.indicador-metade {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 3px;
+	min-width: 0;
+	padding: 9px 10px 9px 12px;
+	background-color: #fff;
+}
+
+/* nas metades a frase do sensor pode ocupar 2 linhas */
+.indicador-metade .indicador-citado {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	white-space: normal;
+}
+
+/* primeira linha: título à esquerda, "Ver todos" à direita */
+.indicador-cabecalho {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2px 8px;
 }
 
 .indicador-titulo {
-	font-size: 18px; /* tamanho da letra (14px) */
-	font-weight: 800; /* espessura da letra (média) */
-	line-height: 1.3; /* altura da linha do texto */
 	color: var(--escuro);
+	font-size: 13px;
+	font-weight: 700;
 }
 
 .indicador-linha {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-wrap: wrap; /* se faltar espaço, o selo desce em vez de vazar do card */
-	align-items: center; /* centraliza os itens na vertical */
-	gap: 6px 10px; /* espaço entre os itens */
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 4px 8px;
 }
 
 .indicador-dado {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-size: clamp(26px, 2.6cqi, 40px); /* tamanho da letra fluido — cqi = % da largura do conteúdo */
-	font-weight: 700; /* espessura da letra (negrito) */
-	line-height: 1; /* altura da linha do texto */
-	white-space: nowrap; /* impede o texto de quebrar linha — "há 5 h" nunca quebra em duas linhas */
+	color: var(--escuro);
+	font-size: clamp(24px, 2.2cqi, 32px);
+	font-weight: 800;
+	line-height: 1;
+}
+
+#indicador-critico .indicador-dado { color: var(--vermelho-texto); }
+#indicador-atencao .indicador-dado { color: var(--amarelo-texto); }
+
+.indicador-unidade {
+	color: var(--escuro);
+	font-size: 13px;
+	font-weight: 700;
 }
 
 .indicador-status {
-	display: inline-flex; /* flex que ocupa só o tamanho do conteúdo, como um texto */
-	align-items: center; /* centraliza os itens na vertical */
-	padding: 4px 10px; /* espaço interno (4px 10px) */
-	font-size: 12px; /* tamanho da letra (12px) */
-	font-weight: 700; /* espessura da letra (negrito) */
-	line-height: 1.2; /* altura da linha do texto */
-	white-space: nowrap; /* impede o texto de quebrar linha */
-	border-radius: 999px; /* formato de pílula */
+	align-self: center;
+	padding: 3px 9px;
+	font-size: 11.5px;
+	font-weight: 700;
+	white-space: nowrap;
+	border-radius: 999px;
 }
 
-.indicador-status:empty {
-	display: none; /* sem texto, o selo some */
-}
-
+/* etiqueta vermelha dos sensores sem leitura */
 .indicador-status-critico {
-	color: var(--vermelho); /* cor do texto (usa a variável --vermelho) */
-	background-color: rgba(214, 69, 69, 0.14); /* cor de fundo (cor com transparência) */
-}
-
-.indicador-status-atencao {
-	color: var(--amarelo-texto); /* amarelo escurecido para ter contraste */
-	background-color: rgba(242, 183, 5, 0.18); /* cor de fundo (cor com transparência) */
-}
-
-.indicador-status-normal {
-	color: var(--verde); /* cor do texto (usa a variável --verde) */
-	background-color: rgba(2, 146, 93, 0.14); /* cor de fundo (cor com transparência) */
+	color: #fff;
+	background-color: var(--vermelho-etiqueta);
 }
 
 .indicador-descricao {
-	margin-top: auto; /* alinha as descrições no rodapé dos cards */
-	font-size: 16px; /* tamanho da letra (12.5px) */
-	line-height: 1.35; /* altura da linha do texto */
+	font-size: 12px;
+	line-height: 1.3;
+	white-space: nowrap;
+}
+
+/* o sensor citado: o primeiro pela regra de urgência (uma linha, com "...") */
+.indicador-citado {
+	overflow: hidden;
+	color: #3E5248;
+	font-size: 12px;
+	line-height: 1.35;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.indicador-citado strong {
+	color: var(--escuro);
+}
+
+.indicador-vazio {
+	white-space: normal;
+	color: var(--cinzado);
+}
+
+.ver-todos {
+	padding: 2px 8px;
+	white-space: nowrap;
+	color: var(--verde);
+	font-size: 12px;
+	font-weight: 700;
+	background-color: rgba(2, 146, 93, 0.1);
+	border: 1px solid transparent;
+	border-radius: 999px;
+	cursor: pointer;
+}
+
+.ver-todos:hover,
+.ver-todos[aria-expanded="true"] {
+	border-color: var(--verde);
+}
+
+/* etiqueta de prioridade ao lado do tipo de resíduo: "Orgânico P1" */
+.prioridade {
+	display: inline-block;
+	margin-left: 4px;
+	padding: 0 5px;
+	color: var(--cinzado);
+	font-size: 10.5px;
+	font-weight: 700;
+	line-height: 16px;
+	vertical-align: 1px;
+	background-color: #fff;
+	border: 1px solid var(--borda);
+	border-radius: 5px;
+	cursor: help;
 }
 
 
 /* --------------------------------------------------------------------------
-   3. LISTA DE PONTOS DE COLETA (visão geral)
+   PAINEL "VER TODOS" (popover ancorado no card; modal em tela pequena)
    -------------------------------------------------------------------------- */
-.lista-pontos {
-	flex: 1; /* ocupa toda a altura que sobrar no card */
-	min-height: 0; /* deixa a lista encolher para caber na janela */
-	overflow-y: auto; /* se a janela for baixa demais, só a lista rola (a página não) */
-	margin-top: 10px; /* espaço acima do elemento (10px) */
-	list-style: none; /* remove as bolinhas da lista */
+.painel-lista {
+	position: fixed;
+	z-index: 20;
+	display: flex;
+	flex-direction: column;
+	width: 400px;
+	max-height: min(70vh, 520px);
+	background-color: #fff;
+	border: 1.5px solid var(--borda);
+	border-radius: 14px;
+	box-shadow: 0 18px 40px -12px rgba(16, 41, 30, 0.35);
 }
 
-/* cada ponto é um botão: clicar abre a visão do ponto */
-.ponto {
-	display: grid; /* grid organiza os itens internos em linhas e colunas */
-	grid-template-columns: 10px minmax(0, 1fr) auto 64px; /* marcador | nome | nível | status */
-	align-items: center; /* centraliza os itens na vertical */
-	column-gap: 10px; /* espaço horizontal entre as colunas (10px) */
-	width: 100%; /* ocupa a largura toda da lista */
-	padding: 5px 8px; /* espaço interno (5px 8px) */
-	text-align: left; /* alinha o texto à esquerda */
-	background: transparent; /* fundo transparente */
-	border: none; /* remove a borda */
-	border-bottom: 1px solid var(--borda); /* linha separando os pontos */
-	cursor: pointer; /* mostra a mãozinha ao passar o mouse */
+.painel-lista-cabecalho {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 12px 12px 4px 16px;
 }
 
-.ponto:hover {
-	background-color: var(--fundo); /* destaca o ponto ao passar o mouse */
+.painel-lista-titulo {
+	font-size: 15px;
+	font-weight: 700;
 }
 
-.ponto-marcador {
-	width: 10px; /* largura (10px) */
-	height: 10px; /* altura (10px) */
-	border-radius: 50%; /* deixa o elemento redondo */
-	background-color: var(--lima); /* verde para normal */
+.painel-lista-fechar {
+	width: 30px;
+	height: 30px;
+	flex-shrink: 0;
+	color: var(--escuro);
+	font-size: 20px;
+	line-height: 1;
+	background: none;
+	border: 1px solid var(--borda);
+	border-radius: 8px;
+	cursor: pointer;
 }
 
-.ponto-atencao .ponto-marcador {
-	background-color: var(--amarelo); /* amarelo para atenção */
+.painel-lista-fechar:hover {
+	background-color: var(--fundo);
 }
 
-.ponto-critico .ponto-marcador {
-	background-color: var(--vermelho); /* vermelho para crítico */
+.painel-lista-legenda {
+	padding: 0 16px 8px;
+	color: var(--cinzado);
+	font-size: 12px;
 }
 
-/* rua e bairro na mesma linha, para os 10 pontos caberem sem rolar */
-.ponto-nome {
-	overflow: hidden; /* esconde o que passar do espaço */
-	font-size: 13.5px; /* tamanho da letra (13.5px) */
-	white-space: nowrap; /* impede o texto de quebrar linha */
-	text-overflow: ellipsis; /* coloca "..." quando o nome não cabe */
+/* a lista rola por dentro do painel */
+.painel-lista-itens {
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	padding: 0 8px;
+	list-style: none;
+	border-top: 1px solid var(--borda);
+	border-bottom: 1px solid var(--borda);
+}
+
+.lista-item {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	gap: 2px 10px;
+	width: 100%;
+	padding: 8px;
+	text-align: left;
+	color: var(--escuro);
+	font-size: 12.5px;
+	background: none;
+	border: none;
+	border-bottom: 1px solid var(--borda);
+	cursor: pointer;
+}
+
+.painel-lista-itens li:last-child .lista-item {
+	border-bottom: none;
+}
+
+.lista-item:hover {
+	background-color: var(--fundo);
+}
+
+.lista-sensor {
+	grid-row: span 2;
+	font-weight: 800;
+	white-space: nowrap;
+}
+
+.lista-local {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.lista-tipo {
+	grid-column: 1;
+	color: var(--cinzado);
+}
+
+.lista-detalhe {
+	grid-column: 2;
+	color: var(--cinzado);
+}
+
+.painel-lista-rodape {
+	padding: 10px 16px;
+	font-size: 13px;
+}
+
+/* tela pequena: o painel vira um modal no centro, com fundo escurecido */
+.painel-lista-fundo {
+	position: fixed;
+	inset: 0;
+	z-index: 19;
+	background-color: rgba(0, 31, 18, 0.35);
+}
+
+.painel-lista-modal {
+	left: 50%;
+	top: 50%;
+	width: min(400px, calc(100vw - 32px));
+	max-height: calc(100vh - 48px);
+	transform: translate(-50%, -50%);
+}
+
+
+/* --------------------------------------------------------------------------
+   3. TABELA DE COMPARTIMENTOS
+   -------------------------------------------------------------------------- */
+/* a tabela é um container: as colunas extras somem quando o card fica estreito */
+.card-tabela {
+	container: tabela / inline-size;
+}
+
+.card-cabecalho {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px 16px;
+}
+
+.linha-detalhe-ponto .card-cabecalho {
+	flex-wrap: nowrap;
+	align-items: flex-start;
+	margin-bottom: 8px;
+}
+
+.linha-detalhe-ponto .card-cabecalho > div {
+	min-width: 0;
+}
+
+.linha-detalhe-ponto .card-cabecalho > .seletor-periodo,
+.linha-detalhe-ponto .card-cabecalho > .filtro-data {
+	flex-shrink: 0;
+}
+
+.filtros {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.filtro-busca,
+.filtro-bairro {
+	padding: 7px 10px;
+	font-size: 13px;
+	color: var(--escuro);
+	background-color: #fff;
+	border: 1.5px solid var(--borda);
+	border-radius: 9px;
+}
+
+.filtro-busca {
+	width: 220px;
+}
+
+.filtro-busca:focus,
+.filtro-bairro:focus {
+	outline: 2px solid rgba(2, 146, 93, 0.35);
+	border-color: var(--verde);
+}
+
+/* CHIPS: filtro por situação, com a quantidade */
+.chips-linha {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 6px 12px;
+	margin: 10px 0 8px;
+}
+
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.tabela-contagem {
+	color: var(--cinzado);
+	font-size: 12.5px;
+}
+
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 10px;
+	color: var(--escuro);
+	font-size: 12.5px;
+	font-weight: 500;
+	background-color: #fff;
+	border: 1.5px solid var(--borda);
+	border-radius: 999px;
+	cursor: pointer;
+}
+
+.chip span {
+	font-weight: 800;
+}
+
+.chip i {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+
+.chip-critico i { background-color: var(--vermelho); }
+.chip-atencao i { background-color: var(--amarelo); }
+.chip-breve i { background-color: transparent; border: 2px solid var(--amarelo); }
+.chip-semleitura i { background-color: var(--cinza-sensor); }
+.chip-normal i { background-color: var(--lima); }
+
+.chip:hover {
+	border-color: var(--verde);
+}
+
+.chip-ativo {
+	color: #fff;
+	background-color: var(--escuro);
+	border-color: var(--escuro);
+}
+
+/* a tabela rola por dentro do card */
+.tabela-rolagem {
+	flex: 1;
+	min-height: 0;
+	overflow: auto;
+	border-top: 1px solid var(--borda);
+}
+
+.tabela {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	font-size: 13px;
+}
+
+.tabela th {
+	position: sticky; /* o cabeçalho fica parado enquanto a tabela rola */
+	top: 0;
+	z-index: 1;
+	padding: 0;
+	text-align: left;
+	background-color: var(--fundo);
+	border-bottom: 1px solid var(--borda);
+}
+
+.tabela th button {
+	display: block;
+	width: 100%;
+	padding: 8px 10px;
+	color: var(--escuro);
+	font-size: 12px;
+	font-weight: 700;
+	text-align: left;
+	white-space: nowrap;
+	background: none;
+	border: none;
+}
+
+.tabela th button {
+	cursor: pointer;
+}
+
+/* tabela de leituras (visão do ponto): cabeçalho sem botão de ordenar */
+.tabela-leituras th {
+	padding: 8px 10px;
+	color: var(--escuro);
+	font-size: 12px;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.tabela th button:hover {
+	color: var(--verde);
+}
+
+.tabela th button.ordenado::after {
+	content: ' ▼';
+	font-size: 9px;
+}
+
+.tabela th button.ordenado.invertido::after {
+	content: ' ▲';
+}
+
+.tabela td {
+	padding: 6px 10px;
+	white-space: nowrap;
+	border-bottom: 1px solid var(--borda);
+}
+
+.card-tabela tbody tr {
+	cursor: pointer;
+}
+
+.card-tabela tbody tr:hover td {
+	background-color: var(--fundo);
+}
+
+.card-tabela tbody tr:focus {
+	outline: 2px solid var(--verde);
+	outline-offset: -2px;
+}
+
+.sensor-num {
+	margin-left: 6px;
+	color: var(--cinzado);
+	font-size: 11.5px;
+}
+
+.col-ponto {
+	max-width: 280px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .ponto-rua {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-weight: 700; /* espessura da letra (negrito) */
+	font-weight: 700;
 }
 
 .ponto-bairro {
-	margin-left: 4px; /* espaço entre a rua e o bairro */
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	font-size: 12px; /* tamanho da letra (12px) */
+	margin-left: 6px;
+	color: var(--cinzado);
+	font-size: 12px;
 }
 
-.ponto-nivel {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-size: 14px; /* tamanho da letra (14px) */
-	font-weight: 700; /* espessura da letra (negrito) */
+.col-previsao,
+.col-leitura {
+	color: var(--cinzado);
 }
 
-/* selo do status (mesmo formato de pílula dos indicadores) */
-.ponto-status {
-	padding: 3px 0; /* espaço interno (3px em cima e embaixo) */
-	font-size: 11.5px; /* tamanho da letra (11.5px) */
-	font-weight: 700; /* espessura da letra (negrito) */
-	text-align: center; /* centraliza o texto */
-	color: var(--verde); /* verde para normal */
-	background-color: rgba(2, 146, 93, 0.14); /* cor de fundo (cor com transparência) */
-	border-radius: 999px; /* formato de pílula */
+.tabela-vazia {
+	padding: 24px;
+	color: var(--cinzado);
+	font-size: 13px;
+	text-align: center;
 }
 
-.ponto-atencao .ponto-status {
-	color: var(--amarelo-texto); /* amarelo escurecido para ter contraste */
-	background-color: rgba(242, 183, 5, 0.18); /* cor de fundo (cor com transparência) */
+/* selo da situação */
+.situacao {
+	display: inline-block;
+	min-width: 76px;
+	padding: 3px 8px;
+	font-size: 11.5px;
+	font-weight: 700;
+	text-align: center;
+	border-radius: 999px;
 }
 
-.ponto-critico .ponto-status {
-	color: var(--vermelho); /* cor do texto (usa a variável --vermelho) */
-	background-color: rgba(214, 69, 69, 0.14); /* cor de fundo (cor com transparência) */
+.situacao-critico { color: var(--vermelho-texto); background-color: rgba(214, 69, 69, 0.14); }
+.situacao-atencao { color: var(--amarelo-texto); background-color: rgba(242, 183, 5, 0.2); }
+.situacao-normal { color: var(--verde); background-color: rgba(2, 146, 93, 0.12); }
+.situacao-semleitura { color: #4A5A52; background-color: #E7ECE9; }
+
+/* BARRA DO NÍVEL com um traço em cada limite (atenção e crítico) */
+.nivel-celula {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
 }
+
+.barra {
+	position: relative;
+	display: inline-block;
+	width: 70px;
+	height: 8px;
+	flex-shrink: 0;
+	background-color: #E6EEE9;
+	border-radius: 999px;
+}
+
+.barra-preenchimento {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	border-radius: 999px;
+}
+
+.barra-critico { background-color: var(--vermelho); }
+.barra-atencao { background-color: var(--amarelo); }
+.barra-normal { background-color: var(--lima); }
+.barra-semleitura { background-color: #C3CEC8; }
+
+.barra-limite {
+	position: absolute;
+	top: -3px;
+	bottom: -3px;
+	width: 2px;
+	margin-left: -1px;
+	border-radius: 1px;
+}
+
+.barra-limite-atencao { background-color: var(--amarelo-texto); }
+.barra-limite-critico { background-color: var(--vermelho-texto); }
+
+.nivel-texto {
+	min-width: 34px;
+	font-weight: 700;
+	text-align: right;
+}
+
+/* cor do número do nível */
+.nivel-critico { color: var(--vermelho-texto); }
+.nivel-atencao { color: var(--amarelo-texto); }
+.nivel-normal { color: var(--verde); }
+.nivel-semleitura { color: var(--cinzado); }
 
 
 /* --------------------------------------------------------------------------
-   GRÁFICO DE ROSCA: COMPARTIMENTOS POR PATAMAR
+   VISÃO DE UM PONTO
    -------------------------------------------------------------------------- */
-.patamares {
-	flex: 1; /* ocupa todo o espaço que sobrar no card */
-	min-height: 0; /* deixa o bloco encolher para caber na janela */
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* rosca em cima, legenda embaixo */
-	align-items: center; /* centraliza os itens na horizontal */
-	justify-content: center; /* centraliza os itens na vertical */
-	gap: 14px; /* espaço entre os itens (14px) */
-	margin-top: 10px; /* espaço acima do elemento (10px) */
+
+/* o diagnóstico usa as cores do alerta, mas em coluna */
+.diagnostico {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
-.patamares-grafico {
-	position: relative; /* referência para o canvas e o texto do centro */
-	flex: 1 1 auto; /* cresce até onde der */
-	min-height: 0; /* deixa a rosca encolher para caber na janela */
-	width: 100%; /* ocupa a largura do card */
-	min-height: 120px; /* altura mínima (120px), para a rosca não sumir quando a página rola */
-	max-height: 200px; /* altura máxima (200px) */
+.diag-lista {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-top: 8px;
+	list-style: none;
 }
 
-.patamares-grafico canvas {
-	position: absolute; /* o canvas não empurra o card */
-	inset: 0; /* preenche a caixa inteira */
+.diag-item {
+	display: grid;
+	grid-template-columns: 136px minmax(80px, 1fr) 44px minmax(0, 1.4fr); /* tipo | barra | % | detalhe */
+	align-items: center;
+	gap: 12px;
+	padding: 7px 12px;
+	font-size: 13px;
+	background-color: #fff;
+	border: 1px solid var(--borda);
+	border-radius: 10px;
 }
 
-.patamares-grafico-centro {
-	position: absolute; /* posiciona o elemento por coordenadas dentro do pai */
-	inset: 0; /* cobre todo o pai */
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	align-items: center; /* centraliza os itens na horizontal */
-	justify-content: center; /* centraliza os itens na vertical */
-	pointer-events: none; /* não atrapalha o tooltip do gráfico */
+.diag-item .barra {
+	width: 100%;
 }
 
-.patamares-grafico-total {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-size: 30px; /* tamanho da letra (30px) */
-	font-weight: 700; /* espessura da letra (negrito) */
-	line-height: 1; /* altura da linha do texto */
+.diag-tipo {
+	font-weight: 700;
 }
 
-.patamares-grafico-unidade {
-	color: var(--cinzado); /* cor do texto (usa a variável --cinzado) */
-	font-size: 11.5px; /* tamanho da letra (11.5px) */
+.diag-nivel {
+	font-size: 15px;
+	font-weight: 800;
+	text-align: right;
 }
 
-.patamares-lista {
-	display: flex; /* flex coloca os itens internos lado a lado */
-	flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
-	gap: 8px; /* espaço entre os itens (8px) */
-	width: 100%; /* ocupa a largura do card */
-	max-width: 200px; /* largura máxima (200px) */
+.diag-detalhe {
+	overflow: hidden;
+	color: var(--cinzado);
+	font-size: 12.5px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
-.patamar {
-	display: grid; /* grid organiza os itens internos em linhas e colunas */
-	grid-template-columns: 12px 1fr auto; /* marcador | nome | quantidade */
-	column-gap: 10px; /* espaço horizontal entre as colunas (10px) */
-	align-items: center; /* centraliza os itens na vertical */
+/* SELETOR DE PERÍODO DO HISTÓRICO: 24 h | 7 dias | 30 dias | 90 dias */
+.seletor-periodo {
+	display: inline-flex;
+	padding: 3px;
+	background-color: var(--fundo);
+	border: 1px solid var(--borda);
+	border-radius: 10px;
 }
 
-.patamar-marcador {
-	width: 12px; /* largura (12px) */
-	height: 12px; /* altura (12px) */
-	border-radius: 50%; /* deixa o elemento redondo */
+.seletor-periodo button {
+	padding: 4px 10px;
+	color: var(--cinzado);
+	font-size: 12.5px;
+	font-weight: 700;
+	white-space: nowrap;
+	background: none;
+	border: none;
+	border-radius: 7px;
+	cursor: pointer;
 }
 
-.patamar-normal .patamar-marcador {
-	background-color: var(--lima); /* cor de fundo (usa a variável --lima) */
+.seletor-periodo button:hover {
+	color: var(--escuro);
 }
 
-.patamar-atencao .patamar-marcador {
-	background-color: var(--amarelo); /* cor de fundo (usa a variável --amarelo) */
+.seletor-periodo button.ativo {
+	color: #fff;
+	background-color: var(--escuro);
 }
 
-.patamar-critico .patamar-marcador {
-	background-color: var(--vermelho); /* cor de fundo (usa a variável --vermelho) */
+/* campo de data das leituras do dia */
+.filtro-data {
+	padding: 6px 8px;
+	font-size: 13px;
+	color: var(--escuro);
+	background-color: #fff;
+	border: 1.5px solid var(--borda);
+	border-radius: 9px;
 }
 
-.patamar-nome {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-size: 14px; /* tamanho da letra (14px) */
-	font-weight: 700; /* espessura da letra (negrito) */
+.filtro-data:focus {
+	outline: 2px solid rgba(2, 146, 93, 0.35);
+	border-color: var(--verde);
 }
 
-.patamar-quantidade {
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-size: 18px; /* tamanho da letra (18px) */
-	font-weight: 700; /* espessura da letra (negrito) */
-	line-height: 1; /* altura da linha do texto */
-	text-align: right; /* alinha o texto à direita */
+/* ÚLTIMA COLETA (tabela N:M) */
+.coleta {
+	gap: 2px;
 }
 
-
-/* --------------------------------------------------------------------------
-   TABELA DE LEITURAS RECENTES (visão do ponto)
-   -------------------------------------------------------------------------- */
-.tabela-leituras {
-	flex: 1; /* ocupa toda a altura que sobrar no card */
-	min-height: 0; /* deixa a tabela encolher para caber na janela */
-	overflow-y: auto; /* se a janela for baixa demais, só a tabela rola */
-	margin-top: 10px; /* espaço acima do elemento (10px) */
+.coleta-data {
+	margin-top: 8px;
+	font-size: clamp(20px, 1.8cqi, 26px);
+	font-weight: 800;
 }
 
-.tabela-leituras table {
-	width: 100%; /* ocupa a largura do card */
-	border-collapse: collapse; /* junta as bordas das células */
-	font-size: 13px; /* tamanho da letra (13px) */
+.coleta-itens {
+	margin-top: 10px;
+	list-style: none;
 }
 
-.tabela-leituras th {
-	position: sticky; /* o cabeçalho fica parado se a tabela rolar */
-	top: 0; /* gruda no topo da tabela */
-	padding: 7px 8px; /* espaço interno (7px 8px) */
-	color: var(--escuro); /* cor do texto (usa a variável --escuro) */
-	font-size: 12px; /* tamanho da letra (12px) */
-	text-align: left; /* alinha o texto à esquerda */
-	background-color: var(--fundo); /* cor de fundo (usa a variável --fundo) */
+.coleta-itens li {
+	display: flex;
+	justify-content: space-between;
+	padding: 5px 0;
+	font-size: 13.5px;
+	border-bottom: 1px solid var(--borda);
 }
 
-.tabela-leituras td {
-	padding: 6px 8px; /* espaço interno (6px 8px) */
-	color: #1d2925; /* cor do texto (#1d2925) */
-	white-space: nowrap; /* impede o texto de quebrar linha */
-	border-bottom: 1px solid var(--borda); /* linha separando as leituras */
+.coleta-nota {
+	margin-top: 8px;
+	color: var(--cinzado);
+	font-size: 12.5px;
 }
 
-/* nível com a cor do patamar */
-.nivel {
-	font-weight: 700; /* espessura da letra (negrito) */
-}
-
-.nivel-normal {
-	color: var(--verde); /* verde para normal */
-}
-
-.nivel-atencao {
-	color: var(--amarelo-texto); /* amarelo escurecido para ter contraste */
-}
-
-.nivel-critico {
-	color: var(--vermelho); /* vermelho para crítico */
+.coleta-nota-tarde {
+	color: var(--vermelho-texto);
+	font-weight: 700;
 }
 
 
@@ -815,108 +1368,164 @@ button {
    RESPONSIVIDADE
    -------------------------------------------------------------------------- */
 
-/* CELULAR / TELA ESTREITA: barra vira faixa no topo */
+/* CELULAR / TELA ESTREITA: a barra lateral vira uma faixa no topo */
 @media screen and (max-width: 900px) {
 	.layout {
-		flex-direction: column; /* faz os itens do flex ficarem um embaixo do outro */
+		flex-direction: column;
 	}
 
 	.barra-lateral {
-		width: 100%; /* ocupa todo o espaço disponível */
-		height: auto; /* altura automática, conforme o conteúdo */
-		position: static; /* posição normal, segue o fluxo da página */
-		overflow: visible; /* mostra o conteúdo mesmo se passar do tamanho */
-		flex-direction: row; /* faz os itens do flex ficarem lado a lado */
-		flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
-		align-items: center; /* centraliza os itens na vertical */
-		justify-content: space-between; /* distribui os itens um em cada ponta */
-		gap: 12px 16px; /* espaço entre os itens */
-		padding: 12px clamp(16px, 3vw, 40px); /* espaço interno (vertical 12px, lateral fluido) */
-		border-right: none; /* remove a borda da direita */
-		border-bottom: 1px solid var(--borda); /* linha na parte de baixo do elemento */
-		box-shadow: 0 6px 20px 0 rgba(16, 41, 30, 0.06); /* sombra suave para dar profundidade */
+		width: 100%;
+		height: auto;
+		position: static;
+		overflow: visible;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px 16px;
+		padding: 12px clamp(16px, 3vw, 40px);
+		border-right: none;
+		border-bottom: 1px solid var(--borda);
+		box-shadow: 0 6px 20px 0 rgba(16, 41, 30, 0.06);
 	}
 
 	.barra-lateral-menu {
-		flex-direction: row; /* faz os itens do flex ficarem lado a lado */
-		flex-wrap: wrap; /* se faltar espaço, os itens quebram para a linha de baixo */
-		order: 3; /* menu desce para uma linha própria */
-		width: 100%; /* ocupa todo o espaço disponível */
+		flex-direction: row;
+		flex-wrap: wrap;
+		order: 3; /* o menu desce para uma linha própria */
+		width: 100%;
 	}
 
 	.barra-link {
-		padding: 8px 12px; /* espaço interno (8px 12px) */
-		font-size: 14px; /* tamanho da letra (14px) */
+		padding: 8px 12px;
+		font-size: 14px;
 	}
 
 	.barra-lateral-botoes {
-		flex-direction: row; /* faz os itens do flex ficarem lado a lado */
-		margin-top: 0; /* remove o espaço acima */
+		flex-direction: row;
+		margin-top: 0;
 	}
 
 	.barra-botao {
-		padding: 8px 14px; /* espaço interno (8px 14px) */
+		width: auto;
+		padding: 8px 14px;
 	}
 }
 
-/* JANELA MUITO BAIXA (zoom alto, por exemplo): a página volta a rolar */
-@media screen and (max-height: 600px) {
+/* JANELA BAIXA (zoom alto, por exemplo): a página volta a rolar */
+@media screen and (max-height: 640px) {
 	.painel {
-		height: auto; /* altura conforme o conteúdo */
+		height: auto;
 	}
 
 	.linha-detalhe {
-		grid-auto-rows: 360px; /* altura fixa para os cards de gráfico */
+		grid-auto-rows: 440px;
 	}
 }
 
-/* NOTEBOOK PEQUENO / TABLET: alerta numa linha própria, indicadores embaixo */
-@container conteudo (width < 1000px) {
+/* NOTEBOOK PEQUENO / TABLET: tudo em uma coluna e a página rola */
+@container conteudo (width < 980px) {
 	.painel {
-		height: auto; /* a página volta a rolar */
+		height: auto;
 	}
 
-	.linha-resumo {
-		grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 indicadores lado a lado */
-	}
-
-	.linha-resumo .alerta {
-		grid-column: 1 / -1; /* o alerta ocupa a linha inteira */
-	}
-
+	.linha-topo,
 	.linha-detalhe-geral,
 	.linha-detalhe-ponto {
-		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); /* 2 colunas */
-		grid-auto-rows: 400px; /* altura fixa para os cards de gráfico (cabem os 10 pontos da lista) */
+		grid-template-columns: minmax(0, 1fr);
 	}
 
-	.linha-detalhe > .card:first-child {
-		grid-column: 1 / -1; /* o primeiro card ocupa a linha inteira */
+	/* os 3 indicadores lado a lado, embaixo do alerta (o duplo mais largo) */
+	.indicadores {
+		display: grid;
+		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+	}
+
+	.card-tabela {
+		height: 560px; /* altura fixa: a tabela rola por dentro */
+	}
+
+	.linha-detalhe > .card:not(.card-tabela) {
+		height: 360px;
 	}
 }
 
-/* CELULAR: tudo em uma coluna */
+/* TABELA ESTREITA: some a coluna "Última leitura" (a situação "Sem leitura" continua) */
+@container tabela (width < 820px) {
+	.col-leitura {
+		display: none;
+	}
+
+	.col-ponto {
+		max-width: 190px;
+	}
+
+	.barra {
+		width: 56px;
+	}
+
+	.tabela td,
+	.tabela th button {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+}
+
+/* CELULAR */
 @container conteudo (width < 640px) {
-	.linha-resumo,
-	.linha-detalhe-geral,
-	.linha-detalhe-ponto {
-		grid-template-columns: minmax(0, 1fr); /* uma coluna */
+	.alerta {
+		grid-template-columns: minmax(0, 1fr); /* resumo em cima, fila embaixo */
 	}
 
-	.linha-detalhe-geral,
-	.linha-detalhe-ponto {
-		grid-auto-rows: auto; /* altura conforme o conteúdo */
+	.indicadores {
+		grid-template-columns: minmax(0, 1fr);
 	}
 
-	.grafico {
-		min-height: 260px; /* altura mínima para o gráfico ficar legível */
+	.indicador-citado {
+		white-space: normal; /* no celular a frase do sensor quebra a linha */
 	}
 
-	.filtro-visao {
-		width: 100%; /* o filtro ocupa a largura toda */
+	.fila-item {
+		grid-template-columns: 22px minmax(0, 1fr) auto 10px;
 	}
 
-	.painel-atualizacao {
-		text-align: left; /* alinha o texto à esquerda */
+	.fila-previsao,
+	.fila-bairro,
+	.sensor-num {
+		display: none; /* menos colunas para caber sem rolar para o lado */
+	}
+
+	.filtros,
+	.filtro-busca {
+		width: 100%;
+	}
+
+	.filtro-busca,
+	.filtro-bairro {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.col-ponto {
+		max-width: 160px;
+	}
+
+	.painel-topo-info {
+		align-items: flex-start;
+	}
+
+	.diag-item {
+		grid-template-columns: 124px minmax(0, 1fr) 40px;
+	}
+
+	/* no celular o cabeçalho dos cards do ponto pode quebrar a linha */
+	.linha-detalhe-ponto .card-cabecalho {
+		flex-wrap: wrap;
+	}
+
+	.diag-detalhe {
+		grid-column: 1 / -1; /* o detalhe desce para uma linha própria */
+		white-space: normal;
 	}
 }
